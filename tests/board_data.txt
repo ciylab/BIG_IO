@@ -1,0 +1,25 @@
+lsusb -v ->
+
+nano clone :
+  idVendor           0x1a86 QinHeng Electronics
+  idProduct          0x7523 CH340 serial converter
+thinary :
+  idVendor           0x1a86 QinHeng Electronics
+  idProduct          0x7523 CH340 serial converter
+every :
+  idVendor           0x2341 Arduino SA
+  idProduct          0x0058 Arduino Nano Every
+nano R4 :
+  idVendor           0x2341 Arduino SA
+  idProduct          0x0074 Nano R4  
+nano :
+  idVendor           0x0403 Future Technology Devices International, Ltd
+  idProduct          0x6001 FT232 Serial (UART) IC
+blue pill :
+  idVendor           0x0483 STMicroelectronics
+  idProduct          0x5740 Virtual COM Port
+
+arduino-cli board list :
+Port         Protocol Type              Board Name         FQBN                 Core
+/dev/ttyUSB0 serial   Serial Port (USB) Thinary Nano Every thinary:avr:nona4808 thinary:avr
+
