@@ -1,51 +1,91 @@
 ## PRÉSENTATION
-Ce code permet d'utiliser une entrée MIDI sur le module MIDI2CVGATE pour générer des CV et GATE avec la possibilité d'enregistrer ce qui sort du clavier. La note maximale est calibrée (minimum C0 = 0 volt) pour que C4 corresponde à 4 volts. Compte tenu de l'alimentation il devrait être possible d'atteindre C5.
+Ce code permet de gérer un module qui possède des entées et des sorties MIDI/CV/GATE. Les entrées et les sorties sont associées par des algorithmes.
 
 ## MODE D'EMPLOI
 À la mise sous tension les leds s'allument à tour de rôle pendant que l'écran affiche pendant quelques secondes un message d'information :
 
 ~~~~~~~
- MIDI
- TO 
- CV/GATE
+ BIG InOut
+ by 
+ CIYLab
  vx.y.z
 ~~~~~~~
 
 suivi du numéro de version.
 
-Pour choisir un des algorithmes installés, il faut tourner l'encodeur PARAMETER au-dessus de l'écran.
+La page principale permet les manipulations de base :
 
 ~~~~~~~
->DRUM 1  TIME
- DRUM 2
- ARP 1
- LOOPER 2
+>CONFIG
+ CALIBR
+ PLAY
+ LOAD   SAVE
 ~~~~~~~
 
-Ce même encodeur PARAMETER permet ensuite d'afficher la liste des paramètres par simple pression et de sélectionner le paramètre qu'on souhaite modifier.
+** Navigation ** :
+
+  - on tourne l'encodeur gauche pour naviguer dans le menu
+  - on presse l'encodeur gauche pour remonter (hiérarchie)
+  - on tourne l'encodeur droit pour charger la page ou modifier la valeur
+  - on presse l'encodeur droit pour valider (on/off, rec, del, tone...)
+
+Il est possible de sauvegarder (SAVE) ou de charger (LOAD) une configuration.
+
+Une configuration consiste à choisir un algorithme, une entrée et une sortie parmi :
+
+** In ** :
+
+  - NONE
+  - MIDI
+  - GATE (0 ou 5 volts)
+  
+** Out ** :
+
+  - NONE
+  - MIDI
+  - GATE (5 sorties)
+  - CV (3 sorties)
+  
+** Algorithmes ** :
+
+  - NONE : ne fait rien
+  - SIMPLE : simple changement de canal MIDI ou MIDI en CV/GATE
+  - RAND : générateur aléatoire
+  - RECORD : enregistrement d'une séquence
+  - MINI SEQ : quelques notes 
+  - TRIGGER : rythmique
+  - TIME : gestion de l'horloge
+  - ARPEG : arpégiateur
+  - COMPARE : on filtre dans un intervalle
+
+Par exemple :
 
 ~~~~~~~
- IN      DIVIDE
- CLOCK
->BPM
- MULT
+>ID     6
+ IN     CH2
+ OUT    TRIG1
+ ACTION RECORD
 ~~~~~~~
 
-Une nouvelle pression permet de revenir à la liste des algorithmes.
+Le module est une configuré par défaut :
 
-Une fois le paramètre sélectionné, l'encodeur VALUE à gauche de l'écran permet d'en modifier la valeur. À noter qu'une rotation d'un seul cran de l'encodeur VALUE affiche la valeur sans la modifier. On modifie la valeur par rotation ou par pression suivant le type de paramètre.
+| ID | IN | OUT | ACTION | COMMENTS |
+|:-------- |:--------|:--------|:--------|--------:|
+| 1     | TRIG0   | TRIG1    | TIME | clock |
+| 2     | NONE   | TRIG2    | TRIGGER | rythme euclidien |
+| 3     | NONE   | TRIG3    | TRIGGER |rythme euclidien |
+| 4     | NONE   | CH1    | MINI SEQ | bass line |
+| 5     | CH2   | CH2    | RECORD | mélodie |
+| 6     | NONE   | CVGATE1    | RAND | notes aléatoire |
+| 7     | CH3   | CH3    | NONE | canal 3 incatif |
+| 8     | CH14  | CVGATE2    | SIMPLE | MIDI vers CV/GATE |
 
-~~~~~~~
- IN      DIVIDE
- CLOCK
-> 80
- MULT
-~~~~~~~
+La page PLAY permet d'accéder aux paramètres de chacun des 8 modules.
 
-**Reboot** : une pression longue sur l'encodeur PARAMETER affichant la liste redémarre le module.
+**Reboot** : une pression longue sur l'encodeur de gauche redémarre le module.
 
 **Program Change** : le module réagit aux messages PC
 
-**Control Change** : le module réagit aux messages CC dont le numéro de 2 à 8 est celui du paramètre sur le canal midi. Le numéro de canal midi ne peut être changé que manuellement.
+**Control Change** : le module réagit aux messages CC dont le numéro de 1 à 8 est celui du paramètre sur le canal midi.
 
 
