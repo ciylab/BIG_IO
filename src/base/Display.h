@@ -19,8 +19,10 @@ class Display {
     void static putChar(byte position, char c);
     void welcome();
     void display();
+    void static new_config_page();
     void static newPage(byte index);
-    void static show_value(byte index, int val);
+    void static show_config_values(byte j, byte index, int val);
+    void static show_value(byte i, byte j, byte index, int val);
     void static no_show_value(byte index); 
 };
 

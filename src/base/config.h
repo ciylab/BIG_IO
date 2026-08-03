@@ -8,7 +8,11 @@ typedef struct data {
     int buffer;
 } data;
 
+typedef struct algo {
+    int in;
+    int out;
+    int action_num;
+} algo;
 
 void init_data();
-
 #endif

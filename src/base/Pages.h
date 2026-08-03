@@ -10,7 +10,7 @@ typedef struct {
     char text[64]; /**<Chaîne affichée. */
     byte size; /**<Nombre d'items. */
     byte pos[8]; /**<Positions possibles du curseur. */
-    byte cursor_num; /**<Numéro d'item pointé par le curseur. */ 
+    byte cursor_num = 0; /**<Numéro d'item pointé par le curseur. */ 
 } page;
 
 class Pages {

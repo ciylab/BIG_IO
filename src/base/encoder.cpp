@@ -2,8 +2,10 @@
 #include "Display.h"
 #include "Pages.h"
 #include "config.h"
+#include "dac.h"
 
 extern data values[16][8];
+extern algo algos[8];
 
 /**
  * @file encoder.cpp
@@ -85,8 +87,10 @@ void change_value(int8_t rotation) {
     byte j = p.cursor_num;
     if(!new_value) {
         new_value = true;
-        Display::show_value(p.pos[j], values[i][j].val);
-        return;
+        Display::show_value(i, j, p.pos[j], values[i][j].val);
+        if (i != 1) {
+            return;
+        }
     }
     if(0 < rotation && 
             values[i][j].val < values[i][j].max) {
@@ -95,7 +99,10 @@ void change_value(int8_t rotation) {
             values[i][j].min < values[i][j].val) {
         values[i][j].val--;
     }
-    Display::show_value(p.pos[j], values[i][j].val);
+    Display::show_value(i, j, p.pos[j], values[i][j].val);
+    if(i == 0 && j == 1) { // calibration
+        calibrate(values[i][j].val);
+    }
 }
 
 /**

@@ -4,6 +4,7 @@
 #include "src/base/Display.h"
 #include "src/base/Pages.h"
 #include "src/base/config.h"
+#include "src/base/dac.h"
 
 Versatile_RotaryEncoder *left;
 Versatile_RotaryEncoder *right;
@@ -23,6 +24,11 @@ void setup() {
 	right = new Versatile_RotaryEncoder(PA1, PA0, PA2);
     right->setHandleRotate(r_handleRotate);
     right->setHandlePress(r_handlePress);
+    pinMode(CS1, OUTPUT);
+    pinMode(CS2, OUTPUT);
+    digitalWrite(CS1, HIGH);
+    digitalWrite(CS2, HIGH);    
+    SPI.begin();
     ps->init();
     //ps->test();
     delay(1000);

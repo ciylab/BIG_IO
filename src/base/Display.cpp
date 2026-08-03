@@ -13,6 +13,7 @@
 #include <U8x8lib.h>
 #include "Display.h"
 #include "Pages.h"
+#include "config.h"
 
 /**
  * Oled SSD1306 ou SH1106.
@@ -24,6 +25,28 @@ char Display::buffer[64];
 
 byte Display::charIndex = 0; /**<position dans le tampon */
 byte Display::endPosition = 63; /**<dernière position à afficher */
+extern algo algos[8];
+extern data values[16][8];
+
+char *in[18] = {
+    "NONE ", 
+    "CH1  ", "CH2  ", "CH3  ", "CH4  ", "CH5  ", "CH6  ", "CH7  ", "CH8  ", 
+    "CH9  ", "CH10 ", "CH11 ", "CH12 ", "CH13 ", "CH14 ", "CH15 ", "CH16 ",
+    "TRIG0"
+};   
+
+char *out[28] = {
+    "NONE ", 
+    "CH1  ", "CH2  ", "CH3  ", "CH4  ", "CH5  ", "CH6  ", "CH7  ", "CH8  ", 
+    "CH9  ", "CH10 ", "CH11 ", "CH12 ", "CH13 ", "CH14 ", "CH15 ", "CH16 ",
+    "TRIG1", "TRIG2", "TRIG3", "TRIG4", "TRIG5",
+    "CV1  ", "CV2  ", "CV3  ",
+    "CVGT1", "CVGT2", "CVGT3"
+};
+
+char *actions[9] = {
+     "NONE", "ARPEG ", "COMP  ", "MINISQ", "RAND  ", 
+     "RECORD", "SIMPLE", "TIME  ", "TRIG  "};
 
 /**
  * @brief Initialisation avec 64 espaces.
@@ -86,17 +109,83 @@ void Display::display() {
     charIndex++;
 }
 
+void Display::new_config_page() {
+    int val = 0;
+    byte idx = 0;
+    values[1][1].val = algos[val].in;
+    values[1][2].val = algos[val].out;
+    values[1][3].val = algos[val].action_num;
+    idx += 7;
+    sprintf(buffer + idx, " %d    ", val + 1);
+    idx += 16;
+    sprintf(buffer + idx, " %s ", in[algos[val].in]);
+    idx += 16;
+    sprintf(buffer + idx, " %s ", out[algos[val].out]);
+    idx += 16;
+    sprintf(buffer + idx, " %s ", actions[algos[val].action_num]);
+}
+
 void Display::newPage(byte index) {
-    sprintf(buffer, Pages::pages[Pages::current_page_num].text);
+    page p = Pages::pages[Pages::current_page_num];
+    sprintf(buffer, p.text);
+    if(Pages::current_page_num == 1) {
+        // exceptionnellement on affiche toutes les valeurs
+        new_config_page();
+    }
     charIndex = 0;
     endPosition = 63;
     putChar(index, ' ');
     putChar(0, '>');
 }
 
-void Display::show_value(byte index, int val) {
+void Display::show_config_values(byte j, byte index, int val) {
     charIndex = index;
-    sprintf(buffer + index, " %3d    ", val);
+    int num = values[1][0].val; // id parmi 8 des algos
+    switch(j) {
+        case 0:
+            // on change les valeurs stockées par défaut.
+            values[1][1].val = algos[val].in;
+            values[1][2].val = algos[val].out;
+            values[1][3].val = algos[val].action_num;
+            index += 7;
+            sprintf(buffer + index, " %d    ", val + 1);
+            index += 16;
+            sprintf(buffer + index, " %s ", in[algos[val].in]);
+            index += 16;
+            sprintf(buffer + index, " %s ", out[algos[val].out]);
+            index += 16;
+            sprintf(buffer + index, " %s ", actions[algos[val].action_num]);
+            break;
+        case 1:
+            index += 7;
+            algos[num].in = val;
+            sprintf(buffer + index, " %s ", in[val]);
+            break;
+        case 2:
+            index += 7;
+            algos[num].out = val;
+            sprintf(buffer + index, " %s ", out[val]);
+            break;
+        case 3:
+            index += 7;
+            algos[num].action_num = val;
+            sprintf(buffer + index, " %s ", actions[val]);
+            break;
+    }
+    endPosition = index + 7;
+}
+
+void Display::show_value(byte i, byte j, byte index, int val) {
+    if (i == 1) {
+        show_config_values(j, index, val);
+        return;
+    }
+    charIndex = index;
+    if (i == 0 && (j == 3 || j == 4)) {
+        sprintf(buffer + index, " SLOT%d ", val);
+    } else {
+        sprintf(buffer + index, " %3d   ", val);
+    }
     endPosition = index + 7;
 }
 
