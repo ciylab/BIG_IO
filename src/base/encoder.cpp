@@ -3,6 +3,7 @@
 #include "Pages.h"
 #include "config.h"
 #include "dac.h"
+#include "eeprom.h"
 
 extern data values[16][8];
 extern algo algos[8];
@@ -148,7 +149,18 @@ void r_handleRotate(int8_t rotation) {
  */
 
 void r_handlePress() {
+    byte i = Pages::current_page_num;
+    page p = Pages::pages[i];
+    byte j = p.cursor_num;
+    if(i == 0) {
+        if (j == 3) {
+            load(values[i][j].val);
+        } else if (j == 4) {
+            save(values[i][j].val);
+        }
+    }
 #ifdef DEBUG
 	Serial.println("Right Pressed");
+    Serial.println(values[i][j].val);
 #endif
 }

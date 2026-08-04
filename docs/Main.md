@@ -29,8 +29,6 @@ La page principale permet les manipulations de base :
   - on tourne l'encodeur droit pour charger la page ou modifier la valeur
   - on presse l'encodeur droit pour valider (on/off, rec, del, tone...)
 
-Il est possible de sauvegarder (SAVE) ou de charger (LOAD) une configuration.
-
 Une configuration consiste à choisir un algorithme, une entrée et une sortie parmi :
 
 ** In ** :
@@ -67,20 +65,24 @@ Par exemple :
  ACTION RECORD
 ~~~~~~~
 
-Le module est une configuré par défaut :
+Le module est configuré par défaut :
 
-| ID | IN | OUT | ACTION | COMMENTS |
-|:-------- |:--------|:--------|:--------|--------:|
-| 1     | TRIG0   | TRIG1    | TIME | clock |
-| 2     | NONE   | TRIG2    | TRIGGER | rythme euclidien |
-| 3     | NONE   | TRIG3    | TRIGGER |rythme euclidien |
-| 4     | NONE   | CH1    | MINI SEQ | bass line |
-| 5     | CH2   | CH2    | RECORD | mélodie |
-| 6     | NONE   | CVGATE1    | RAND | notes aléatoire |
-| 7     | CH3   | CH3    | NONE | canal 3 incatif |
-| 8     | CH14  | CVGATE2    | SIMPLE | MIDI vers CV/GATE |
+|ID| IN    | OUT    | ACTION   | COMMENTS          |
+|:-|:------|:-------|:---------|------------------:|
+| 1| TRIG0 | TRIG1  | TIME     | clock             |
+| 2| NONE  | TRIG2  | TRIGGER  | rythme euclidien  |
+| 3| NONE  | TRIG3  | TRIGGER  | rythme euclidien  |
+| 4| NONE  | CH1    | MINI SEQ | bass line         |
+| 5| CH2   | CH2    | RECORD   | mélodie           |
+| 6| NONE  | CVGATE1| RAND     | notes aléatoire   |
+| 7| CH3   | CH3    | NONE     | canal 3 inatif    |
+| 8| CH14  | CVGATE2| SIMPLE   | MIDI vers CV/GATE |
+
+La calibration CALIBR permet de contrôler la justesse des notes sur un rack modulaire. La sortie CV1 est par défaut, au moment de la calibration, pour un C4 à 4 volts. S'il est juste on doit avoir C2 (2 volts) sur CV2 et C1 (1 volt) sur CV3.
 
 La page PLAY permet d'accéder aux paramètres de chacun des 8 modules.
+
+Il est possible de sauvegarder (SAVE) ou de charger (LOAD) une configuration. La validation se fait par pression de l'encodeur droit.
 
 **Reboot** : une pression longue sur l'encodeur de gauche redémarre le module.
 

@@ -29,24 +29,47 @@ extern algo algos[8];
 extern data values[16][8];
 
 char *in[18] = {
-    "NONE ", 
-    "CH1  ", "CH2  ", "CH3  ", "CH4  ", "CH5  ", "CH6  ", "CH7  ", "CH8  ", 
-    "CH9  ", "CH10 ", "CH11 ", "CH12 ", "CH13 ", "CH14 ", "CH15 ", "CH16 ",
-    "TRIG0"
+    "NONE ", // 0
+    "CH1  ", "CH2  ", "CH3  ", "CH4  ", // 1
+    "CH5  ", "CH6  ", "CH7  ", "CH8  ", // 5
+    "CH9  ", "CH10 ", "CH11 ", "CH12 ", // 9
+    "CH13 ", "CH14 ", "CH15 ", "CH16 ", // 13
+    "TRIG0"  // 17
 };   
 
 char *out[28] = {
-    "NONE ", 
-    "CH1  ", "CH2  ", "CH3  ", "CH4  ", "CH5  ", "CH6  ", "CH7  ", "CH8  ", 
-    "CH9  ", "CH10 ", "CH11 ", "CH12 ", "CH13 ", "CH14 ", "CH15 ", "CH16 ",
-    "TRIG1", "TRIG2", "TRIG3", "TRIG4", "TRIG5",
-    "CV1  ", "CV2  ", "CV3  ",
-    "CVGT1", "CVGT2", "CVGT3"
+    "NONE ", // 0
+    "CH1  ", "CH2  ", "CH3  ", "CH4  ", // 1
+    "CH5  ", "CH6  ", "CH7  ", "CH8  ", // 5
+    "CH9  ", "CH10 ", "CH11 ", "CH12 ", // 9 
+    "CH13 ", "CH14 ", "CH15 ", "CH16 ", // 13
+    "TRIG1", "TRIG2", "TRIG3", "TRIG4", "TRIG5", // 17
+    "CV1  ", "CV2  ", "CV3  ", // 22
+    "CVGT1", "CVGT2", "CVGT3"  // 25
 };
 
 char *actions[9] = {
-     "NONE", "ARPEG ", "COMP  ", "MINISQ", "RAND  ", 
-     "RECORD", "SIMPLE", "TIME  ", "TRIG  "};
+    "NONE",   // 0
+    "ARPEG ", // 1
+    "COMP  ", // 2
+    "MINISQ", // 3
+    "RAND  ", // 4
+    "RECORD", // 5
+    "SIMPLE", // 6
+    "TIME  ", // 7
+    "TRIG  "  // 8
+};
+
+char *memory[8] = {
+    "FACT",   // 0
+    "SLOT A", // 1
+    "SLOT B", // 2
+    "SLOT C", // 3
+    "SLOT D", // 4
+    "SLOT E", // 5
+    "SLOT F", // 6
+    "SLOT G" // 7
+};
 
 /**
  * @brief Initialisation avec 64 espaces.
@@ -182,7 +205,7 @@ void Display::show_value(byte i, byte j, byte index, int val) {
     }
     charIndex = index;
     if (i == 0 && (j == 3 || j == 4)) {
-        sprintf(buffer + index, " SLOT%d ", val);
+        sprintf(buffer + index, " %s ", memory[val]);
     } else {
         sprintf(buffer + index, " %3d   ", val);
     }

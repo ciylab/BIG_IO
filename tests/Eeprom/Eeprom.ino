@@ -9,7 +9,7 @@
 // 0.1.1    2020-07-14 fix #1 compile for ESP; fix author
 // 0.1.2    2025-08-27 add print filename and version number of library
 
-
+#include <U8x8lib.h>
 #include <Wire.h>
 #include <I2C_eeprom.h>
 
@@ -18,7 +18,7 @@
 
 // #define SERIAL_DEBUG SerialUSB
 #define SERIAL_DEBUG Serial
-
+U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 I2C_eeprom eeprom(DEVICEADDRESS, I2C_DEVICESIZE_24LC256);
 
 void readAndWriteVar() {
@@ -46,6 +46,17 @@ void readAndWriteVar() {
 }
 
 
+void test() {
+    int val;
+    int offset = 128;
+    eeprom.setBlock(offset, 1, 16);
+    delay(100);
+    for (int i = 0; i < 16; i++) {
+        val = eeprom.readByte(offset + i);
+        Serial.println(val);
+    }
+
+}
 
 
 void setup()
@@ -60,13 +71,15 @@ void setup()
 
   SERIAL_DEBUG.println("IT IS BEGINNING");
   SERIAL_DEBUG.println("WAIT FOR IT");
-
+  u8x8.begin();
   Wire.begin();
-
+  u8x8.setFont(u8x8_font_7x14_1x2_r);
+  u8x8.drawString(0,0,"Hello HEX!");
   eeprom.begin();
-
-  readAndWriteVar();
+  test();
+  //readAndWriteVar();
   SERIAL_DEBUG.println("\nDone...");
+
 }
 
 

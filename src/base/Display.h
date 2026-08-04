@@ -3,10 +3,10 @@
  * @brief Champs de la classe d'affichage.
  */
  
-#include "Pages.h"
 
 #ifndef DISPLAY_H
 #define DISPLAY_H
+#include "Pages.h"
 
 class Display {
   public:

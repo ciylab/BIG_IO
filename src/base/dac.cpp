@@ -4,6 +4,10 @@
  * le DAC.
  */
 #include "dac.h"
+#include <SPI.h>
+
+#define CS1 PA4
+#define CS2 PC15
 
 /**
     Build the 16-bit command word:
@@ -15,10 +19,21 @@
 */
 
 /**
+ * @brief Cette fonction d'encapsulation initialise les dacs.
+ */
+void init_dac() {
+    pinMode(CS1, OUTPUT);
+    pinMode(CS2, OUTPUT);
+    digitalWrite(CS1, HIGH);
+    digitalWrite(CS2, HIGH);    
+    SPI.begin();
+}
+
+/**
  * @brief Cette fonction envoie un entier **cv** compris entre 0 et 4095
  * sur un des deux canaux du dac 12-bit.
  */
-void dac_write(int ch, int cv) {
+void dac_write(byte ch, int cv) {
     if (ch == 0) {
         digitalWrite(CS1, LOW);
         SPI.transfer((cv >> 8) | 0x30);  // H0x30=OUTA/1x
@@ -45,8 +60,9 @@ void dac_write(int ch, int cv) {
  * conservée en mémoire dans les paramètres et sert de valeur de 
  * référence dans les actions.
  */
-void calibrate(int val) {
-    dac_write(0, 3276 + val);
-    dac_write(1, 1638 + val / 2);
-    dac_write(2, 819 + val / 4);
+void calibrate(byte val) {
+    int cv = (int) val - 128;
+    dac_write(0, 3276 + cv);
+    dac_write(1, 1638 + cv / 2);
+    dac_write(2, 819 + cv / 4);
 }

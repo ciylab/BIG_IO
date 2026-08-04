@@ -4,11 +4,9 @@
 
 #ifndef DAC_H
 #define DAC_H
-#include <SPI.h>
+#include <Arduino.h>
 
-#define CS1 PA4
-#define CS2 PC15
-
-void dac_write(int ch, int cv);
-void calibrate(int val);
+void init_dac();
+void dac_write(byte ch, int cv);
+void calibrate(byte val);
 #endif
