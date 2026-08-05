@@ -24,6 +24,7 @@ class Display {
     void static show_config_values(byte j, byte index, int val);
     void static show_value(byte i, byte j, byte index, int val);
     void static no_show_value(byte index); 
+    void static buildPlayPage();
 };
 
 #endif

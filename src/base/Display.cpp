@@ -222,4 +222,19 @@ void Display::no_show_value(byte index) {
     }
 }
 
-
+void Display::buildPlayPage() {
+    page *p;
+    p = &Pages::pages[2];
+    sprintf(p->text,
+            " 1:%.4s  2:%.4s\n 3:%.4s  4:%.4s\n 5:%.4s  6:%.4s\n 7:%.4s  8:%.4s",
+            actions[algos[0].action_num], 
+            actions[algos[1].action_num], 
+            actions[algos[2].action_num], 
+            actions[algos[3].action_num], 
+            actions[algos[4].action_num], 
+            actions[algos[5].action_num], 
+            actions[algos[6].action_num], 
+            actions[algos[7].action_num], 
+            actions[algos[0].action_num] 
+           );
+}

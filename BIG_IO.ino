@@ -30,6 +30,7 @@ void setup() {
     init_data();
     init_from_eeprom();
     delay(1000);
+    oled.buildPlayPage();
     oled.newPage(0);
 }
 

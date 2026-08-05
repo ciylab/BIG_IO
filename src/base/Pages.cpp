@@ -29,12 +29,15 @@ void Pages::add(page p) {
  */
  
 void Pages::init() {
-    this->add({
+    this->add({ // main page
             " CONFIG          CALIBR          PLAY            LOAD    SAVE", 
             5, {0, 16, 32, 48, 56}});
-    this->add({
+    this->add({ // config page
             " ID              IN              OUT             ACTION      ", 
             4, {0, 16, 32, 48}});
+    this->add({ // play page
+            " 1:      2:      3:      4:      5:      6:      7:      8:   ",
+            8, {0, 8, 16, 24, 32, 40, 48, 56}});
 }
 
 void Pages::test() {

@@ -69,7 +69,7 @@ void l_handlePress() {
 	Serial.println("Left Pressed");
 #endif
     page p = Pages::pages[Pages::current_page_num];
-    if(Pages::current_page_num == 1) {
+    if(Pages::current_page_num == 1 || Pages::current_page_num == 2) {
         Pages::current_page_num = 0; 
         Display::newPage(p.pos[p.cursor_num]);
     }
@@ -148,10 +148,14 @@ void r_handleRotate(int8_t rotation) {
                 Display::newPage(p.pos[p.cursor_num]);
                 break; 
             case 2:
+                Pages::current_page_num = 2; 
+                Display::newPage(p.pos[p.cursor_num]);
                 break;
             default:
                 change_value(rotation);
         }
+    } else if(Pages::current_page_num == 2) {
+        // TO DO
     } else {
         change_value(rotation);
     } 
@@ -172,6 +176,7 @@ void r_handlePress() {
     if(i == 0) { // main page
         if (j == 3) { //load
             load(values[i][j].val);
+            Display::buildPlayPage();
         } else if (j == 4) { //save
             save(values[i][j].val);
         }
