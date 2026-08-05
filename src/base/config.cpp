@@ -3,16 +3,8 @@
 #include "config.h"
 
 data values[16][8];
-algo algos[8] = {
-        {17, 17, 7}, 
-        {0, 18, 8}, 
-        {0, 19, 8}, 
-        {0, 1, 3}, 
-        {2, 2, 5}, 
-        {0, 25, 4}, 
-        {3, 3, 0}, 
-        {14, 26, 6} 
-    };
+
+algo algos[8];
 
 void init_data() {
     /* main page */

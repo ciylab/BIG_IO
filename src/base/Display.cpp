@@ -149,12 +149,14 @@ void Display::new_config_page() {
 }
 
 void Display::newPage(byte index) {
-    page p = Pages::pages[Pages::current_page_num];
-    sprintf(buffer, p.text);
+    page *p;
+    p = &Pages::pages[Pages::current_page_num];
+    sprintf(buffer, p->text);
     if(Pages::current_page_num == 1) {
         // exceptionnellement on affiche toutes les valeurs
         new_config_page();
     }
+    p->cursor_num = 0;
     charIndex = 0;
     endPosition = 63;
     putChar(index, ' ');

@@ -15,9 +15,6 @@ Pages *ps = new Pages();
 
 void setup() {
     Serial.begin(9600);
-    delay(5000);
-    init_data();
-    init_eeprom();
     oled.begin();
     oled.welcome();
     left = new Versatile_RotaryEncoder(PB0, PB1, PB10);
@@ -30,6 +27,8 @@ void setup() {
     init_dac();
     ps->init();
     //ps->test();
+    init_data();
+    init_from_eeprom();
     delay(1000);
     oled.newPage(0);
 }

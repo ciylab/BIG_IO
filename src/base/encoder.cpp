@@ -29,25 +29,32 @@ extern algo algos[8];
 bool new_value = false;
 
 void l_handleRotate(int8_t rotation) {
-#ifdef DEBUG
-    Serial.println("Left Rotated");
-#endif
     page *p;
     p = &Pages::pages[Pages::current_page_num];
     byte index = p->cursor_num;
     Display::putChar(p->pos[index], ' ');
+#ifdef DEBUG
+    Serial.print("page: ");
+    Serial.print(Pages::current_page_num);
+    Serial.print(" item: ");
+    Serial.print(p->cursor_num);
+#endif
     if(new_value) {
         Display::no_show_value(p->pos[index]);
+        new_value = false;
     }
     index += p->size;
     if(0 < rotation) {
-        index++;;
+        index++;
     } else {
         index--;
     }
     p->cursor_num = index % p->size;
+#ifdef DEBUG
+    Serial.print(" ---> ");
+    Serial.println(p->cursor_num);
+#endif
     Display::putChar(p->pos[p->cursor_num], '>');
-    new_value = false;
 }
 
 /**
@@ -86,10 +93,21 @@ void change_value(int8_t rotation) {
     byte i = Pages::current_page_num;
     page p = Pages::pages[i];
     byte j = p.cursor_num;
+#ifdef DEBUG
+    Serial.print("page: ");
+    Serial.print(i);
+    Serial.print(" item: ");
+    Serial.print(j);
+    Serial.print(" old val: ");
+    Serial.print(values[i][j].val);
+#endif
     if(!new_value) {
         new_value = true;
         Display::show_value(i, j, p.pos[j], values[i][j].val);
         if (i != 1) {
+#ifdef DEBUG
+            Serial.println(" no change");
+#endif
             return;
         }
     }
@@ -99,7 +117,13 @@ void change_value(int8_t rotation) {
     } else if(rotation < 0 && 
             values[i][j].min < values[i][j].val) {
         values[i][j].val--;
+    } else {
+        return; // nothing to do
     }
+#ifdef DEBUG
+    Serial.print(" new val: ");
+    Serial.println(values[i][j].val);
+#endif
     Display::show_value(i, j, p.pos[j], values[i][j].val);
     if(i == 0 && j == 1) { // calibration
         calibrate(values[i][j].val);
@@ -116,13 +140,6 @@ void change_value(int8_t rotation) {
 
 
 void r_handleRotate(int8_t rotation) {
-#ifdef DEBUG
-    Serial.print("Right Rotated: ");
-    if (rotation > 0)
-	    Serial.println("Right");
-    else
-	    Serial.println("Left");
-#endif
     page p = Pages::pages[Pages::current_page_num];
     if(Pages::current_page_num == 0) {
         switch(p.cursor_num) {
@@ -152,15 +169,16 @@ void r_handlePress() {
     byte i = Pages::current_page_num;
     page p = Pages::pages[i];
     byte j = p.cursor_num;
-    if(i == 0) {
-        if (j == 3) {
+    if(i == 0) { // main page
+        if (j == 3) { //load
             load(values[i][j].val);
-        } else if (j == 4) {
+        } else if (j == 4) { //save
             save(values[i][j].val);
         }
+        values[1][0].val = 0; // we start from ID = 1
     }
 #ifdef DEBUG
-	Serial.println("Right Pressed");
+	Serial.print("slot : ");
     Serial.println(values[i][j].val);
 #endif
 }
