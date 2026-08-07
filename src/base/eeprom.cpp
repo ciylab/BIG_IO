@@ -29,12 +29,11 @@ byte readEEPROM(int deviceaddress, unsigned int eeaddress ) {
     Wire.write((int)(eeaddress & 0xFF));    //writes the LSB
     Wire.endTransmission();
     Wire.requestFrom(deviceaddress,1);
-    if (Wire.available()) 
+    if (Wire.available()) { 
         rdata = Wire.read();
+    }
     return rdata;
 }
-
-
 
 /**
  * @brief Fonction d'initialisation.
@@ -45,11 +44,13 @@ void init_from_eeprom() {
     /**
      * code pour initialiser l'EEPROM :
      */
-    // write_factory();
-    // write_simple();
-    // for(int i = 2; i < 8; i++) {
-    //     write_null(i);
-    // }
+/*
+    write_factory();
+    write_simple();
+    for(int i = 2; i < 8; i++) {
+        write_null(i);
+    }
+    */
     load(0); // load from factory preset FACT.
 }
 
@@ -68,7 +69,7 @@ void save(int slot_num) {
     for(int i = 0; i < 8; i++) {
         writeEEPROM(eeprom, offset + 3 * i, algos[i].in);
         writeEEPROM(eeprom, offset + 3 * i + 1, algos[i].out);
-        writeEEPROM(eeprom, offset + 3 * i + 2, algos[i].action_num);
+        writeEEPROM(eeprom, offset + 3 * i + 2, algos[i].action);
     }
 }
 
@@ -84,8 +85,9 @@ void load(int slot_num) {
     for(int i = 0; i < 8; i++) {
         algos[i].in = readEEPROM(eeprom, offset + 3 * i);
         algos[i].out = readEEPROM(eeprom, offset + 3 * i + 1);
-        algos[i].action_num = readEEPROM(eeprom, offset + 3 * i + 2);
+        algos[i].action = readEEPROM(eeprom, offset + 3 * i + 2);
     }
+    update_algo();
 }
 
 /**
@@ -94,19 +96,19 @@ void load(int slot_num) {
 
 void write_factory() {
     algo t[8] = {
-        {17, 17, 7}, 
-        {0, 18, 8}, 
-        {0, 19, 8}, 
-        {0, 1, 3}, 
-        {2, 2, 5}, 
-        {0, 25, 4}, 
-        {3, 3, 0}, 
-        {14, 26, 6} 
+        {17, 17, 6}, // SIMPLE
+        {0, 18, 7},  // TRIG
+        {0, 19, 7},  // TRIG
+        {0, 1, 3},   // MINISQ
+        {2, 2, 5},   // RECORD
+        {0, 25, 4},  // RAND
+        {3, 3, 0},   // NONE
+        {14, 26, 6}  // SIMPLE
     };
     for(int i = 0; i < 8; i++) {
         writeEEPROM(eeprom, 3 * i, t[i].in);
         writeEEPROM(eeprom, 3 * i + 1, t[i].out);
-        writeEEPROM(eeprom, 3 * i + 2, t[i].action_num);
+        writeEEPROM(eeprom, 3 * i + 2, t[i].action);
     }
 }
 
@@ -128,7 +130,7 @@ void write_simple() {
     for(int i = 0; i < 8; i++) {
         writeEEPROM(eeprom, CONFIG_SIZE + 3 * i, t[i].in);
         writeEEPROM(eeprom, CONFIG_SIZE + 3 * i + 1, t[i].out);
-        writeEEPROM(eeprom, CONFIG_SIZE + 3 * i + 2, t[i].action_num);
+        writeEEPROM(eeprom, CONFIG_SIZE + 3 * i + 2, t[i].action);
     }
 }
 

@@ -2,18 +2,22 @@
 #define CONFIG_H
 #include <Arduino.h>
 
-typedef struct data {
-    byte val;
-    byte min;
-    byte max;
-    byte buffer;
-} data;
+typedef struct parameter {
+    char name[8];    // name to display
+    byte value;      // uses when playing
+    byte buffer;     // value before update to prevent change when note on
+    byte min;        // min value
+    byte max;        // max value
+    byte cursor_pos; // on screen from 0 to 63
+} parameter;
 
 typedef struct algo {
     byte in;
     byte out;
-    byte action_num;
+    byte action;
 } algo;
 
-void init_data();
+void init_modules();
+void update_algo();
+
 #endif

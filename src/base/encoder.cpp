@@ -1,12 +1,11 @@
 #include <Arduino.h> // pour les tests avec Serial
 #include "Display.h"
-#include "Pages.h"
 #include "config.h"
 #include "dac.h"
 #include "eeprom.h"
+#include "Module.h"
 
-extern data values[16][8];
-extern algo algos[8];
+extern Module modules[3];
 
 /**
  * @file encoder.cpp
@@ -29,32 +28,21 @@ extern algo algos[8];
 bool new_value = false;
 
 void l_handleRotate(int8_t rotation) {
-    page *p;
-    p = &Pages::pages[Pages::current_page_num];
-    byte index = p->cursor_num;
-    Display::putChar(p->pos[index], ' ');
-#ifdef DEBUG
-    Serial.print("page: ");
-    Serial.print(Pages::current_page_num);
-    Serial.print(" item: ");
-    Serial.print(p->cursor_num);
-#endif
+    Module m = modules[Display::current_page];
+    Display::putChar(Display::cursor_pos, ' ');
     if(new_value) {
-        Display::no_show_value(p->pos[index]);
+        Display::no_show_value(m.parameters[Display::cursor_num]);
         new_value = false;
     }
-    index += p->size;
+    byte index = Display::cursor_num + m.size;
     if(0 < rotation) {
         index++;
     } else {
         index--;
     }
-    p->cursor_num = index % p->size;
-#ifdef DEBUG
-    Serial.print(" ---> ");
-    Serial.println(p->cursor_num);
-#endif
-    Display::putChar(p->pos[p->cursor_num], '>');
+    Display::cursor_num = index % modules[Display::current_page].size;
+    Display::cursor_pos = m.parameters[Display::cursor_num].cursor_pos;
+    Display::putChar(Display::cursor_pos, '>');
 }
 
 /**
@@ -68,10 +56,9 @@ void l_handlePress() {
 #ifdef DEBUG
 	Serial.println("Left Pressed");
 #endif
-    page p = Pages::pages[Pages::current_page_num];
-    if(Pages::current_page_num == 1 || Pages::current_page_num == 2) {
-        Pages::current_page_num = 0; 
-        Display::newPage(p.pos[p.cursor_num]);
+    if(Display::current_page == 1 || Display::current_page == 2) {
+        Display::current_page = 0; 
+        Display::newPage();
     }
 }
 
@@ -90,43 +77,23 @@ void l_handleLongPress() {
  */
 
 void change_value(int8_t rotation) {
-    byte i = Pages::current_page_num;
-    page p = Pages::pages[i];
-    byte j = p.cursor_num;
-#ifdef DEBUG
-    Serial.print("page: ");
-    Serial.print(i);
-    Serial.print(" item: ");
-    Serial.print(j);
-    Serial.print(" old val: ");
-    Serial.print(values[i][j].val);
-#endif
-    if(!new_value) {
+    parameter *p;     
+    p = modules[Display::current_page].parameters + Display::cursor_num;
+    if(!new_value && Display::current_page != 2) {
         new_value = true;
-        Display::show_value(i, j, p.pos[j], values[i][j].val);
-        if (i != 1) {
-#ifdef DEBUG
-            Serial.println(" no change");
-#endif
-            return;
-        }
+        Display::show_value(p->value);
+        return;
     }
-    if(0 < rotation && 
-            values[i][j].val < values[i][j].max) {
-        values[i][j].val++;
-    } else if(rotation < 0 && 
-            values[i][j].min < values[i][j].val) {
-        values[i][j].val--;
+    if(0 < rotation && p->value < p->max) {
+        p->value++;
+    } else if(rotation < 0 && p->min < p->value) {
+        p->value--;
     } else {
         return; // nothing to do
     }
-#ifdef DEBUG
-    Serial.print(" new val: ");
-    Serial.println(values[i][j].val);
-#endif
-    Display::show_value(i, j, p.pos[j], values[i][j].val);
-    if(i == 0 && j == 1) { // calibration
-        calibrate(values[i][j].val);
+    Display::show_value(p->value);
+    if(Display::current_page == 0 && Display::cursor_num == 1) {
+        calibrate(p->value);
     }
 }
 
@@ -138,24 +105,20 @@ void change_value(int8_t rotation) {
  * Les suivantes appellent la fonction du module. 
  */
 
-
 void r_handleRotate(int8_t rotation) {
-    page p = Pages::pages[Pages::current_page_num];
-    if(Pages::current_page_num == 0) {
-        switch(p.cursor_num) {
+    if(Display::current_page == 0) {
+        switch(Display::cursor_num) {
             case 0:
-                Pages::current_page_num = 1; 
-                Display::newPage(p.pos[p.cursor_num]);
+                Display::current_page = 1; 
+                Display::newPage();
                 break; 
             case 2:
-                Pages::current_page_num = 2; 
-                Display::newPage(p.pos[p.cursor_num]);
+                Display::current_page = 2; 
+                Display::newPage();
                 break;
             default:
                 change_value(rotation);
         }
-    } else if(Pages::current_page_num == 2) {
-        // TO DO
     } else {
         change_value(rotation);
     } 
@@ -170,20 +133,14 @@ void r_handleRotate(int8_t rotation) {
  */
 
 void r_handlePress() {
-    byte i = Pages::current_page_num;
-    page p = Pages::pages[i];
-    byte j = p.cursor_num;
+    byte i = Display::current_page;
+    byte j = Display::cursor_num;
+    parameter p = modules[i].parameters[j];
     if(i == 0) { // main page
         if (j == 3) { //load
-            load(values[i][j].val);
-            Display::buildPlayPage();
+            load(p.value);
         } else if (j == 4) { //save
-            save(values[i][j].val);
+            save(p.value);
         }
-        values[1][0].val = 0; // we start from ID = 1
     }
-#ifdef DEBUG
-	Serial.print("slot : ");
-    Serial.println(values[i][j].val);
-#endif
 }

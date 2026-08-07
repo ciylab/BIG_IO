@@ -9,24 +9,25 @@
  * par boucle de loop(). 
  */
 
-
 #include <U8x8lib.h>
 #include "Display.h"
-#include "Pages.h"
 #include "config.h"
+#include "Module.h"
 
-/**
- * Oled SSD1306 ou SH1106.
- */
+extern algo algos[8];
+extern parameter values[16][8];
+extern Module modules[3];
 
 U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
 char Display::buffer[64];
-
 byte Display::charIndex = 0; /**<position dans le tampon */
 byte Display::endPosition = 63; /**<dernière position à afficher */
-extern algo algos[8];
-extern data values[16][8];
+byte Display::cursor_num = 0; /**<le premier item de la page */
+byte Display::cursor_pos = 0; /**< curseur en (0, 0). */
+byte Display::current_page = 0; /**< on affiche la page principale. */
+
+int count = 0;
 
 char *in[18] = {
     "NONE ", // 0
@@ -48,16 +49,15 @@ char *out[28] = {
     "CVGT1", "CVGT2", "CVGT3"  // 25
 };
 
-char *actions[9] = {
-    "NONE",   // 0
+char *actions[8] = {
+    "NONE  ", // 0
     "ARPEG ", // 1
     "COMP  ", // 2
     "MINISQ", // 3
     "RAND  ", // 4
     "RECORD", // 5
     "SIMPLE", // 6
-    "TIME  ", // 7
-    "TRIG  "  // 8
+    "TRIG  "  // 7
 };
 
 char *memory[8] = {
@@ -68,7 +68,7 @@ char *memory[8] = {
     "SLOT D", // 4
     "SLOT E", // 5
     "SLOT F", // 6
-    "SLOT G" // 7
+    "SLOT G"  // 7
 };
 
 /**
@@ -87,6 +87,7 @@ Display::Display() {
  */
 void Display::begin() {
     u8x8.begin();
+    welcome();
 }
     
 /**
@@ -97,7 +98,7 @@ void Display::putChar(byte position, char c) {
 }
 
 /**
- * @brief Affiche un message de bienvenue.
+ * @brief Affiche un message de bienvenue avec le numéro de version.
  */
 
 void Display::welcome() {
@@ -115,7 +116,7 @@ void Display::welcome() {
  * La variable **endPosition** est le numéro du dernier caractère du
  * buffer à afficher. En général il y a un groupe de 6 caractères seulement
  * à rafraîchir. La fonction en affiche un au maximum.
- * */
+ */
 
 void Display::display() {
     // without buffer : 100ms
@@ -123,6 +124,11 @@ void Display::display() {
     if (endPosition <= charIndex) {
         return;
     }
+#ifdef DEBUG
+    count++;
+    Serial.print("->");
+    Serial.println(count);
+#endif
     while (charIndex < endPosition && 
         screen[charIndex] == buffer[charIndex]) {
         charIndex++;
@@ -132,109 +138,54 @@ void Display::display() {
     charIndex++;
 }
 
-void Display::new_config_page() {
-    int val = 0;
-    byte idx = 0;
-    values[1][1].val = algos[val].in;
-    values[1][2].val = algos[val].out;
-    values[1][3].val = algos[val].action_num;
-    idx += 7;
-    sprintf(buffer + idx, " %d    ", val + 1);
-    idx += 16;
-    sprintf(buffer + idx, " %s ", in[algos[val].in]);
-    idx += 16;
-    sprintf(buffer + idx, " %s ", out[algos[val].out]);
-    idx += 16;
-    sprintf(buffer + idx, " %s ", actions[algos[val].action_num]);
-}
+/**
+ * @brief Prépare les données pour l'affichage d'une nouvelle page.
+ */
 
-void Display::newPage(byte index) {
-    page *p;
-    p = &Pages::pages[Pages::current_page_num];
-    sprintf(buffer, p->text);
-    if(Pages::current_page_num == 1) {
-        // exceptionnellement on affiche toutes les valeurs
-        new_config_page();
-    }
-    p->cursor_num = 0;
+void Display::newPage() {
+    sprintf(buffer, modules[current_page].text);
     charIndex = 0;
     endPosition = 63;
-    putChar(index, ' ');
-    putChar(0, '>');
+    putChar(cursor_pos, ' ');
+    cursor_num = 0;
+    cursor_pos = 0;
+    putChar(cursor_pos, '>');
 }
 
-void Display::show_config_values(byte j, byte index, int val) {
-    charIndex = index;
-    int num = values[1][0].val; // id parmi 8 des algos
-    switch(j) {
-        case 0:
-            // on change les valeurs stockées par défaut.
-            values[1][1].val = algos[val].in;
-            values[1][2].val = algos[val].out;
-            values[1][3].val = algos[val].action_num;
-            index += 7;
-            sprintf(buffer + index, " %d    ", val + 1);
-            index += 16;
-            sprintf(buffer + index, " %s ", in[algos[val].in]);
-            index += 16;
-            sprintf(buffer + index, " %s ", out[algos[val].out]);
-            index += 16;
-            sprintf(buffer + index, " %s ", actions[algos[val].action_num]);
-            break;
-        case 1:
-            index += 7;
-            algos[num].in = val;
-            sprintf(buffer + index, " %s ", in[val]);
-            break;
-        case 2:
-            index += 7;
-            algos[num].out = val;
-            sprintf(buffer + index, " %s ", out[val]);
-            break;
-        case 3:
-            index += 7;
-            algos[num].action_num = val;
-            sprintf(buffer + index, " %s ", actions[val]);
-            break;
+/**
+ * @brief Pour afficher la valeur d'un paramètre.
+ */
+
+void Display::show_value(int val) {
+    charIndex = cursor_pos;
+    if(current_page == 0) {
+        if (cursor_num == 3 || cursor_num == 4) {
+            sprintf(buffer + charIndex, " %s ", memory[val]);
+        } else if(cursor_num == 1) { // calibration
+            sprintf(buffer + charIndex, " %3d   ", val - 128);
+        } else {
+            return;
+        }
+    } else if(current_page == 2) {
+        sprintf(buffer + charIndex + 3, "%.4s", actions[val]);
+    } else {
+        sprintf(buffer + charIndex, " %3d   ", val);
     }
-    endPosition = index + 7;
+    endPosition = charIndex + 7;
 }
 
-void Display::show_value(byte i, byte j, byte index, int val) {
-    if (i == 1) {
-        show_config_values(j, index, val);
+/**
+ * @brief Pour afficher le nom d'un paramètre.
+ */
+
+void Display::no_show_value(parameter p) {
+    if(current_page == 2) {
         return;
     }
-    charIndex = index;
-    if (i == 0 && (j == 3 || j == 4)) {
-        sprintf(buffer + index, " %s ", memory[val]);
-    } else {
-        sprintf(buffer + index, " %3d   ", val);
-    }
-    endPosition = index + 7;
-}
-
-void Display::no_show_value(byte index) {
-    charIndex = index;
-    endPosition = index + 7;
-    for (int i = index; i < endPosition; i++) {
-        buffer[i] = Pages::pages[Pages::current_page_num].text[i];
+    charIndex = cursor_pos;
+    endPosition = charIndex + 7;
+    for (int i = 0; i < 7; i++) {
+        buffer[charIndex + i] = p.name[i];
     }
 }
 
-void Display::buildPlayPage() {
-    page *p;
-    p = &Pages::pages[2];
-    sprintf(p->text,
-            " 1:%.4s  2:%.4s\n 3:%.4s  4:%.4s\n 5:%.4s  6:%.4s\n 7:%.4s  8:%.4s",
-            actions[algos[0].action_num], 
-            actions[algos[1].action_num], 
-            actions[algos[2].action_num], 
-            actions[algos[3].action_num], 
-            actions[algos[4].action_num], 
-            actions[algos[5].action_num], 
-            actions[algos[6].action_num], 
-            actions[algos[7].action_num], 
-            actions[algos[0].action_num] 
-           );
-}
