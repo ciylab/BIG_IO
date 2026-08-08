@@ -5,7 +5,8 @@
 #include "eeprom.h"
 #include "Module.h"
 
-extern Module modules[3];
+extern Module *modules[3];
+extern algo algos[8];
 
 /**
  * @file encoder.cpp
@@ -28,20 +29,20 @@ extern Module modules[3];
 bool new_value = false;
 
 void l_handleRotate(int8_t rotation) {
-    Module m = modules[Display::current_page];
+    Module *m = modules[Display::current_page];
     Display::putChar(Display::cursor_pos, ' ');
     if(new_value) {
-        Display::no_show_value(m.parameters[Display::cursor_num]);
+        Display::no_show_value(m->parameters[Display::cursor_num]);
         new_value = false;
     }
-    byte index = Display::cursor_num + m.size;
+    byte index = Display::cursor_num + m->size;
     if(0 < rotation) {
         index++;
     } else {
         index--;
     }
-    Display::cursor_num = index % modules[Display::current_page].size;
-    Display::cursor_pos = m.parameters[Display::cursor_num].cursor_pos;
+    Display::cursor_num = index % modules[Display::current_page]->size;
+    Display::cursor_pos = m->parameters[Display::cursor_num].cursor_pos;
     Display::putChar(Display::cursor_pos, '>');
 }
 
@@ -53,11 +54,8 @@ void l_handleRotate(int8_t rotation) {
  */
 
 void l_handlePress() {
-#ifdef DEBUG
-	Serial.println("Left Pressed");
-#endif
-    if(Display::current_page == 1 || Display::current_page == 2) {
-        Display::current_page = 0; 
+    if(Display::current_page == TIME || Display::current_page == PLAY) {
+        Display::current_page = MAIN; 
         Display::newPage();
     }
 }
@@ -78,8 +76,8 @@ void l_handleLongPress() {
 
 void change_value(int8_t rotation) {
     parameter *p;     
-    p = modules[Display::current_page].parameters + Display::cursor_num;
-    if(!new_value && Display::current_page != 2) {
+    p = &modules[Display::current_page]->parameters[Display::cursor_num];
+    if(!new_value && Display::current_page != PLAY) {
         new_value = true;
         Display::show_value(p->value);
         return;
@@ -92,8 +90,10 @@ void change_value(int8_t rotation) {
         return; // nothing to do
     }
     Display::show_value(p->value);
-    if(Display::current_page == 0 && Display::cursor_num == 1) {
+    if(Display::current_page == MAIN && Display::cursor_num == 1) {
         calibrate(p->value);
+    } else if(Display::current_page == PLAY) {
+        algos[Display::cursor_num].action = p->value;
     }
 }
 
@@ -106,14 +106,14 @@ void change_value(int8_t rotation) {
  */
 
 void r_handleRotate(int8_t rotation) {
-    if(Display::current_page == 0) {
+    if(Display::current_page == MAIN) {
         switch(Display::cursor_num) {
             case 0:
-                Display::current_page = 1; 
+                Display::current_page = TIME; 
                 Display::newPage();
                 break; 
             case 2:
-                Display::current_page = 2; 
+                Display::current_page = PLAY; 
                 Display::newPage();
                 break;
             default:
@@ -135,8 +135,8 @@ void r_handleRotate(int8_t rotation) {
 void r_handlePress() {
     byte i = Display::current_page;
     byte j = Display::cursor_num;
-    parameter p = modules[i].parameters[j];
-    if(i == 0) { // main page
+    parameter p = modules[i]->parameters[j];
+    if(i == MAIN) { // main page
         if (j == 3) { //load
             load(p.value);
         } else if (j == 4) { //save

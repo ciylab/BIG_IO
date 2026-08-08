@@ -46,18 +46,5 @@ void Module::setMenu() {
             text[j + offset] = parameters[i].name[j];
         }
     }
-#ifdef DEBUG
-    for (int  i = 0; i < 64; i++) {
-        Serial.print(text[i]);
-    }
-    Serial.println();
-#endif
 }
-
-void Module::handleNoteOn(byte channel, byte pitch, byte velocity)  {
-}
-
-void Module::handleNoteOff(byte channel, byte pitch, byte velocity)  {
-}
-
 

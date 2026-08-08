@@ -16,7 +16,7 @@
 
 extern algo algos[8];
 extern parameter values[16][8];
-extern Module modules[3];
+extern Module *modules[3];
 
 U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
@@ -47,28 +47,6 @@ char *out[28] = {
     "TRIG1", "TRIG2", "TRIG3", "TRIG4", "TRIG5", // 17
     "CV1  ", "CV2  ", "CV3  ", // 22
     "CVGT1", "CVGT2", "CVGT3"  // 25
-};
-
-char *actions[8] = {
-    "NONE  ", // 0
-    "ARPEG ", // 1
-    "COMP  ", // 2
-    "MINISQ", // 3
-    "RAND  ", // 4
-    "RECORD", // 5
-    "SIMPLE", // 6
-    "TRIG  "  // 7
-};
-
-char *memory[8] = {
-    "FACT",   // 0
-    "SLOT A", // 1
-    "SLOT B", // 2
-    "SLOT C", // 3
-    "SLOT D", // 4
-    "SLOT E", // 5
-    "SLOT F", // 6
-    "SLOT G"  // 7
 };
 
 /**
@@ -124,11 +102,6 @@ void Display::display() {
     if (endPosition <= charIndex) {
         return;
     }
-#ifdef DEBUG
-    count++;
-    Serial.print("->");
-    Serial.println(count);
-#endif
     while (charIndex < endPosition && 
         screen[charIndex] == buffer[charIndex]) {
         charIndex++;
@@ -143,7 +116,7 @@ void Display::display() {
  */
 
 void Display::newPage() {
-    sprintf(buffer, modules[current_page].text);
+    sprintf(buffer, modules[current_page]->text);
     charIndex = 0;
     endPosition = 63;
     putChar(cursor_pos, ' ');
@@ -157,20 +130,13 @@ void Display::newPage() {
  */
 
 void Display::show_value(int val) {
-    charIndex = cursor_pos;
-    if(current_page == 0) {
-        if (cursor_num == 3 || cursor_num == 4) {
-            sprintf(buffer + charIndex, " %s ", memory[val]);
-        } else if(cursor_num == 1) { // calibration
-            sprintf(buffer + charIndex, " %3d   ", val - 128);
-        } else {
-            return;
-        }
-    } else if(current_page == 2) {
-        sprintf(buffer + charIndex + 3, "%.4s", actions[val]);
-    } else {
-        sprintf(buffer + charIndex, " %3d   ", val);
+    if(current_page == 0 && (cursor_num == 0 || cursor_num == 2)) {
+        return;
     }
+    charIndex = cursor_pos;
+    char temp[8];
+    modules[current_page]->getString(val, temp);
+    sprintf(buffer + charIndex, temp);
     endPosition = charIndex + 7;
 }
 

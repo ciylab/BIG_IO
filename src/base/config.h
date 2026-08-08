@@ -2,6 +2,10 @@
 #define CONFIG_H
 #include <Arduino.h>
 
+#define MAIN 0
+#define TIME 1
+#define PLAY 2
+
 typedef struct parameter {
     char name[8];    // name to display
     byte value;      // uses when playing
