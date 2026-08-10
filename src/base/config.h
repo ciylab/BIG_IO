@@ -2,9 +2,20 @@
 #define CONFIG_H
 #include <Arduino.h>
 
+
+#define CLOCK_IN PA3
+#define CLOCK_OUT PB3
+#define GATE_1 PB5
+#define GATE_2 PB4
+#define DRUM_2 PB8
+#define DRUM_1 PB9
+
 #define MAIN 0
 #define TIME 1
 #define PLAY 2
+
+const byte pins[] = {
+    CLOCK_OUT, GATE_2, GATE_1, DRUM_2, DRUM_1};
 
 typedef struct parameter {
     char name[8];    // name to display
@@ -21,7 +32,7 @@ typedef struct algo {
     byte action;
 } algo;
 
-void init_modules();
 void update_algo();
-
+void pin_init();
+void pin_test();
 #endif

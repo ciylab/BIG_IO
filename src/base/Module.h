@@ -29,11 +29,16 @@ class Module {
     Module(char *);
     void add(parameter p);
     void setMenu();
-    virtual void handleNoteOn(byte channel, byte pitch, byte velocity) {};
-    virtual void handleNoteOff(byte channel, byte pitch, byte velocity) {};
+    virtual void handleNoteOn(byte channel, byte pitch, byte velocity) {}
+    virtual void handleNoteOff(byte channel, byte pitch, byte velocity) {}
+    virtual void handleClock() {}
+    virtual void handleStart() {}
+    virtual void handleStop() {}
+
     /** pour afficher la valeur */
-    virtual void getString(int val, char temp[8]) {};
-    virtual void handleClock() {};
+    virtual void getString(int val, char temp[8]) {}
+    virtual void execute() {}
+
 };
 
 #endif

@@ -3,8 +3,10 @@
  * @brief Gestion des messages MIDI.
  */
 
-#include <Arduino.h> // micros()
-#include <MIDI.h>
+#include "midi.h"
+#include "Modules.h"
+
+extern Modules *myModules;
 
 /**
  * @brief Gestion note on de la librairie
@@ -24,4 +26,15 @@ void handleNoteOn(byte channel, byte pitch, byte velocity) {
 void handleNoteOff(byte channel, byte pitch, byte velocity) {
 }
 
+void handleClock() {
+    myModules->modules[1]->handleClock();
+}
+
+void handleStart() {
+    myModules->modules[1]->handleStart();
+}
+
+void handleStop() {
+    myModules->modules[1]->handleStop();    
+}
 

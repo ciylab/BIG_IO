@@ -34,9 +34,6 @@ class Main: public Module {
             this->add({" SAVE  ", 1, 1, 1, 7, 56});
             this->setMenu();
         }
-        void handleNoteOn(byte channel, byte pitch, byte velocity) {}
-        void handleNoteOff(byte channel, byte pitch, byte velocity) {}
-        void handleClock() {};
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 1: // calibration

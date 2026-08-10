@@ -13,7 +13,7 @@ class Display {
     public:
         static byte cursor_num; /**< Index de 0 à 7 du curseur dans la liste. */
         static byte cursor_pos; /**< Position de 0 à 63 du curseur à l'écran. */
-        static byte current_page; /**< id de la page courante. */
+        //static byte current_page; /**< id de la page courante. */
         static char buffer[64]; /**<tampon de l'écran */ 
         char screen[64]; /**<contenu de l'écran */
         static byte charIndex; /**<position dans le tampon */

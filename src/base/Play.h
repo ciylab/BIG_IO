@@ -26,9 +26,6 @@ class Play: public Module {
             this->add({" 8:    ", 0, 0, 0, 7, 56});
             this->setMenu();
         }
-        void handleNoteOn(byte channel, byte pitch, byte velocity) {}
-        void handleNoteOff(byte channel, byte pitch, byte velocity) {}
-        void handleClock() {};
         void getString(int val, char temp[8]) {
             sprintf(temp, " %d:%.4s", 
                     Display::cursor_num + 1, actions[val]);

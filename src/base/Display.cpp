@@ -12,11 +12,12 @@
 #include <U8x8lib.h>
 #include "Display.h"
 #include "config.h"
-#include "Module.h"
+#include "Modules.h"
 
 extern algo algos[8];
 extern parameter values[16][8];
-extern Module *modules[3];
+//extern Module *modules[3];
+extern Modules *myModules;
 
 U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
@@ -25,7 +26,7 @@ byte Display::charIndex = 0; /**<position dans le tampon */
 byte Display::endPosition = 63; /**<dernière position à afficher */
 byte Display::cursor_num = 0; /**<le premier item de la page */
 byte Display::cursor_pos = 0; /**< curseur en (0, 0). */
-byte Display::current_page = 0; /**< on affiche la page principale. */
+//byte Display::current_page = 0; /**< on affiche la page principale. */
 
 int count = 0;
 
@@ -116,7 +117,12 @@ void Display::display() {
  */
 
 void Display::newPage() {
-    sprintf(buffer, modules[current_page]->text);
+    sprintf(buffer, myModules->modules[Modules::current]->text);
+#ifdef DEBUG
+    for(int i = 0; i < 64; i++) {
+        Serial.print(buffer[i]);
+    }
+#endif
     charIndex = 0;
     endPosition = 63;
     putChar(cursor_pos, ' ');
@@ -130,12 +136,12 @@ void Display::newPage() {
  */
 
 void Display::show_value(int val) {
-    if(current_page == 0 && (cursor_num == 0 || cursor_num == 2)) {
+    if(Modules::current == 0 && (cursor_num == 0 || cursor_num == 2)) {
         return;
     }
     charIndex = cursor_pos;
     char temp[8];
-    modules[current_page]->getString(val, temp);
+    myModules->modules[Modules::current]->getString(val, temp);
     sprintf(buffer + charIndex, temp);
     endPosition = charIndex + 7;
 }
@@ -145,7 +151,7 @@ void Display::show_value(int val) {
  */
 
 void Display::no_show_value(parameter p) {
-    if(current_page == 2) {
+    if(Modules::current == 2) {
         return;
     }
     charIndex = cursor_pos;

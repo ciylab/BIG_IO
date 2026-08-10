@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "Module.h"
+#include "Modules.h"
 #include "Display.h"
 #include "Main.h"
 #include "Play.h"
@@ -12,8 +13,7 @@
 
 parameter values[16][8];
 algo algos[8];
-
-Module *modules[3];
+extern Modules *myModules;
 
 char *actions[8] = {
     "NONE  ", // 0
@@ -29,18 +29,27 @@ char *actions[8] = {
 void update_algo() {
     byte offset;
     for(int i = 0; i < 8; i++) {
-        modules[2]->parameters[i].value = algos[i].action;
-        modules[2]->parameters[i].buffer = algos[i].action;
-        offset = modules[2]->parameters[i].cursor_pos;
+        myModules->modules[2]->parameters[i].value = algos[i].action;
+        myModules->modules[2]->parameters[i].buffer = algos[i].action;
+        offset = myModules->modules[2]->parameters[i].cursor_pos;
         for (int j = 0; j < 4; j++) {
-            modules[2]->text[j + offset + 3] = actions[algos[i].action][j];
+            myModules->modules[2]->text[j + offset + 3] = 
+                actions[algos[i].action][j];
         }
     }
 }
 
-void init_modules() {
-    modules[0] = new Main("MAIN");
-    modules[1] = new Time("TIME");
-    modules[2] = new Play("PLAY");
+void pin_init() {
+    for(int i = 0; i < 5; i++) {
+        pinMode(pins[i], OUTPUT);
+        digitalWrite(pins[i], HIGH);
+    }
 }
 
+void pin_test() {
+    for(int i = 0; i < 5; i++) {
+        digitalWrite(pins[i], LOW);
+        delay(500);
+        digitalWrite(pins[i], HIGH);
+    }
+}
