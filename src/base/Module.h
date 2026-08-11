@@ -35,7 +35,7 @@ class Module {
     virtual void handleStart() {}
     virtual void handleStop() {}
     virtual void l_handlePress();
-
+    virtual void r_handlePress();
     /** pour afficher la valeur */
     virtual void getString(int val, char temp[8]) {}
     virtual void execute() {}

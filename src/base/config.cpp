@@ -51,10 +51,10 @@ void load_modules() {
                 m = new Module("SIMPLE");
                 break;
             case 7:
-                m = new Trigger("TRIG");
+                m = new Trigger(actions[7]);
                 break;
             default:
-                m = new Module("NONE");
+                m = new Module(actions[0]);
                 break;
         }
         myModules->add(m);

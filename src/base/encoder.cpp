@@ -1,33 +1,38 @@
-#include <Arduino.h> // pour les tests avec Serial
-#include "Display.h"
-#include "config.h"
-#include "dac.h"
-#include "eeprom.h"
-#include "Modules.h"
-
-//extern Module *modules[3];
-extern Modules *myModules;
-extern algo algos[8];
-
 /**
  * @file encoder.cpp
  * @brief Comportement général des deux encodeurs.
  * 
- * Les appels sont antérieurs aux autres appels.
+ * Les appels sont antérieurs aux autres appels. Les réponses 
+ * spécifiques aux modules sont traités dans les classes filles.
  *
  */
 
+#include <Arduino.h> // pour les tests avec Serial
+#include "Display.h" // gére l'affichage du curseur sans buffer
+#include "dac.h"     // pour le calibrage en temps réel
+#include "Modules.h" // pour le module NONE vide
+
 /**
- * @brief Rotation de l'encodeur PARAMETER.
- *
- * Déplacement du curseur dans tous les cas
- * et affichage du paramètre précédent dans le cas d'un
- * algorithme à la place d'une éventuelle valeur. 
- *
- * Chaque rotation indique un nouveau choix.
- *
+ *  Variable (très) locale bloquant le changement de valeur 
+ *  lors du premier affichage.
+ *  On tourne l'encodeur mais la valeur ne change pas.
  */
 bool new_value = false;
+
+extern Modules *myModules;
+extern algo algos[8];
+
+/**
+ * @brief Rotation de l'encodeur de gauche pour naviguer sur la page.
+ *
+ * Déplacement du curseur dans tous les cas. 
+ *
+ * Chaque rotation indique un nouveau choix. Ici c'est cursor_num
+ * qui est important : la valeur permet de positionner le curseur
+ * et indique le paramètre concerné.
+ *
+ */
+
 
 void l_handleRotate(int8_t rotation) {
     Module *m = myModules->modules[Modules::current];
@@ -48,10 +53,9 @@ void l_handleRotate(int8_t rotation) {
 }
 
 /**
- * @brief Pression de l'encodeur PARAMETER.
+ * @brief Pression de l'encodeur de gauche.
  *
- * Alternance menu principal/algorithme.
- * Dans tous les cas, on rafraîchit toute la page.
+ * Gérer au cas par cas suivant le module chargé.
  */
 
 void l_handlePress() {
@@ -69,12 +73,13 @@ void l_handleLongPress() {
 }
 
 /**
- * @brief Change la valeur par rotation.
+ * @brief Change la valeur par rotation sauf au premier tour.
  */
 
 void change_value(int8_t rotation) {
-    parameter *p;     
-    p = &(myModules->modules[Modules::current]->parameters)[Display::cursor_num];
+    Module *m = myModules->modules[Modules::current];
+    parameter *p; // pointeur car p change    
+    p = &(m->parameters)[Display::cursor_num];
     if(!new_value && Modules::current != PLAY) {
         new_value = true;
         Display::show_value(p->value);
@@ -88,6 +93,7 @@ void change_value(int8_t rotation) {
         return; // nothing to do
     }
     Display::show_value(p->value);
+    // Ici on agit immédiatement = temps réel.
     if(Modules::current == MAIN && Display::cursor_num == 1) {
         calibrate(p->value);
     } else if(Modules::current == PLAY) {
@@ -96,52 +102,27 @@ void change_value(int8_t rotation) {
 }
 
 /**
- * @brief Rotation de l'encodeur VALUE.
- *
- * Actif uniquement sur la page des algorithmes.
- * La première utilisation ne fait qu'afficher la valeur.
- * Les suivantes appellent la fonction du module. 
+ * @brief Rotation de l'encodeur de droite pour changer les valeurs
+ * ou afficher la page sélectionnée.
  */
 
 void r_handleRotate(int8_t rotation) {
-    if(Modules::current == MAIN) {
-        switch(Display::cursor_num) {
-            case 0:
-                Modules::current = TIME; 
-                Display::newPage();
-                break; 
-            case 2:
-                Modules::current = PLAY; 
-                Display::newPage();
-                break;
-            default:
-                change_value(rotation);
-        }
+    if(Modules::current == MAIN && Display::cursor_num == 0) {
+        Modules::current = TIME; 
+        Display::newPage();
+    } else if(Modules::current == MAIN && Display::cursor_num == 2) {
+        Modules::current = PLAY; 
+        Display::newPage();
     } else {
         change_value(rotation);
     } 
 }
 
 /**
- * @brief Pression de l'encodeur VALUE.
- *
- * Actif uniquement sur la page des algorithmes.
- * La première utilisation ne fait qu'afficher la valeur.
- * Les suivantes appellent la fonction du module.
+ * @brief Pression de l'encodeur de droite en général pour
+ * valider un choix. Usage rare.
  */
 
 void r_handlePress() {
-    byte i = Modules::current;
-    byte j = Display::cursor_num;
-    parameter p = myModules->modules[i]->parameters[j];
-    if(i == MAIN) { // main page
-        if (j == 3) { //load
-            load(p.value);
-        } else if (j == 4) { //save
-            save(p.value);
-        }
-    } else if (i == PLAY) {
-        Modules::current = j + 3;
-        Display::newPage();
-    }
+    myModules->modules[Modules::current]->r_handlePress();
 }

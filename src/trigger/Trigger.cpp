@@ -3,9 +3,9 @@
  * @brief Gestion du temps.
  */
 #include <MIDI.h>
-#include "../trigger/Trigger.h"
 #include "../time/Time.h"
 #include "Trigger.h"
+#include "../base/Modules.h"
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
@@ -27,20 +27,20 @@ bool Trigger::isPulse() {
 }
 
 void Trigger::startPulse() {
-    if(2 <= parameters[0].value && parameters[0].value < 6) {
+    if(1 <= parameters[0].value && parameters[0].value < 6) {
         digitalWrite(pins[parameters[0].value - 1], LOW);
     } else if(6 <= parameters[0].value && parameters[0].value < 22) {
         parameters[0].buffer = parameters[0].value;
-        parameters[4].buffer = parameters[4].value;
-        MIDI.sendNoteOn(parameters[4].value, 127, parameters[0].value - 5);
+        lastPitch = parameters[4].buffer;
+        MIDI.sendNoteOn(parameters[4].buffer, 127, parameters[0].value - 5);
     }
 }
 
 void Trigger::stopPulse() {
-    if(2 <= parameters[0].value && parameters[0].value < 6) {
+    if(1 <= parameters[0].value && parameters[0].value < 6) {
         digitalWrite(pins[parameters[0].value - 1], HIGH);
     } else if(6 <= parameters[0].value && parameters[0].value < 22) {
-        MIDI.sendNoteOff(parameters[4].buffer, 0, parameters[0].buffer - 5);
+        MIDI.sendNoteOff(lastPitch, 0, parameters[0].buffer - 5);
     }
 }
 
@@ -53,12 +53,22 @@ void Trigger::execute() {
     }
     if(Time::newTick) {
         if(Time::tick % 6 == 0 && isPulse()) {
-            // Serial.println((Time::tick / 6) % parameters[1].value);
             startPulse();
             start = Time::tick;
         } else if (Time::tick == start + parameters[5].value) {
             stopPulse();
         }
+    }
+}
+
+void Trigger::l_handlePress() {
+    Modules::current = PLAY; 
+    Display::newPage();
+}
+
+void Trigger::r_handlePress() {
+    if(Display::cursor_num == 4) {
+        parameters[4].buffer = parameters[4].value;
     }
 }
 

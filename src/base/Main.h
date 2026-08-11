@@ -5,7 +5,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include "../base/Module.h"
-
+#include "eeprom.h"
 
 class Main: public Module {
     private:
@@ -50,6 +50,15 @@ class Main: public Module {
             }
             temp[7] = '\0';
         }
+        void r_handlePress() {
+            parameter p = this->parameters[Display::cursor_num];
+            if(Display::cursor_num == 3) {
+                load(p.value);
+            } else if(Display::cursor_num == 4) {
+                save(p.value);
+            }
+        }
+
 };
 
 #endif

@@ -19,7 +19,7 @@ class Trigger: public Module {
             " C", "C#", " D", "D#", " E", " F", 
             "F#", " G", "G#", " A", "A#", " B"
         };
-
+        byte lastPitch;
     public:
         unsigned long start;
         /**
@@ -55,6 +55,8 @@ class Trigger: public Module {
         bool isPulse();
         void startPulse();
         void stopPulse();
+        void l_handlePress();
+        void r_handlePress();
 };
 
 #endif

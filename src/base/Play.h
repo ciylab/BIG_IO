@@ -8,6 +8,7 @@
 #include "../base/Modules.h"
 
 extern char *actions[8];
+extern Modules *myModules;
 
 class Play: public Module {
     public:
@@ -34,6 +35,14 @@ class Play: public Module {
         }
         void l_handlePress() {
             Modules::current = MAIN;
+            Display::newPage();
+        }
+        void r_handlePress() {
+            Module *m = myModules->modules[Display::cursor_num + 3];
+            if(m->size == 0) {
+                return;
+            }
+            Modules::current = Display::cursor_num + 3;
             Display::newPage();
         }
 };
