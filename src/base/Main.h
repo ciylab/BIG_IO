@@ -22,7 +22,7 @@ class Main: public Module {
 
     public:
         /**
-         * @brief Constructeur par défauti.
+         * @brief Constructeur par défaut.
          *
          * Le bpm est compris entre 30 et 240 (Arturia keystep)
          * */

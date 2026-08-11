@@ -87,7 +87,7 @@ void load(int slot_num) {
         algos[i].out = readEEPROM(eeprom, offset + 3 * i + 1);
         algos[i].action = readEEPROM(eeprom, offset + 3 * i + 2);
     }
-    update_algo();
+    load_modules();
 }
 
 /**

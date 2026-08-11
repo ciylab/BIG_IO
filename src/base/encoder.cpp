@@ -55,10 +55,7 @@ void l_handleRotate(int8_t rotation) {
  */
 
 void l_handlePress() {
-    if(Modules::current == TIME || Modules::current == PLAY) {
-        Modules::current = MAIN; 
-        Display::newPage();
-    }
+    myModules->modules[Modules::current]->l_handlePress();
 }
 
 /**
@@ -143,5 +140,8 @@ void r_handlePress() {
         } else if (j == 4) { //save
             save(p.value);
         }
+    } else if (i == PLAY) {
+        Modules::current = j + 3;
+        Display::newPage();
     }
 }

@@ -8,6 +8,7 @@
 
 
 #include "Module.h"
+#include "Modules.h"
 
 /**
  * @brief Constructeur.
@@ -47,4 +48,10 @@ void Module::setMenu() {
         }
     }
 }
+
+void Module::l_handlePress() {
+    Modules::current = MAIN; 
+    Display::newPage();
+}
+
 

@@ -29,6 +29,7 @@ class Time: public Module {
         static unsigned long delta;
         static unsigned long lastTime;
         static unsigned long lastClockIn;
+        static bool newTick;
         Time(char name[8]) : Module(name) {
             this->add({" IN    ", 2, 2, 0, 2, 0});
             this->add({" OUT   ", 1, 1, 0, 18, 8});
@@ -41,6 +42,7 @@ class Time: public Module {
         void handleClock();
         void handleStart();
         void handleStop();
+        void l_handlePress();
         void execute();
         void handleTick();
         void turn_led();

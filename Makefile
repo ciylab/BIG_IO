@@ -47,6 +47,7 @@ $(info SPEEDLABEL  is [${SPEEDLABEL}])
 all: compile upload
 
 compile:
+	ctags -R src
 	arduino-cli compile -b $(FQBN) $(CFLAGS) \
 	--board-options "pnum=BLUEPILL_F103CB" \
 	--board-options "usb=CDCgen" \

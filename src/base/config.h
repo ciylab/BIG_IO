@@ -10,12 +10,13 @@
 #define DRUM_2 PB8
 #define DRUM_1 PB9
 
+
 #define MAIN 0
 #define TIME 1
 #define PLAY 2
 
 const byte pins[] = {
-    CLOCK_OUT, GATE_2, GATE_1, DRUM_2, DRUM_1};
+    CLOCK_OUT, DRUM_1, DRUM_2, GATE_1, GATE_2};
 
 typedef struct parameter {
     char name[8];    // name to display
@@ -32,7 +33,7 @@ typedef struct algo {
     byte action;
 } algo;
 
-void update_algo();
+void load_modules();
 void pin_init();
 void pin_test();
 #endif

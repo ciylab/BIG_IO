@@ -5,6 +5,7 @@
 #ifndef PLAY_H
 #define PLAY_H
 #include "../base/Module.h"
+#include "../base/Modules.h"
 
 extern char *actions[8];
 
@@ -30,6 +31,10 @@ class Play: public Module {
             sprintf(temp, " %d:%.4s", 
                     Display::cursor_num + 1, actions[val]);
             temp[7] = '\0';
+        }
+        void l_handlePress() {
+            Modules::current = MAIN;
+            Display::newPage();
         }
 };
 

@@ -4,6 +4,7 @@
  */
 #include <MIDI.h> 
 #include "Time.h"
+#include "../base/Modules.h"
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
@@ -13,6 +14,7 @@ unsigned long Time::delta = 2500000 / 120;
 unsigned long Time::lastTime = micros();
 unsigned long Time::lastClockIn = 0;
 bool start = false;
+bool Time::newTick = true;
 
 /**
  * @brief Gestion de l'horloge.
@@ -48,7 +50,12 @@ void Time::handleTick() {
     }
     Time::metronome();
     Time::tick++;
+    Time::newTick = true;
+}
 
+void Time::l_handlePress() {
+    Modules::current = MAIN;
+    Display::newPage();
 }
 
 void Time::metronome() {
@@ -108,6 +115,7 @@ void Time::clock_send() {
 }
 
 void Time::execute() {
+    Time::newTick = false;
     if(this->parameters[0].value == 0) { // entrée désactivée
         clock_send();
     } else if(this->parameters[0].value == 1) { // entrée trigger

@@ -22,12 +22,10 @@ Modules *myModules = new Modules();
 
 void setup() {
     Serial.begin(9600);
+    pinMode(CLOCK_IN, INPUT);
     pin_init();
     oled.begin();
     pin_test();
-    myModules->add(new Main("MAIN"));
-    myModules->add(new Time("TIME"));
-    myModules->add(new Play("PLAY"));
     MIDI.begin(MIDI_CHANNEL_OMNI);
     MIDI.turnThruOff();
     MIDI.setHandleNoteOn(handleNoteOn);

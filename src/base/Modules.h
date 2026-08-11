@@ -16,7 +16,7 @@ class Modules {
   public:
     byte size; /**<nombre de modules */
     static byte current;
-    Module *modules[8];
+    Module *modules[11];
     Modules();      // do nothing but needed
     void add(Module *module);
     /** pour afficher la valeur */
