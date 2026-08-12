@@ -95,7 +95,7 @@ void change_value(int8_t rotation) {
     Display::show_value(p->value);
     // Ici on agit immédiatement = temps réel.
     if(Modules::current == MAIN && Display::cursor_num == 1) {
-        calibrate(p->value);
+        Modules::c4_reference_voltage = calibrate(p->value);
     } else if(Modules::current == PLAY) {
         algos[Display::cursor_num].action = p->value;
     }

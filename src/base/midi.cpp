@@ -3,10 +3,14 @@
  * @brief Gestion des messages MIDI.
  */
 
+#include <MIDI.h>
 #include "midi.h"
 #include "Modules.h"
 
 extern Modules *myModules;
+using namespace MIDI_NAMESPACE;
+extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
+
 
 /**
  * @brief Gestion note on de la librairie
@@ -15,6 +19,10 @@ extern Modules *myModules;
  */
 
 void handleNoteOn(byte channel, byte pitch, byte velocity) {
+    for(int i = 3; i < 6; i++) {
+        myModules->modules[i]->handleNoteOn(
+            channel, pitch, velocity);
+    }
 }
 
 /**
@@ -24,17 +32,21 @@ void handleNoteOn(byte channel, byte pitch, byte velocity) {
  */
 
 void handleNoteOff(byte channel, byte pitch, byte velocity) {
+    for(int i = 3; i < 6; i++) {
+        myModules->modules[i]->handleNoteOff(
+            channel, pitch, velocity);
+    }
 }
 
 void handleClock() {
-    myModules->modules[1]->handleClock();
+    myModules->modules[TIME]->handleClock();
 }
 
 void handleStart() {
-    myModules->modules[1]->handleStart();
+    myModules->modules[TIME]->handleStart();
 }
 
 void handleStop() {
-    myModules->modules[1]->handleStop();    
+    myModules->modules[TIME]->handleStop();    
 }
 

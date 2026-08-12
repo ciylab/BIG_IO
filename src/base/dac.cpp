@@ -60,9 +60,10 @@ void dac_write(byte ch, int cv) {
  * conservée en mémoire dans les paramètres et sert de valeur de 
  * référence dans les actions.
  */
-void calibrate(byte val) {
-    int cv = (int) val - 128;
-    dac_write(0, 3276 + cv);
-    dac_write(1, 1638 + cv / 2);
-    dac_write(2, 819 + cv / 4);
+unsigned int calibrate(byte val) {
+    unsigned int cv = 3276 - 128 + val;
+    dac_write(0, cv);
+    dac_write(1, cv / 2);
+    dac_write(2, cv / 4);
+    return cv;
 }

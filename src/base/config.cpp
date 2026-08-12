@@ -11,6 +11,7 @@
 #include "Play.h"
 #include "../time/Time.h"
 #include "../trigger/Trigger.h"
+#include "../simple/Simple.h"
 
 parameter values[16][8];
 algo algos[8];
@@ -48,7 +49,7 @@ void load_modules() {
                 m = new Module("RECORD");
                 break;
             case 6:
-                m = new Module("SIMPLE");
+                m = new Simple(actions[6]);
                 break;
             case 7:
                 m = new Trigger(actions[7]);

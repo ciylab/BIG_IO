@@ -16,6 +16,7 @@ class Modules {
   public:
     byte size; /**<nombre de modules */
     static byte current;
+    static unsigned int c4_reference_voltage;
     Module *modules[11];
     Modules();      // do nothing but needed
     void add(Module *module);

@@ -8,5 +8,5 @@
 
 void init_dac();
 void dac_write(byte ch, int cv);
-void calibrate(byte val);
+unsigned int calibrate(byte val);
 #endif

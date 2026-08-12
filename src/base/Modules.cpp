@@ -12,6 +12,7 @@
 #include "Modules.h"
 
 byte Modules::current = 0;
+unsigned int Modules::c4_reference_voltage = 3277;
 
 /**
  * @brief Constructeur par défaut.
@@ -39,6 +40,7 @@ void Modules::execute() {
         this->modules[i]->execute();
     }*/
     this->modules[1]->execute();
+    this->modules[3]->execute();
     this->modules[4]->execute();
     this->modules[5]->execute();
 }
