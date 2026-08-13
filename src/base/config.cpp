@@ -12,6 +12,7 @@
 #include "../time/Time.h"
 #include "../trigger/Trigger.h"
 #include "../simple/Simple.h"
+#include "../miniseq/Miniseq.h"
 
 parameter values[16][8];
 algo algos[8];
@@ -40,7 +41,7 @@ void load_modules() {
                 m = new Module("COMP");
                 break;
             case 3:
-                m = new Module("MINISQ");
+                m = new Miniseq(actions[3]);
                 break;
             case 4:
                 m = new Module("RAND");

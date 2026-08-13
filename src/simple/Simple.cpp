@@ -35,8 +35,7 @@ void Simple::handleNoteOn(byte channel, byte pitch, byte velocity) {
     }
     if(this->parameters[3].value != 0) {
         dac_write(this->parameters[3].value - 1, 
-                min(4095, 
-                    (int) (pitch * Modules::c4_reference_voltage / 48)));
+                Modules::getVoltage(pitch));
     }
 }
 
@@ -44,17 +43,13 @@ void Simple::handleNoteOff(byte channel, byte pitch, byte velocity) {
     if(!isInRange(pitch) || channel != this->parameters[0].value) {
         return;
     }
-    if(this->parameters[1].value != 0) {
+    if(this->parameters[1].buffer != 0) {
         MIDI.sendNoteOff(pitch_send[pitch], 0, 
                 this->parameters[1].buffer);
     }
     if(this->parameters[2].value != 0) {
         digitalWrite(pins[parameters[2].value], HIGH);
     }
-    if(this->parameters[3].value != 0) {
-        dac_write(this->parameters[3].value - 1, 0);
-    }
-
 }
 
 void Simple::r_handlePress() {}

@@ -5,6 +5,7 @@
 #ifndef TIME_H
 #define TIME_H
 #include "../base/Module.h"
+#define DEFAULT_BPM 30
 
 
 class Time: public Module {
@@ -31,18 +32,20 @@ class Time: public Module {
         static unsigned long lastClockIn;
         static bool newTick;
         Time(char name[8]) : Module(name) {
-            this->add({" IN    ", 2, 2, 0, 2, 0});
+            this->add({" IN    ", 0, 0, 0, 2, 0});
             this->add({" OUT   ", 1, 1, 0, 18, 8});
-            this->add({" BPM   ", 120, 120, 30, 240, 16});
+            this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 16});
             this->add({" SPEED ", 3, 3, 0, 6, 24});
             this->add({" METER ", 1, 1, 0, 2, 32});
             this->add({" RAND  ", 0, 0, 0, 5, 40});
             this->setMenu();
+            this->parameters[8] = {" HIDDEN", 1, 1, 1, 5, 8};
         }
         void handleClock();
         void handleStart();
         void handleStop();
         void l_handlePress();
+        void r_handlePress();
         void execute();
         void handleTick();
         void turn_led();
@@ -59,7 +62,11 @@ class Time: public Module {
                     digitalWrite(CLOCK_OUT, HIGH);
                     break;
                 case 1:
-                    sprintf(temp, " %.5s ", InOut[val]);
+                    if(!hidden) {
+                        sprintf(temp, " %.5s ", PROGRESS[val]);
+                    } else { 
+                        sprintf(temp, " %.5s ", InOut[val]);
+                    }
                     digitalWrite(CLOCK_OUT, HIGH);
                     break;
                 case 2:
@@ -87,6 +94,5 @@ class Time: public Module {
 };
 
 bool listen_clock_pulse();
-
 #endif
 

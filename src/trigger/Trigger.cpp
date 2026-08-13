@@ -6,6 +6,7 @@
 #include "../time/Time.h"
 #include "Trigger.h"
 #include "../base/Modules.h"
+#include "../base/encoder.h"
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
@@ -32,7 +33,8 @@ void Trigger::startPulse() {
     } else if(6 <= parameters[0].value && parameters[0].value < 22) {
         parameters[0].buffer = parameters[0].value;
         lastPitch = parameters[4].buffer;
-        MIDI.sendNoteOn(parameters[4].buffer, 127, parameters[0].value - 5);
+        MIDI.sendNoteOn(lastPitch, 127, parameters[0].value - 5);
+        Serial.println("note on");
     }
 }
 
@@ -41,6 +43,7 @@ void Trigger::stopPulse() {
         digitalWrite(pins[parameters[0].value - 1], HIGH);
     } else if(6 <= parameters[0].value && parameters[0].value < 22) {
         MIDI.sendNoteOff(lastPitch, 0, parameters[0].buffer - 5);
+        Serial.println("note off");
     }
 }
 
@@ -55,7 +58,7 @@ void Trigger::execute() {
         if(Time::tick % 6 == 0 && isPulse()) {
             startPulse();
             start = Time::tick;
-        } else if (Time::tick == start + parameters[5].value) {
+        } else if (Time::tick == start + parameters[8].value) {
             stopPulse();
         }
     }
@@ -67,6 +70,13 @@ void Trigger::l_handlePress() {
 }
 
 void Trigger::r_handlePress() {
+    /*
+    if(Display::cursor_num == 0) {
+        hidden = !hidden;
+        new_value = false;
+        r_handleRotate(0);
+    } else 
+    */
     if(Display::cursor_num == 4) {
         parameters[4].buffer = parameters[4].value;
     }

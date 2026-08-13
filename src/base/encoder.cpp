@@ -37,9 +37,9 @@ extern algo algos[8];
 void l_handleRotate(int8_t rotation) {
     Module *m = myModules->modules[Modules::current];
     Display::putChar(Display::cursor_pos, ' ');
-    if(new_value) {
+    if(m->new_value) {
         Display::no_show_value(m->parameters[Display::cursor_num]);
-        new_value = false;
+        m->new_value = false;
     }
     byte index = Display::cursor_num + m->size;
     if(0 < rotation) {
@@ -78,10 +78,14 @@ void l_handleLongPress() {
 
 void change_value(int8_t rotation) {
     Module *m = myModules->modules[Modules::current];
-    parameter *p; // pointeur car p change    
-    p = &(m->parameters)[Display::cursor_num];
-    if(!new_value && Modules::current != PLAY) {
-        new_value = true;
+    parameter *p; // pointeur car p change   
+    if(m->hidden) {
+        p = &(m->parameters)[Display::cursor_num];
+    } else {
+        p = &(m->parameters)[8];
+    }
+    if(!m->new_value && Modules::current != PLAY) {
+        m->new_value = true;
         Display::show_value(p->value);
         return;
     }
@@ -95,7 +99,7 @@ void change_value(int8_t rotation) {
     Display::show_value(p->value);
     // Ici on agit immédiatement = temps réel.
     if(Modules::current == MAIN && Display::cursor_num == 1) {
-        Modules::c4_reference_voltage = calibrate(p->value);
+        Modules::C4RefVolt = calibrate(p->value);
     } else if(Modules::current == PLAY) {
         algos[Display::cursor_num].action = p->value;
     }

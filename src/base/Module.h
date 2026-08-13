@@ -20,27 +20,34 @@
  */
 
 class Module {
-  public:
-    parameter parameters[8]; /**<tableau des paramètres */
-    int size; /**<nombre de paramètres */
-    char name[8]; /**<nom du module */
-    char text[64]; /**<texte de la page */
-    Module();      // do nothing but needed
-    Module(char *);
-    void add(parameter p);
-    void setMenu();
-    virtual void handleNoteOn(byte channel, byte pitch, byte velocity) {} 
-    virtual void handleNoteOff(byte channel, byte pitch, byte velocity) {}
-    virtual void handleClock() {}
-    virtual void handleStart() {}
-    virtual void handleStop() {}
-    virtual void l_handlePress();
-    virtual void r_handlePress();
-    /** pour afficher la valeur */
-    virtual void getString(int val, char temp[8]) {}
-    virtual void execute() {}
+    public:
+        parameter parameters[9]; /**<tableau des paramètres dont un caché */
+        int size; /**<nombre de paramètres */
+        char name[8]; /**<nom du module */
+        char text[64]; /**<texte de la page */
+        bool hidden; /**<le paramètre caché est... caché. */
+        /**
+         *  Variable bloquant le changement de valeur 
+         *  lors du premier affichage.
+         *  On tourne l'encodeur mais la valeur ne change pas.
+         */
+        bool new_value;         
+        Module();      // do nothing but needed
+        Module(char *);
+        void add(parameter p);
+        void setMenu();
+        virtual void handleNoteOn(byte channel, byte pitch, byte velocity) {} 
+        virtual void handleNoteOff(byte channel, byte pitch, byte velocity) {}
+        virtual void handleClock() {}
+        virtual void handleStart() {}
+        virtual void handleStop() {}
+        virtual void l_handlePress();
+        virtual void r_handlePress();
+        /** pour afficher la valeur */
+        virtual void getString(int val, char temp[8]) {}
+        virtual void execute() {}
 
 };
 
 #endif
- 
+

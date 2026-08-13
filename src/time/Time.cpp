@@ -5,17 +5,17 @@
 #include <MIDI.h> 
 #include "Time.h"
 #include "../base/Modules.h"
+#include "../base/encoder.h"
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
 unsigned long Time::tick = 0;
-unsigned long Time::delta = 2500000 / 120;
+unsigned long Time::delta = 2500000 / DEFAULT_BPM;
 unsigned long Time::lastTime = micros();
 unsigned long Time::lastClockIn = 0;
 bool start = false;
 bool Time::newTick = true;
-
 /**
  * @brief Gestion de l'horloge.
  *
@@ -58,6 +58,17 @@ void Time::l_handlePress() {
     Display::newPage();
 }
 
+void Time::r_handlePress() {
+    /*
+    if(Display::cursor_num != 1) {
+        return;
+    }
+    hidden = !hidden;
+    new_value = false;
+    r_handleRotate(0);
+    */
+}
+
 void Time::metronome() {
     if(this->parameters[1].value < 3) {
         return;
@@ -89,7 +100,7 @@ void Time::turn_led() {
     }
     if (Time::tick % modulo == 0 && play_rand()) {
         digitalWrite(CLOCK_OUT, LOW);
-    } else if (Time::tick % modulo == 1) {
+    } else if (Time::tick % modulo == 2) {
         digitalWrite(CLOCK_OUT, HIGH);
     }
 }

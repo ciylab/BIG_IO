@@ -16,12 +16,13 @@ class Modules {
   public:
     byte size; /**<nombre de modules */
     static byte current;
-    static unsigned int c4_reference_voltage;
+    static unsigned int C4RefVolt;
     Module *modules[11];
     Modules();      // do nothing but needed
     void add(Module *module);
     /** pour afficher la valeur */
     void execute();
+    static int getVoltage(byte pitch);
 };
 
 #endif

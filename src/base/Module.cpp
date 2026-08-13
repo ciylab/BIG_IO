@@ -24,6 +24,8 @@ Module::Module() {
 
 Module::Module(char *name) {
     size = 0;
+    new_value = false;
+    hidden = true;
     strcpy(this->name, name);
     for (int i = 0; i < 64; i++) {
         text[i] = ' ';
