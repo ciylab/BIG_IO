@@ -27,7 +27,7 @@ bool Trigger::isPulse() {
     return false;
 }
 
-void Trigger::startPulse() {
+void Trigger::startPlay() {
     if(1 <= parameters[0].value && parameters[0].value < 6) {
         digitalWrite(pins[parameters[0].value - 1], LOW);
     } else if(6 <= parameters[0].value && parameters[0].value < 22) {
@@ -38,7 +38,7 @@ void Trigger::startPulse() {
     }
 }
 
-void Trigger::stopPulse() {
+void Trigger::stopPlay() {
     if(1 <= parameters[0].value && parameters[0].value < 6) {
         digitalWrite(pins[parameters[0].value - 1], HIGH);
     } else if(6 <= parameters[0].value && parameters[0].value < 22) {
@@ -56,10 +56,10 @@ void Trigger::execute() {
     }
     if(Time::newTick) {
         if(Time::tick % 6 == 0 && isPulse()) {
-            startPulse();
+            startPlay();
             start = Time::tick;
         } else if (Time::tick == start + parameters[8].value) {
-            stopPulse();
+            stopPlay();
         }
     }
 }

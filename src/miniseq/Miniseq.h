@@ -48,6 +48,8 @@ class Miniseq: public Module {
             this->noteIndex = 0;
         }
         void execute();
+        void startPlay();
+        void stopPlay();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:

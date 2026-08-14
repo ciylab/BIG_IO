@@ -62,8 +62,8 @@ class Trigger: public Module {
             temp[7] = '\0';
         }
         bool isPulse();
-        void startPulse();
-        void stopPulse();
+        void startPlay();
+        void stopPlay();
         void l_handlePress();
         void r_handlePress();
 };

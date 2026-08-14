@@ -44,8 +44,9 @@ void Modules::execute() {
     this->modules[4]->execute(); // TRIGGER
     this->modules[5]->execute(); // TRIGGER
     this->modules[6]->execute(); // MINISEQ
-    //this->modules[9]->execute();
-    //this->modules[9]->execute();
+    this->modules[6]->execute(); // MINISEQ
+    this->modules[8]->execute(); // RANDOM
+    this->modules[10]->execute(); // SIMPLE
 }
 
 int Modules::getVoltage(byte pitch) {

@@ -12,42 +12,49 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
+void Miniseq::startPlay() {
+    lastPitch = this->parameters[3 + noteIndex].value - 1;
+    if(this->parameters[0].value != 0) {
+        // pour prévenir l'absence de note off
+        this->parameters[0].buffer = this->parameters[0].value;
+        MIDI.sendNoteOn(lastPitch,
+                127, this->parameters[0].buffer);
+    }
+    if(this->parameters[1].value != 0) {
+        this->parameters[1].buffer = this->parameters[1].value;
+        digitalWrite(pins[parameters[1].value], LOW);
+    }
+    if(this->parameters[2].value != 0) {        
+        dac_write(this->parameters[2].value - 1, 
+                Modules::getVoltage(lastPitch));
+    }
+}
+
+void Miniseq::stopPlay() {
+    if(this->parameters[0].buffer != 0) {
+        this->parameters[0].buffer = this->parameters[0].value;
+        MIDI.sendNoteOff(lastPitch,
+                0, this->parameters[0].buffer);
+    }
+    if(this->parameters[1].buffer != 0) {
+        digitalWrite(pins[parameters[1].buffer], HIGH);
+    }            
+    noteIndex = (noteIndex + 1) % 5; 
+    if(this->parameters[3 + noteIndex].value == 0) {
+        noteIndex = 0; // la note est NONE et la boucle est finie
+    }
+}
+
 void Miniseq::execute() {
     if(this->parameters[3].value == 0) {
         return ;
     }
-    byte pitch = this->parameters[3 + noteIndex].value - 1;
     if(Time::newTick) {
         if(Time::tick % 6 == 0) {
+            startPlay();
             start = Time::tick;
-            if(this->parameters[0].value != 0) {
-                // pour prévenir l'absence de note off
-                lastPitch = pitch;
-                this->parameters[0].buffer = this->parameters[0].value;
-                MIDI.sendNoteOn(pitch,
-                        127, this->parameters[0].buffer);
-            }
-            if(this->parameters[1].value != 0) {
-                this->parameters[1].buffer = this->parameters[1].value;
-                digitalWrite(pins[parameters[1].value], LOW);
-            }
-            if(this->parameters[2].value != 0) {        
-                dac_write(this->parameters[2].value - 1, 
-                        Modules::getVoltage(pitch));
-            }
         } else if (Time::tick == start + this->parameters[8].value) {
-            if(this->parameters[0].buffer != 0) {
-                this->parameters[0].buffer = this->parameters[0].value;
-                MIDI.sendNoteOff(lastPitch,
-                        0, this->parameters[0].buffer);
-            }
-            if(this->parameters[1].buffer != 0) {
-                digitalWrite(pins[parameters[1].buffer], HIGH);
-            }            
-            noteIndex = (noteIndex + 1) % 5; 
-            if(this->parameters[3 + noteIndex].value == 0) {
-                noteIndex = 0; // la note est NONE et la boucle est finie
-            }
+            stopPlay();
         }
     }
 }

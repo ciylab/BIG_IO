@@ -13,6 +13,7 @@
 #include "../trigger/Trigger.h"
 #include "../simple/Simple.h"
 #include "../miniseq/Miniseq.h"
+#include "../random/Random.h"
 
 parameter values[16][8];
 algo algos[8];
@@ -44,7 +45,7 @@ void load_modules() {
                 m = new Miniseq(actions[3]);
                 break;
             case 4:
-                m = new Module("RAND");
+                m = new Random(actions[4]);
                 break;
             case 5:
                 m = new Module("RECORD");

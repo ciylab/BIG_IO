@@ -52,4 +52,10 @@ void Simple::handleNoteOff(byte channel, byte pitch, byte velocity) {
     }
 }
 
+void Simple::l_handlePress() {
+    Modules::current = PLAY; 
+    Display::newPage();
+}
+
 void Simple::r_handlePress() {}
+

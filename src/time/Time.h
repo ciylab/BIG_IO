@@ -33,7 +33,7 @@ class Time: public Module {
         static bool newTick;
         Time(char name[8]) : Module(name) {
             this->add({" IN    ", 0, 0, 0, 2, 0});
-            this->add({" OUT   ", 1, 1, 0, 18, 8});
+            this->add({" OUT   ", 2, 2, 0, 18, 8});
             this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 16});
             this->add({" SPEED ", 3, 3, 0, 6, 24});
             this->add({" METER ", 1, 1, 0, 2, 32});

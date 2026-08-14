@@ -34,8 +34,8 @@ class Simple: public Module {
             this->add({" MIDI O", 2, 2, 0, 16, 8});
             this->add({" GT OUT", 3, 3, 0, 4, 16});
             this->add({" CV OUT", 1, 1, 0, 3, 24});
-            this->add({" MIN   ", 0, 0, 21, 108, 32});
-            this->add({" MAX   ", 108, 108, 21, 108, 40});
+            this->add({" MIN   ", 0, 0, 0, 108, 32});
+            this->add({" MAX   ", 108, 108, 0, 108, 40});
             this->add({" TRANSP", 0, 0, 0, 11, 48});
             this->setMenu();
             for (int i = 0; i < 128; i++) {
@@ -75,6 +75,7 @@ class Simple: public Module {
             temp[7] = '\0';
         }
         void r_handlePress();
+        void l_handlePress();        
 };
 
 #endif
