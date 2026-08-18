@@ -1,17 +1,16 @@
 #include <MIDI.h>
 #include <Versatile_RotaryEncoder.h>
 #include <U8x8lib.h>
-#include "src/base/encoder.h"
-#include "src/base/Display.h"
-#include "src/base/config.h"
-#include "src/base/dac.h"
-#include "src/base/eeprom.h"
-#include "src/base/midi.h"
-#include "src/base/Modules.h"
-#include "src/base/Main.h"
-#include "src/time/Time.h"
-#include "src/base/Play.h"
-
+#include "src/encoder.h"
+#include "src/Display.h"
+#include "src/config.h"
+#include "src/dac.h"
+#include "src/eeprom.h"
+#include "src/midi.h"
+#include "src/Modules.h"
+#include "src/Main.h"
+#include "src/Time.h"
+#include "src/Play.h"
 
 Versatile_RotaryEncoder *left;
 Versatile_RotaryEncoder *right;

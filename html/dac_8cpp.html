@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BIG_IO: Référence du fichier src/base/dac.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">BIG_IO
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','Recherche');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_0af1587c8378955de40f48b4bd1869f0.html">base</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle"><div class="title">Référence du fichier dac.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="dac_8h_source.html">dac.h</a>&quot;</code><br />
+<code>#include &lt;SPI.h&gt;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:af0597d6c273dd4d188ff257eac67e6cd" id="r_af0597d6c273dd4d188ff257eac67e6cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dac_8cpp.html#af0597d6c273dd4d188ff257eac67e6cd">init_dac</a> ()</td></tr>
+<tr class="memdesc:af0597d6c273dd4d188ff257eac67e6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Déclaration des pins de sorties et lancement de SPI.  <br /></td></tr>
+<tr class="separator:af0597d6c273dd4d188ff257eac67e6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d2d2171004bd303a2377218574fb134" id="r_a7d2d2171004bd303a2377218574fb134"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dac_8cpp.html#a7d2d2171004bd303a2377218574fb134">dac_write</a> (byte ch, int cv)</td></tr>
+<tr class="memdesc:a7d2d2171004bd303a2377218574fb134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction d'écriture sur le bus SPI.  <br /></td></tr>
+<tr class="separator:a7d2d2171004bd303a2377218574fb134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34742cd059ca5bb0c8d1bd40d6d6e718" id="r_a34742cd059ca5bb0c8d1bd40d6d6e718"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dac_8cpp.html#a34742cd059ca5bb0c8d1bd40d6d6e718">calibrate</a> (byte val)</td></tr>
+<tr class="memdesc:a34742cd059ca5bb0c8d1bd40d6d6e718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cette fonction permet de calibrer les CVs.  <br /></td></tr>
+<tr class="separator:a34742cd059ca5bb0c8d1bd40d6d6e718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a34742cd059ca5bb0c8d1bd40d6d6e718" name="a34742cd059ca5bb0c8d1bd40d6d6e718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34742cd059ca5bb0c8d1bd40d6d6e718">&#9670;&#160;</a></span>calibrate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int calibrate </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cette fonction permet de calibrer les CVs. </p>
+<p>La fonction permet d'envoyer exactement 4 volts pour C4 sur CV1. On doit observer 2 volts sur CV2 et 1 volt sur CV3. La valeur est conservée en mémoire dans les paramètres et sert de valeur de référence dans les actions. </p><dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val</td><td>est la valeur récupérée. Pour val = 0 la valeur de retour est l'entier correspondant à 4 volts. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7d2d2171004bd303a2377218574fb134" name="a7d2d2171004bd303a2377218574fb134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d2d2171004bd303a2377218574fb134">&#9670;&#160;</a></span>dac_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void dac_write </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fonction d'écriture sur le bus SPI. </p>
+<p>Build the 16-bit command word:<br  />
+ Bit 15: A/B (0 for MCP4921)<br  />
+ Bit 14: Buffered VREF (0 = unbuffered, 1 = buffered)<br  />
+ Bit 13: Output Gain (1 = 1x, 0 = 2x)<br  />
+ Bit 12: Shutdown control (1 = active operation)<br  />
+ Bits 11-0: 12-bit data value<br  />
+ </p><dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ch</td><td>l'un des trois canaux </td></tr>
+    <tr><td class="paramname">cv</td><td>un entier entre 0 et 4095 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af0597d6c273dd4d188ff257eac67e6cd" name="af0597d6c273dd4d188ff257eac67e6cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0597d6c273dd4d188ff257eac67e6cd">&#9670;&#160;</a></span>init_dac()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void init_dac </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Déclaration des pins de sorties et lancement de SPI. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

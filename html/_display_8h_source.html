@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BIG_IO:  Fichier source de src/base/Display.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">BIG_IO
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','Recherche');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_0af1587c8378955de40f48b4bd1869f0.html">base</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Display.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_display_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef DISPLAY_H</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define DISPLAY_H</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="config_8h.html">config.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="class_display.html">   12</a></span><span class="keyword">class </span><a class="code hl_class" href="class_display.html">Display</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="class_display.html#a74e0aa7ab8bec1c0b50ea236af30d572">   14</a></span>        <span class="keyword">static</span> <span class="keywordtype">byte</span> <a class="code hl_variable" href="class_display.html#a74e0aa7ab8bec1c0b50ea236af30d572">cursor_num</a>; </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_display.html#ad3666f7c01eabbaf9bca0af08ee49998">   15</a></span>        <span class="keyword">static</span> <span class="keywordtype">byte</span> <a class="code hl_variable" href="class_display.html#ad3666f7c01eabbaf9bca0af08ee49998">cursor_pos</a>; </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="comment">//static byte current_page; /**&lt; id de la page courante. */</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="class_display.html#ab9d46c18ca7277cbe1900aa57fb47830">   17</a></span>        <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code hl_variable" href="class_display.html#ab9d46c18ca7277cbe1900aa57fb47830">buffer</a>[64]; </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_display.html#a710799bc043dfaeee41363170ce8aa52">   18</a></span>        <span class="keywordtype">char</span> <a class="code hl_variable" href="class_display.html#a710799bc043dfaeee41363170ce8aa52">screen</a>[64]; </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_display.html#aeb53856f9170454f4d5751861df9de60">   19</a></span>        <span class="keyword">static</span> <span class="keywordtype">byte</span> <a class="code hl_variable" href="class_display.html#aeb53856f9170454f4d5751861df9de60">charIndex</a>; </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="class_display.html#a7ad8fa5ecb8c622924951dba5617556f">   20</a></span>        <span class="keyword">static</span> <span class="keywordtype">byte</span> <a class="code hl_variable" href="class_display.html#a7ad8fa5ecb8c622924951dba5617556f">endPosition</a>; </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <a class="code hl_function" href="class_display.html#ae972fffea6f7ca1d627ef48c3d841bb3">Display</a>();</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_display.html#ab569d31751d87ab3bd70744532d33605">begin</a>();</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordtype">void</span> <span class="keyword">static</span> <a class="code hl_function" href="class_display.html#a6930a340a071e35921b15b03dd37525f">putChar</a>(<span class="keywordtype">byte</span> position, <span class="keywordtype">char</span> c);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_display.html#a16fde3abc2cba44600b3d829be17d736">welcome</a>();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_display.html#aa3ab70ec7b76fa3ed139d19e53e72283">display</a>();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordtype">void</span> <span class="keyword">static</span> <a class="code hl_function" href="class_display.html#a973a9942f9281f8e105f83247c273360">newPage</a>();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordtype">void</span> <span class="keyword">static</span> <a class="code hl_function" href="class_display.html#afa1e5e97844c5b92d64b60030d662264">show_value</a>(<span class="keywordtype">int</span> val);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordtype">void</span> <span class="keyword">static</span> <a class="code hl_function" href="class_display.html#ad78b32a90badce2c9a624350af10036f">no_show_value</a>(<a class="code hl_struct" href="structparameter.html">parameter</a> p); </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>};</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_display_html"><div class="ttname"><a href="class_display.html">Display</a></div><div class="ttdef"><b>Definition</b> Display.h:12</div></div>
+<div class="ttc" id="aclass_display_html_a16fde3abc2cba44600b3d829be17d736"><div class="ttname"><a href="class_display.html#a16fde3abc2cba44600b3d829be17d736">Display::welcome</a></div><div class="ttdeci">void welcome()</div><div class="ttdoc">Affiche un message de bienvenue avec le numéro de version.</div><div class="ttdef"><b>Definition</b> Display.cpp:81</div></div>
+<div class="ttc" id="aclass_display_html_a6930a340a071e35921b15b03dd37525f"><div class="ttname"><a href="class_display.html#a6930a340a071e35921b15b03dd37525f">Display::putChar</a></div><div class="ttdeci">static void putChar(byte position, char c)</div><div class="ttdoc">Affiche un caractère c à une position position.</div><div class="ttdef"><b>Definition</b> Display.cpp:73</div></div>
+<div class="ttc" id="aclass_display_html_a710799bc043dfaeee41363170ce8aa52"><div class="ttname"><a href="class_display.html#a710799bc043dfaeee41363170ce8aa52">Display::screen</a></div><div class="ttdeci">char screen[64]</div><div class="ttdef"><b>Definition</b> Display.h:18</div></div>
+<div class="ttc" id="aclass_display_html_a74e0aa7ab8bec1c0b50ea236af30d572"><div class="ttname"><a href="class_display.html#a74e0aa7ab8bec1c0b50ea236af30d572">Display::cursor_num</a></div><div class="ttdeci">static byte cursor_num</div><div class="ttdef"><b>Definition</b> Display.h:14</div></div>
+<div class="ttc" id="aclass_display_html_a7ad8fa5ecb8c622924951dba5617556f"><div class="ttname"><a href="class_display.html#a7ad8fa5ecb8c622924951dba5617556f">Display::endPosition</a></div><div class="ttdeci">static byte endPosition</div><div class="ttdef"><b>Definition</b> Display.h:20</div></div>
+<div class="ttc" id="aclass_display_html_a973a9942f9281f8e105f83247c273360"><div class="ttname"><a href="class_display.html#a973a9942f9281f8e105f83247c273360">Display::newPage</a></div><div class="ttdeci">static void newPage()</div><div class="ttdoc">Prépare les données pour l'affichage d'une nouvelle page.</div><div class="ttdef"><b>Definition</b> Display.cpp:117</div></div>
+<div class="ttc" id="aclass_display_html_aa3ab70ec7b76fa3ed139d19e53e72283"><div class="ttname"><a href="class_display.html#aa3ab70ec7b76fa3ed139d19e53e72283">Display::display</a></div><div class="ttdeci">void display()</div><div class="ttdoc">Fonction de rafraîchissement.</div><div class="ttdef"><b>Definition</b> Display.cpp:98</div></div>
+<div class="ttc" id="aclass_display_html_ab569d31751d87ab3bd70744532d33605"><div class="ttname"><a href="class_display.html#ab569d31751d87ab3bd70744532d33605">Display::begin</a></div><div class="ttdeci">void begin()</div><div class="ttdoc">Initialisation du setup.</div><div class="ttdef"><b>Definition</b> Display.cpp:65</div></div>
+<div class="ttc" id="aclass_display_html_ab9d46c18ca7277cbe1900aa57fb47830"><div class="ttname"><a href="class_display.html#ab9d46c18ca7277cbe1900aa57fb47830">Display::buffer</a></div><div class="ttdeci">static char buffer[64]</div><div class="ttdef"><b>Definition</b> Display.h:17</div></div>
+<div class="ttc" id="aclass_display_html_ad3666f7c01eabbaf9bca0af08ee49998"><div class="ttname"><a href="class_display.html#ad3666f7c01eabbaf9bca0af08ee49998">Display::cursor_pos</a></div><div class="ttdeci">static byte cursor_pos</div><div class="ttdef"><b>Definition</b> Display.h:15</div></div>
+<div class="ttc" id="aclass_display_html_ad78b32a90badce2c9a624350af10036f"><div class="ttname"><a href="class_display.html#ad78b32a90badce2c9a624350af10036f">Display::no_show_value</a></div><div class="ttdeci">static void no_show_value(parameter p)</div><div class="ttdoc">Pour afficher le nom d'un paramètre.</div><div class="ttdef"><b>Definition</b> Display.cpp:151</div></div>
+<div class="ttc" id="aclass_display_html_ae972fffea6f7ca1d627ef48c3d841bb3"><div class="ttname"><a href="class_display.html#ae972fffea6f7ca1d627ef48c3d841bb3">Display::Display</a></div><div class="ttdeci">Display()</div><div class="ttdoc">Initialisation avec 64 espaces.</div><div class="ttdef"><b>Definition</b> Display.cpp:54</div></div>
+<div class="ttc" id="aclass_display_html_aeb53856f9170454f4d5751861df9de60"><div class="ttname"><a href="class_display.html#aeb53856f9170454f4d5751861df9de60">Display::charIndex</a></div><div class="ttdeci">static byte charIndex</div><div class="ttdef"><b>Definition</b> Display.h:19</div></div>
+<div class="ttc" id="aclass_display_html_afa1e5e97844c5b92d64b60030d662264"><div class="ttname"><a href="class_display.html#afa1e5e97844c5b92d64b60030d662264">Display::show_value</a></div><div class="ttdeci">static void show_value(int val)</div><div class="ttdoc">Pour afficher la valeur d'un paramètre.</div><div class="ttdef"><b>Definition</b> Display.cpp:136</div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div><div class="ttdoc">Fichier de configuration du projet.</div></div>
+<div class="ttc" id="astructparameter_html"><div class="ttname"><a href="structparameter.html">parameter</a></div><div class="ttdoc">structure d'un paramètre.</div><div class="ttdef"><b>Definition</b> config.h:38</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

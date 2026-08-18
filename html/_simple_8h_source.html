@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BIG_IO:  Fichier source de src/simple/Simple.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">BIG_IO
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','Recherche');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_f651885c6323502307a2634088e32dd6.html">simple</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Simple.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_simple_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef SIMPLE_H</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define SIMPLE_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;../base/Module.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="class_simple.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="class_simple.html">Simple</a>: <span class="keyword">public</span> <a class="code hl_class" href="class_module.html">Module</a> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        <span class="keyword">const</span> <span class="keywordtype">char</span> *MIDIio[17] = {<span class="stringliteral">&quot;NONE  &quot;</span>,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            <span class="stringliteral">&quot;CH 1  &quot;</span>, <span class="stringliteral">&quot;CH 2  &quot;</span>, <span class="stringliteral">&quot;CH 3  &quot;</span>, <span class="stringliteral">&quot;CH 4  &quot;</span>, <span class="stringliteral">&quot;CH 5  &quot;</span>, <span class="stringliteral">&quot;CH 6  &quot;</span>, </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            <span class="stringliteral">&quot;CH 7  &quot;</span>, <span class="stringliteral">&quot;CH 8  &quot;</span>, <span class="stringliteral">&quot;CH 9  &quot;</span>, <span class="stringliteral">&quot;CH 10 &quot;</span>, <span class="stringliteral">&quot;CH 11 &quot;</span>, <span class="stringliteral">&quot;CH 12 &quot;</span>, </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            <span class="stringliteral">&quot;CH 13 &quot;</span>, <span class="stringliteral">&quot;CH 14 &quot;</span>, <span class="stringliteral">&quot;CH 15 &quot;</span>, <span class="stringliteral">&quot;CH 16 &quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        };</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keyword">const</span> <span class="keywordtype">char</span> *GateOut[5] = {<span class="stringliteral">&quot;NONE  &quot;</span>,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            <span class="stringliteral">&quot;DRUM 1&quot;</span>, <span class="stringliteral">&quot;DRUM 2&quot;</span>, <span class="stringliteral">&quot;GATE 1&quot;</span>, <span class="stringliteral">&quot;GATE 2&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        };</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keyword">const</span> <span class="keywordtype">char</span> *CvOut[4] = {<span class="stringliteral">&quot;NONE  &quot;</span>,  <span class="stringliteral">&quot;CV 1  &quot;</span>, <span class="stringliteral">&quot;CV 2  &quot;</span>, <span class="stringliteral">&quot;CV 3  &quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        };</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keyword">const</span> <span class="keywordtype">char</span> *notes[12] = {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="stringliteral">&quot; C&quot;</span>, <span class="stringliteral">&quot;C#&quot;</span>, <span class="stringliteral">&quot; D&quot;</span>, <span class="stringliteral">&quot;D#&quot;</span>, <span class="stringliteral">&quot; E&quot;</span>, <span class="stringliteral">&quot; F&quot;</span>, </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="stringliteral">&quot;F#&quot;</span>, <span class="stringliteral">&quot; G&quot;</span>, <span class="stringliteral">&quot;G#&quot;</span>, <span class="stringliteral">&quot; A&quot;</span>, <span class="stringliteral">&quot;A#&quot;</span>, <span class="stringliteral">&quot; B&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        };</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordtype">byte</span> pitch_send[128];</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_simple.html#a6cdc18aa0926895a16bfc8a86df36d66">   32</a></span>        <a class="code hl_function" href="class_simple.html#a6cdc18aa0926895a16bfc8a86df36d66">Simple</a>(<span class="keywordtype">char</span> <a class="code hl_variable" href="class_module.html#a431258a5c6f8b529ddd7448120285333">name</a>[8]) : <a class="code hl_class" href="class_module.html">Module</a>(<a class="code hl_variable" href="class_module.html#a431258a5c6f8b529ddd7448120285333">name</a>) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; MIDI I&quot;</span>, 1, 1, 0, 16, 0});</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; MIDI O&quot;</span>, 2, 2, 0, 16, 8});</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; GT OUT&quot;</span>, 3, 3, 0, 4, 16});</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; CV OUT&quot;</span>, 1, 1, 0, 3, 24});</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; MIN   &quot;</span>, 0, 0, 0, 108, 32});</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; MAX   &quot;</span>, 108, 108, 0, 108, 40});</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            this-&gt;<a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>({<span class="stringliteral">&quot; TRANSP&quot;</span>, 0, 0, 0, 11, 48});</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            this-&gt;<a class="code hl_function" href="class_module.html#a7eb5c789e396109d7c9d95e23bc1d4d4">setMenu</a>();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 128; i++) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                pitch_send[i] = 0;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        }</div>
+</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="class_simple.html#a8c9278e21296abd850fcc83ccb57bb61">isInRange</a>(<span class="keywordtype">byte</span> pitch);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_simple.html#a5baab702cbcb972f982971ce3cd0b666">handleNoteOn</a>(<span class="keywordtype">byte</span> channel, <span class="keywordtype">byte</span> pitch, <span class="keywordtype">byte</span> velocity);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_simple.html#a52c48737786fece6f1aa6486a6b0f36b">handleNoteOff</a>(<span class="keywordtype">byte</span> channel, <span class="keywordtype">byte</span> pitch, <span class="keywordtype">byte</span> velocity);</div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_simple.html#a11b38fc73584d647276de024742cee41">   48</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_simple.html#a11b38fc73584d647276de024742cee41">getString</a>(<span class="keywordtype">int</span> val, <span class="keywordtype">char</span> temp[8]) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">switch</span>(<a class="code hl_variable" href="class_display.html#a74e0aa7ab8bec1c0b50ea236af30d572">Display::cursor_num</a>) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="keywordflow">case</span> 0:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                    sprintf(temp, <span class="stringliteral">&quot; %.6s&quot;</span>, MIDIio[val]);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="keywordflow">case</span> 1:</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                    sprintf(temp, <span class="stringliteral">&quot; %.6s&quot;</span>, MIDIio[val]);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                <span class="keywordflow">case</span> 2:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    sprintf(temp, <span class="stringliteral">&quot; %.6s&quot;</span>, GateOut[val]);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                <span class="keywordflow">case</span> 3:</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    sprintf(temp, <span class="stringliteral">&quot; %.6s&quot;</span>, CvOut[val]);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <span class="keywordflow">case</span> 4:</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                    sprintf(temp, <span class="stringliteral">&quot; %.2s%d   &quot;</span>, notes[val % 12], val / 12);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                <span class="keywordflow">case</span> 5:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                    sprintf(temp, <span class="stringliteral">&quot; %.2s%d   &quot;</span>, notes[val % 12], val / 12);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                <span class="keywordflow">case</span> 6:</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                    sprintf(temp, <span class="stringliteral">&quot; %.2s    &quot;</span>, notes[val % 12]);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                    sprintf(temp, <span class="stringliteral">&quot; %2d   &quot;</span>, val);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            temp[7] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        }</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_simple.html#aed7f05b97efc938699b64f607c108e23">r_handlePress</a>();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_simple.html#af0b38105d94a6ad24e8ea35fe0979c80">l_handlePress</a>();        </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="ttc" id="aclass_display_html_a74e0aa7ab8bec1c0b50ea236af30d572"><div class="ttname"><a href="class_display.html#a74e0aa7ab8bec1c0b50ea236af30d572">Display::cursor_num</a></div><div class="ttdeci">static byte cursor_num</div><div class="ttdef"><b>Definition</b> Display.h:14</div></div>
+<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Déclaration de la classe.</div><div class="ttdef"><b>Definition</b> Module.h:12</div></div>
+<div class="ttc" id="aclass_module_html_a16dfedb774fbe6b408d3ba07d365d4a9"><div class="ttname"><a href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">Module::add</a></div><div class="ttdeci">void add(parameter p)</div><div class="ttdoc">Ajout d'un paramètre au module.</div><div class="ttdef"><b>Definition</b> Module.cpp:35</div></div>
+<div class="ttc" id="aclass_module_html_a431258a5c6f8b529ddd7448120285333"><div class="ttname"><a href="class_module.html#a431258a5c6f8b529ddd7448120285333">Module::name</a></div><div class="ttdeci">char name[8]</div><div class="ttdoc">Nom du module qui figure sur l'écran.</div><div class="ttdef"><b>Definition</b> Module.h:16</div></div>
+<div class="ttc" id="aclass_module_html_a7eb5c789e396109d7c9d95e23bc1d4d4"><div class="ttname"><a href="class_module.html#a7eb5c789e396109d7c9d95e23bc1d4d4">Module::setMenu</a></div><div class="ttdeci">void setMenu()</div><div class="ttdoc">Construit le texte destiné à être affiché.</div><div class="ttdef"><b>Definition</b> Module.cpp:44</div></div>
+<div class="ttc" id="aclass_simple_html"><div class="ttname"><a href="class_simple.html">Simple</a></div><div class="ttdef"><b>Definition</b> Simple.h:10</div></div>
+<div class="ttc" id="aclass_simple_html_a11b38fc73584d647276de024742cee41"><div class="ttname"><a href="class_simple.html#a11b38fc73584d647276de024742cee41">Simple::getString</a></div><div class="ttdeci">void getString(int val, char temp[8])</div><div class="ttdoc">Méthode définissant la chaîne affichée.</div><div class="ttdef"><b>Definition</b> Simple.h:48</div></div>
+<div class="ttc" id="aclass_simple_html_a52c48737786fece6f1aa6486a6b0f36b"><div class="ttname"><a href="class_simple.html#a52c48737786fece6f1aa6486a6b0f36b">Simple::handleNoteOff</a></div><div class="ttdeci">void handleNoteOff(byte channel, byte pitch, byte velocity)</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Simple.cpp:42</div></div>
+<div class="ttc" id="aclass_simple_html_a5baab702cbcb972f982971ce3cd0b666"><div class="ttname"><a href="class_simple.html#a5baab702cbcb972f982971ce3cd0b666">Simple::handleNoteOn</a></div><div class="ttdeci">void handleNoteOn(byte channel, byte pitch, byte velocity)</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Simple.cpp:19</div></div>
+<div class="ttc" id="aclass_simple_html_a6cdc18aa0926895a16bfc8a86df36d66"><div class="ttname"><a href="class_simple.html#a6cdc18aa0926895a16bfc8a86df36d66">Simple::Simple</a></div><div class="ttdeci">Simple(char name[8])</div><div class="ttdoc">Constructeur par défaut.</div><div class="ttdef"><b>Definition</b> Simple.h:32</div></div>
+<div class="ttc" id="aclass_simple_html_a8c9278e21296abd850fcc83ccb57bb61"><div class="ttname"><a href="class_simple.html#a8c9278e21296abd850fcc83ccb57bb61">Simple::isInRange</a></div><div class="ttdeci">bool isInRange(byte pitch)</div><div class="ttdef"><b>Definition</b> Simple.cpp:14</div></div>
+<div class="ttc" id="aclass_simple_html_aed7f05b97efc938699b64f607c108e23"><div class="ttname"><a href="class_simple.html#aed7f05b97efc938699b64f607c108e23">Simple::r_handlePress</a></div><div class="ttdeci">void r_handlePress()</div><div class="ttdoc">Méthode de l'encodeur spécifique au module.</div><div class="ttdef"><b>Definition</b> Simple.cpp:60</div></div>
+<div class="ttc" id="aclass_simple_html_af0b38105d94a6ad24e8ea35fe0979c80"><div class="ttname"><a href="class_simple.html#af0b38105d94a6ad24e8ea35fe0979c80">Simple::l_handlePress</a></div><div class="ttdeci">void l_handlePress()</div><div class="ttdoc">Méthode de l'encodeur spécifique au module.</div><div class="ttdef"><b>Definition</b> Simple.cpp:55</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

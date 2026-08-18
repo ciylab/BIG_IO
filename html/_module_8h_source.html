@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BIG_IO:  Fichier source de src/base/Module.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">BIG_IO
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','Recherche');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_0af1587c8378955de40f48b4bd1869f0.html">base</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Module.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_module_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef MODULE_H</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define MODULE_H</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="config_8h.html">config.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="_display_8h.html">Display.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="class_module.html">   12</a></span><span class="keyword">class </span><a class="code hl_class" href="class_module.html">Module</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="class_module.html#aae17b811e39e05e64f08891bdb7d29b9">   14</a></span>        <a class="code hl_struct" href="structparameter.html">parameter</a> <a class="code hl_variable" href="class_module.html#aae17b811e39e05e64f08891bdb7d29b9">parameters</a>[9]; </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_module.html#a63c4a3c98ef31e0450e9a73508d0849f">   15</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="class_module.html#a63c4a3c98ef31e0450e9a73508d0849f">size</a>; </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_module.html#a431258a5c6f8b529ddd7448120285333">   16</a></span>        <span class="keywordtype">char</span> <a class="code hl_variable" href="class_module.html#a431258a5c6f8b529ddd7448120285333">name</a>[8]; </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="class_module.html#a4fe083a6e77f0af1588d70459ddb6b8f">   17</a></span>        <span class="keywordtype">char</span> <a class="code hl_variable" href="class_module.html#a4fe083a6e77f0af1588d70459ddb6b8f">text</a>[64]; </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_module.html#abf0de273e00a3b8666327448f042facd">   18</a></span>        <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_module.html#abf0de273e00a3b8666327448f042facd">hidden</a>; </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="class_module.html#ab8483840a7cbfeecbfc4e712bdb52c55">   19</a></span>        <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_module.html#ab8483840a7cbfeecbfc4e712bdb52c55">new_value</a>; </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <a class="code hl_function" href="class_module.html#a5a240a8a9ab1813b17bcb810b24ceaea">Module</a>();      </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <a class="code hl_function" href="class_module.html#a5a240a8a9ab1813b17bcb810b24ceaea">Module</a>(<span class="keywordtype">char</span> *);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">add</a>(<a class="code hl_struct" href="structparameter.html">parameter</a> p);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#a7eb5c789e396109d7c9d95e23bc1d4d4">setMenu</a>();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_module.html#a6619df4d4e4f6e6b51a8daa38c3b9a3f">   35</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#a6619df4d4e4f6e6b51a8daa38c3b9a3f">handleNoteOn</a>(<span class="keywordtype">byte</span> channel, <span class="keywordtype">byte</span> pitch, <span class="keywordtype">byte</span> velocity) {} </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_module.html#a077bd647810ad2a51ea48331ce40a520">   39</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#a077bd647810ad2a51ea48331ce40a520">handleNoteOff</a>(<span class="keywordtype">byte</span> channel, <span class="keywordtype">byte</span> pitch, <span class="keywordtype">byte</span> velocity) {}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_module.html#abfec7083ee6865d3516c590ac00f37f4">   43</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#abfec7083ee6865d3516c590ac00f37f4">handleClock</a>() {}</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_module.html#a3b82fdb2ba0555bf92b0e7aad6ea6bcc">   47</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#a3b82fdb2ba0555bf92b0e7aad6ea6bcc">handleStart</a>() {}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_module.html#ac1d14f816491ef986c513a92ca53ed6a">   51</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#ac1d14f816491ef986c513a92ca53ed6a">handleStop</a>() {}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#a832e35913a5c26255fef97c1a685415c">l_handlePress</a>();</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#aa1ebe4ae3f73dfa70c002d38793752b5">r_handlePress</a>();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="class_module.html#ac0d23d8c624d13030c513508df9e11c7">   68</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#ac0d23d8c624d13030c513508df9e11c7">getString</a>(<span class="keywordtype">int</span> val, <span class="keywordtype">char</span> temp[8]) {}</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="class_module.html#ad5f8a446988a4cf3f372007fa1c6da9a">   72</a></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_module.html#ad5f8a446988a4cf3f372007fa1c6da9a">execute</a>() {}</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>};</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="ttc" id="a_display_8h_html"><div class="ttname"><a href="_display_8h.html">Display.h</a></div><div class="ttdoc">Champs de la classe d'affichage.</div></div>
+<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Déclaration de la classe.</div><div class="ttdef"><b>Definition</b> Module.h:12</div></div>
+<div class="ttc" id="aclass_module_html_a077bd647810ad2a51ea48331ce40a520"><div class="ttname"><a href="class_module.html#a077bd647810ad2a51ea48331ce40a520">Module::handleNoteOff</a></div><div class="ttdeci">virtual void handleNoteOff(byte channel, byte pitch, byte velocity)</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.h:39</div></div>
+<div class="ttc" id="aclass_module_html_a16dfedb774fbe6b408d3ba07d365d4a9"><div class="ttname"><a href="class_module.html#a16dfedb774fbe6b408d3ba07d365d4a9">Module::add</a></div><div class="ttdeci">void add(parameter p)</div><div class="ttdoc">Ajout d'un paramètre au module.</div><div class="ttdef"><b>Definition</b> Module.cpp:35</div></div>
+<div class="ttc" id="aclass_module_html_a3b82fdb2ba0555bf92b0e7aad6ea6bcc"><div class="ttname"><a href="class_module.html#a3b82fdb2ba0555bf92b0e7aad6ea6bcc">Module::handleStart</a></div><div class="ttdeci">virtual void handleStart()</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.h:47</div></div>
+<div class="ttc" id="aclass_module_html_a431258a5c6f8b529ddd7448120285333"><div class="ttname"><a href="class_module.html#a431258a5c6f8b529ddd7448120285333">Module::name</a></div><div class="ttdeci">char name[8]</div><div class="ttdoc">Nom du module qui figure sur l'écran.</div><div class="ttdef"><b>Definition</b> Module.h:16</div></div>
+<div class="ttc" id="aclass_module_html_a4fe083a6e77f0af1588d70459ddb6b8f"><div class="ttname"><a href="class_module.html#a4fe083a6e77f0af1588d70459ddb6b8f">Module::text</a></div><div class="ttdeci">char text[64]</div><div class="ttdoc">Texte de la page du module.</div><div class="ttdef"><b>Definition</b> Module.h:17</div></div>
+<div class="ttc" id="aclass_module_html_a5a240a8a9ab1813b17bcb810b24ceaea"><div class="ttname"><a href="class_module.html#a5a240a8a9ab1813b17bcb810b24ceaea">Module::Module</a></div><div class="ttdeci">Module()</div><div class="ttdoc">Do nothing but needed.</div><div class="ttdef"><b>Definition</b> Module.cpp:17</div></div>
+<div class="ttc" id="aclass_module_html_a63c4a3c98ef31e0450e9a73508d0849f"><div class="ttname"><a href="class_module.html#a63c4a3c98ef31e0450e9a73508d0849f">Module::size</a></div><div class="ttdeci">int size</div><div class="ttdoc">Nombre de paramètres pour ce module.</div><div class="ttdef"><b>Definition</b> Module.h:15</div></div>
+<div class="ttc" id="aclass_module_html_a6619df4d4e4f6e6b51a8daa38c3b9a3f"><div class="ttname"><a href="class_module.html#a6619df4d4e4f6e6b51a8daa38c3b9a3f">Module::handleNoteOn</a></div><div class="ttdeci">virtual void handleNoteOn(byte channel, byte pitch, byte velocity)</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.h:35</div></div>
+<div class="ttc" id="aclass_module_html_a7eb5c789e396109d7c9d95e23bc1d4d4"><div class="ttname"><a href="class_module.html#a7eb5c789e396109d7c9d95e23bc1d4d4">Module::setMenu</a></div><div class="ttdeci">void setMenu()</div><div class="ttdoc">Construit le texte destiné à être affiché.</div><div class="ttdef"><b>Definition</b> Module.cpp:44</div></div>
+<div class="ttc" id="aclass_module_html_a832e35913a5c26255fef97c1a685415c"><div class="ttname"><a href="class_module.html#a832e35913a5c26255fef97c1a685415c">Module::l_handlePress</a></div><div class="ttdeci">virtual void l_handlePress()</div><div class="ttdoc">Méthode de l'encodeur spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.cpp:54</div></div>
+<div class="ttc" id="aclass_module_html_aa1ebe4ae3f73dfa70c002d38793752b5"><div class="ttname"><a href="class_module.html#aa1ebe4ae3f73dfa70c002d38793752b5">Module::r_handlePress</a></div><div class="ttdeci">virtual void r_handlePress()</div><div class="ttdoc">Méthode de l'encodeur spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.cpp:60</div></div>
+<div class="ttc" id="aclass_module_html_aae17b811e39e05e64f08891bdb7d29b9"><div class="ttname"><a href="class_module.html#aae17b811e39e05e64f08891bdb7d29b9">Module::parameters</a></div><div class="ttdeci">parameter parameters[9]</div><div class="ttdoc">Tableau des paramètres dont un caché.</div><div class="ttdef"><b>Definition</b> Module.h:14</div></div>
+<div class="ttc" id="aclass_module_html_ab8483840a7cbfeecbfc4e712bdb52c55"><div class="ttname"><a href="class_module.html#ab8483840a7cbfeecbfc4e712bdb52c55">Module::new_value</a></div><div class="ttdeci">bool new_value</div><div class="ttdoc">Indique qu'on affiche avant modification.</div><div class="ttdef"><b>Definition</b> Module.h:19</div></div>
+<div class="ttc" id="aclass_module_html_abf0de273e00a3b8666327448f042facd"><div class="ttname"><a href="class_module.html#abf0de273e00a3b8666327448f042facd">Module::hidden</a></div><div class="ttdeci">bool hidden</div><div class="ttdoc">Indique si le paramètre caché est caché.</div><div class="ttdef"><b>Definition</b> Module.h:18</div></div>
+<div class="ttc" id="aclass_module_html_abfec7083ee6865d3516c590ac00f37f4"><div class="ttname"><a href="class_module.html#abfec7083ee6865d3516c590ac00f37f4">Module::handleClock</a></div><div class="ttdeci">virtual void handleClock()</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.h:43</div></div>
+<div class="ttc" id="aclass_module_html_ac0d23d8c624d13030c513508df9e11c7"><div class="ttname"><a href="class_module.html#ac0d23d8c624d13030c513508df9e11c7">Module::getString</a></div><div class="ttdeci">virtual void getString(int val, char temp[8])</div><div class="ttdoc">Méthode définissant la chaîne affichée.</div><div class="ttdef"><b>Definition</b> Module.h:68</div></div>
+<div class="ttc" id="aclass_module_html_ac1d14f816491ef986c513a92ca53ed6a"><div class="ttname"><a href="class_module.html#ac1d14f816491ef986c513a92ca53ed6a">Module::handleStop</a></div><div class="ttdeci">virtual void handleStop()</div><div class="ttdoc">Méthode MIDI spécifique au module.</div><div class="ttdef"><b>Definition</b> Module.h:51</div></div>
+<div class="ttc" id="aclass_module_html_ad5f8a446988a4cf3f372007fa1c6da9a"><div class="ttname"><a href="class_module.html#ad5f8a446988a4cf3f372007fa1c6da9a">Module::execute</a></div><div class="ttdeci">virtual void execute()</div><div class="ttdoc">Méthode lancée à chaque boucle.</div><div class="ttdef"><b>Definition</b> Module.h:72</div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div><div class="ttdoc">Fichier de configuration du projet.</div></div>
+<div class="ttc" id="astructparameter_html"><div class="ttname"><a href="structparameter.html">parameter</a></div><div class="ttdoc">structure d'un paramètre.</div><div class="ttdef"><b>Definition</b> config.h:38</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

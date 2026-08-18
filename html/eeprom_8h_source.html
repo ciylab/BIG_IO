@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BIG_IO:  Fichier source de src/base/eeprom.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">BIG_IO
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','Recherche');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_0af1587c8378955de40f48b4bd1869f0.html">base</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">eeprom.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="eeprom_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef EEPROM_H</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define EEPROM_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#a0f3b0279f22ff6e8b1a0c6ab4d843b80">init_from_eeprom</a>();</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#aa3c6ef753629914424c1764d4225285c">save</a>(<span class="keywordtype">int</span> slot_num);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#a78e0b4e70b6ca92e541ced18ee6afc31">write_factory</a>();</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#abec7e6126edf6e44c1d9aa829ad38a40">write_simple</a>();</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#a64554da6bfeb28bde65cc64f1cafc082">write_null</a>(<span class="keywordtype">int</span> i);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#a8fcbafb666bd4f637ada06dca2aba101">load</a>(<span class="keywordtype">int</span> slot_num);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="eeprom_8h.html#a6f41ead481b4832c43e88c54239bfc3c">   14</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="eeprom_8h.html#a6f41ead481b4832c43e88c54239bfc3c">test_eeprom</a>();</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aeeprom_8h_html_a0f3b0279f22ff6e8b1a0c6ab4d843b80"><div class="ttname"><a href="eeprom_8h.html#a0f3b0279f22ff6e8b1a0c6ab4d843b80">init_from_eeprom</a></div><div class="ttdeci">void init_from_eeprom()</div><div class="ttdoc">Fonction d'initialisation.</div><div class="ttdef"><b>Definition</b> eeprom.cpp:42</div></div>
+<div class="ttc" id="aeeprom_8h_html_a64554da6bfeb28bde65cc64f1cafc082"><div class="ttname"><a href="eeprom_8h.html#a64554da6bfeb28bde65cc64f1cafc082">write_null</a></div><div class="ttdeci">void write_null(int i)</div><div class="ttdoc">Write null values (factory preset) in the other slot.</div><div class="ttdef"><b>Definition</b> eeprom.cpp:141</div></div>
+<div class="ttc" id="aeeprom_8h_html_a6f41ead481b4832c43e88c54239bfc3c"><div class="ttname"><a href="eeprom_8h.html#a6f41ead481b4832c43e88c54239bfc3c">test_eeprom</a></div><div class="ttdeci">void test_eeprom()</div></div>
+<div class="ttc" id="aeeprom_8h_html_a78e0b4e70b6ca92e541ced18ee6afc31"><div class="ttname"><a href="eeprom_8h.html#a78e0b4e70b6ca92e541ced18ee6afc31">write_factory</a></div><div class="ttdeci">void write_factory()</div><div class="ttdoc">Write default values (factory preset) in the first slot.</div><div class="ttdef"><b>Definition</b> eeprom.cpp:97</div></div>
+<div class="ttc" id="aeeprom_8h_html_a8fcbafb666bd4f637ada06dca2aba101"><div class="ttname"><a href="eeprom_8h.html#a8fcbafb666bd4f637ada06dca2aba101">load</a></div><div class="ttdeci">void load(int slot_num)</div><div class="ttdoc">Cette fonction remplace la configuration courante par des données en eeprom.</div><div class="ttdef"><b>Definition</b> eeprom.cpp:83</div></div>
+<div class="ttc" id="aeeprom_8h_html_aa3c6ef753629914424c1764d4225285c"><div class="ttname"><a href="eeprom_8h.html#aa3c6ef753629914424c1764d4225285c">save</a></div><div class="ttdeci">void save(int slot_num)</div><div class="ttdoc">Cette fonction enregistre en eeprom la configuration courante.</div><div class="ttdef"><b>Definition</b> eeprom.cpp:64</div></div>
+<div class="ttc" id="aeeprom_8h_html_abec7e6126edf6e44c1d9aa829ad38a40"><div class="ttname"><a href="eeprom_8h.html#abec7e6126edf6e44c1d9aa829ad38a40">write_simple</a></div><div class="ttdeci">void write_simple()</div><div class="ttdoc">Write simple the second slot.</div><div class="ttdef"><b>Definition</b> eeprom.cpp:119</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>
