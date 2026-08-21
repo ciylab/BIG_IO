@@ -16,17 +16,6 @@
 
 class Random: public Module {
     private:
-        const char *MIDIio[17] = {"NONE  ",
-            "CH 1  ", "CH 2  ", "CH 3  ", "CH 4  ", "CH 5  ", "CH 6  ", 
-            "CH 7  ", "CH 8  ", "CH 9  ", "CH 10 ", "CH 11 ", "CH 12 ", 
-            "CH 13 ", "CH 14 ", "CH 15 ", "CH 16 "
-        };
-        const char *GateOut[5] = {"NONE  ",
-            "DRUM 1", "DRUM 2", "GATE 1", "GATE 2"
-        };
-        const char *CvOut[4] = {"NONE  ",  "CV 1  ", "CV 2  ", "CV 3  "
-        };
-
         const char *notes[12] = {
             " C", "C#", " D", "D#", " E", " F", 
             "F#", " G", "G#", " A", "A#", " B"
@@ -44,9 +33,6 @@ class Random: public Module {
         static byte scales[NUM_SCALE][12];
         byte sequence[R_SEQ_SIZE];
         byte lastPitch;
-        byte min;
-        byte max;
-        bool showMax;
     public:
         unsigned long start;
         byte current_index;
@@ -54,22 +40,20 @@ class Random: public Module {
          * @brief Constructeur par défaut.
          *
          */
-        Random() : Module() { 
-            strcpy(this->name, "RANDOM");           
-            this->add({" MIDI O", 2, 2, 0, 16, 0});
-            this->add({" GT OUT", 3, 3, 0, 4, 8});
-            this->add({" CV OUT", 1, 1, 0, 3, 16});
-            this->add({" LENGTH", 1, 1, 0, 16, 24});
-            this->add({" SCALE ", 0, 0, 0, 3, 32});
-            this->add({" KEY   ", 0, 0, 0, 11, 40});
-            this->add({" FREEZE", 0, 0, 0, 1, 48});
-            this->add({" RANGE ", 108, 108, 0, 216, 56});
+        Random() : Module() {
+            this->add({" LENGTH", 0, 0, 0, 16, 0});
+            this->add({" GATE  ", 1, 1, 1, 5, 8});
+            this->add({" SCALE ", 0, 0, 0, 3, 16});
+            this->add({" KEY   ", 0, 0, 0, 11, 24});
+            this->add({" FREEZE", 0, 0, 0, 1, 32});
+            this->add({" MIN   ", 24, 24, 0, 108, 48});
+            this->add({" MAX   ", 72, 72, 0, 108, 56});
             this->setMenu();
-            this->parameters[8] = {" HIDDEN", 1, 1, 1, 5, 0};
-            this->indexInList = 3;
-            this->min = 24;
-            this->max = 72;
-            this->showMax = true;
+            this->indexInList = 2;
+            this->io[0] = {" IN    ", 2, 2, 2, 2, 0};
+            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
+            this->io[3] = {" GT OUT", 1, 1, 1, 5, 48};
             for(int i = 0; i < R_SEQ_SIZE; i++) {
                 this->sequence[i] = 0;
             }
@@ -85,45 +69,24 @@ class Random: public Module {
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:
-                    sprintf(temp, " %.6s", MIDIio[val]);
+                    sprintf(temp, " %2d    ", val);
                     break;
                 case 1:
-                    if(!hidden) {
-                        sprintf(temp, " %.5s ", PROGRESS[val]);
-                    } else {
-                        sprintf(temp, " %.6s", GateOut[val]);
-                    }
+                    sprintf(temp, " %s ", PROGRESS[val]);
                     break;
                 case 2:
-                    sprintf(temp, " %.6s", CvOut[val]);
-                    break;
-                case 3:
-                    sprintf(temp, " %2d   ", val);
-                    break;
-                case 4:
                     sprintf(temp, " %.6s", SCALES[val]);
                     break;
-                case 5:
+                case 3:
                     sprintf(temp, " %.2s    ", notes[val]);
                     break;
-                case 6:
-                    sprintf(temp, " %.3s  ", ONOFF[val]);
+                case 4:
+                    sprintf(temp, " %.3s   ", ONOFF[val]);
                     break;                
-                case 7:
-                    if(val < 108) {
-                        max = val;
-                        sprintf(temp, " MX %.2s%d", 
-                                notes[val % 12], val / 12);
-                    } else if (108 < val) {
-                        val = val - 108;
-                        min = val;
-                        sprintf(temp, " MN %.2s%d", 
-                                notes[val % 12], val / 12);
-                    } else {
-                        sprintf(temp, " ALL  ");
-                    }
+                default:
+                    sprintf(temp, " %.2s%d  ", 
+                            notes[val % 12], val / 12);
                     break;
-
             }
             temp[7] = '\0';
         }

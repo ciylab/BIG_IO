@@ -9,12 +9,6 @@
 
 class Trigger: public Module {
     private:
-        const char *InOut[22] = {"NONE  ", "CLOCK ",
-            "DRUM 1", "DRUM 2", "GATE 1", "GATE 2",
-            "CH 1  ", "CH 2  ", "CH 3  ", "CH 4  ", "CH 5  ", "CH 6  ", 
-            "CH 7  ", "CH 8  ", "CH 9  ", "CH 10 ", "CH 11 ", "CH 12 ", 
-            "CH 13 ", "CH 14 ", "CH 15 ", "CH 16 "
-        };
         const char *notes[12] = {
             " C", "C#", " D", "D#", " E", " F", 
             "F#", " G", "G#", " A", "A#", " B"
@@ -22,8 +16,6 @@ class Trigger: public Module {
         const char *PROGRESS[6] = {
             "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
         };
-
-        byte lastPitch;
     public:
         unsigned long start;
         /**
@@ -31,34 +23,34 @@ class Trigger: public Module {
          *
          */
         Trigger() : Module() {
-            strcpy(this->name, "TRIGGER");
-            this->add({" OUT   ", 0, 0, 0, 21, 0});
-            this->add({" LENGTH", 16, 16, 0, 16, 8});
+            this->add({" LENGTH", 16, 16, 0, 16, 0});
+            this->add({" GATE  ", 1, 1, 1, 5, 8});
             this->add({" BEATS ", 4, 4, 0, 16, 16});
             this->add({" SHIFT ", 0, 0, 0, 16, 24});
-            this->add({" PITCH ", 48, 48, 21, 108, 32});
-            this->add({" GATE  ", 1, 1, 1, 5, 40});
-            this->add({" beats ", 0, 0, 0, 16, 48});
-            this->add({" shift ", 0, 0, 0, 16, 56});
+            this->add({" beats ", 0, 0, 0, 16, 32});
+            this->add({" shift ", 0, 0, 0, 16, 40});
+            this->add({" PITCH ", 48, 48, 21, 108, 48});
             this->setMenu();
-            this->indexInList = 5;
-            this->parameters[8] = {" HIDDEN", 1, 1, 1, 5, 0};
+            this->indexInList = 4;
+            this->io[0] = {" IN    ", 2, 2, 2, 2, 0};
+            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
+            this->io[3] = {" GT OUT", 1, 1, 1, 5, 48};
         }
         void execute();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
-                case 0:
-                    if(!hidden) {
-                        sprintf(temp, " %.5s ", PROGRESS[val]);
-                    } else {
-                        sprintf(temp, " %.6s", InOut[val]);
-                    }
+                case 1:
+                    sprintf(temp, " %.5s ", PROGRESS[val]);
                     break;
-                case 4:
+                case 6:
+                    sprintf(temp, " %.2s%d   ", notes[val % 12], val / 12);
+                    break;
+                case 7:
                     sprintf(temp, " %.2s%d   ", notes[val % 12], val / 12);
                     break;
                 default:
-                    sprintf(temp, " %2d   ", val);
+                    sprintf(temp, " %2d    ", val);
                     break;
             }
             temp[7] = '\0';

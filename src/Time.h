@@ -10,16 +10,12 @@
 
 class Time: public Module {
     private:
-        const char *InOut[19] = {"NONE ", "CLOCK", "MIDI ",
-            "CH 1 ", "CH 2 ", "CH 3 ", "CH 4 ", "CH 5 ", "CH 6 ", 
-            "CH 7 ", "CH 8 ", "CH 9 ", "CH 10", "CH 11", "CH 12", 
-            "CH 13", "CH 14", "CH 15", "CH 16"
-        };
         const char *SPEED[7] = {"/4", "/3", "/2", "x1", "x2", "x3", "x4"};
         const char *METER[3] = {"3/4", "4/4", "5/4"};
         const char *PROGRESS[6] = {
             "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
         };
+        
    public:
         /**
          * @brief Constructeur par défaut.
@@ -33,16 +29,17 @@ class Time: public Module {
         static bool newTick;
 
         Time() : Module() {
-            strcpy(this->name, "TIME");
-            this->add({" IN    ", 0, 0, 0, 2, 0});
-            this->add({" OUT   ", 2, 2, 0, 18, 8});
-            this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 16});
-            this->add({" SPEED ", 3, 3, 0, 6, 24});
+            this->size = 0;
+            this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 0});
+            this->add({" SPEED ", 3, 3, 0, 6, 16});
             this->add({" METER ", 1, 1, 0, 2, 32});
-            this->add({" RAND  ", 0, 0, 0, 5, 40});
+            this->add({" RAND  ", 0, 0, 0, 5, 48});
             this->setMenu();
-            this->parameters[8] = {" HIDDEN", 1, 1, 1, 5, 8};
-            this->indexInList = 1;
+            this->indexInList = 0;
+            this->io[0] = {" IN    ", 2, 2, 0, 2, 0};
+            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[2] = {" CV OUT", 0, 0, 0, 0, 32};
+            this->io[3] = {" GT OUT", 0, 0, 0, 1, 48};
         }
         void handleClock();
         void handleStart();
@@ -58,35 +55,20 @@ class Time: public Module {
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:
-                    if (val == 0) {
-                        delta = 2500000 / this->parameters[2].value;
-                    }
-                    sprintf(temp, " %.5s ", InOut[val]);
-                    digitalWrite(CLOCK_OUT, HIGH);
-                    break;
-                case 1:
-                    //if(!hidden) {
-                    //    sprintf(temp, " %.5s ", PROGRESS[val]);
-                    //} else { 
-                        sprintf(temp, " %.5s ", InOut[val]);
-                    //}
-                    digitalWrite(CLOCK_OUT, HIGH);
-                    break;
-                case 2:
-                    if(this->parameters[0].value == 0) {
+                    if(this->io[0].value == 2) {
                         delta = 2500000 / val;
-                    } else if(this->parameters[0].value == 1) {
+                    } else {
                         val = round(2500000. / delta);
                     }
                     sprintf(temp, " %3d   ", val);
                     break;
-                case 3:
+                case 1:
                     sprintf(temp, " %.2s    ", SPEED[val]);
                     break;
-                case 4:
+                case 2:
                     sprintf(temp, " %.3s   ", METER[val]);
                     break;                
-                case 5:
+                case 3:
                     sprintf(temp, " %.5s ", PROGRESS[val]);
                     break;
                default:

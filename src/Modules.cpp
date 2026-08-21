@@ -9,9 +9,11 @@
 
 #include "Module.h"
 #include "Main.h"
+#include "Conf.h"
 #include "Time.h"
 #include "Play.h"
 #include "Modules.h"
+#include "io.h"
 
 /**
  * @brief Les modules disponibles.
@@ -22,7 +24,9 @@
 #include "modules/Random.h"
 #include "modules/Simple.h"
 
-byte Modules::current = 0;
+byte Modules::current = MAIN;
+byte Modules::to_config = MAIN;
+
 unsigned int Modules::C4RefVolt = 3277;
 
 /**
@@ -31,7 +35,9 @@ unsigned int Modules::C4RefVolt = 3277;
 
 Modules::Modules() {
     this->modules[0] = new Main();
-    this->modules[1] = new Play();
+    this->modules[1] = new Conf();
+    this->modules[2] = new io();
+    this->modules[3] = new Play();
 }
 
 /**
@@ -39,7 +45,7 @@ Modules::Modules() {
  */
 
 void Modules::execute() {
-    for (int i = 2; i < 10; i++) {
+    for (int i = TIME; i < TIME + 8; i++) {
         this->modules[i]->execute();
     }
 }
@@ -51,19 +57,19 @@ int Modules::getVoltage(byte pitch) {
 
 Module *Modules::getModule(byte num) {
     switch(num) {
-        case 1:
+        case 0:
             return new Time();
             break;
-        case 2:
+        case 1:
             return new Miniseq();
             break;
-        case 3:
+        case 2:
             return new Random();
             break;
-        case 4:
+        case 3:
             return new Simple();
             break;
-        case 5:
+        case 4:
             return new Trigger();
             break;
         default:

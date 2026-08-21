@@ -23,14 +23,14 @@ bool Time::newTick = true;
 
 
 void Time::handleClock() {
-    if(this->parameters[0].value == 2) { // entrée midi
+    if(this->io[0].value == 1) { // entrée midi
         MIDI.sendRealTime(midi::Clock);
         handleTick();
     }
 }
 
 void Time::handleStop() {
-    if(this->parameters[0].value == 2) { // entrée midi
+    if(this->io[0].value == 1) { // entrée midi
         MIDI.sendRealTime(midi::Stop);
     }
 }
@@ -38,18 +38,18 @@ void Time::handleStop() {
 
 void Time::handleStart() {
     Time::tick = 0;
-    if(this->parameters[0].value == 2) { // entrée midi
+    if(this->io[0].value == 1) { // entrée midi
         MIDI.sendRealTime(midi::Start);
     }
 }
 
 void Time::handleTick() {
-    if(this->parameters[1].value == 1) { // sortie clock activée
+    Time::tick++;
+    Time::newTick = true;
+    if(this->io[3].value == 0) { // sortie clock activée
         turn_led();
     }
     Time::metronome();
-    Time::tick++;
-    Time::newTick = true;
 }
 
 void Time::l_handlePress() {
@@ -61,29 +61,29 @@ void Time::r_handlePress() {
 }
 
 void Time::metronome() {
-    if(this->parameters[1].value < 3) {
+    if(this->io[1].value == 2) {
         return;
     }
-    byte modulo = 24 * (this->parameters[4].value + 3);
-    byte channel = this->parameters[1].value - 2;
+    byte modulo = 24 * (this->parameters[2].value + 3);
+    byte channel = this->io[1].value - 2;
     if(Time::tick % modulo == 0) {
         MIDI.sendNoteOn(48, 64, channel);
-    } else if(Time::tick % modulo == 12) {
+    } else if(Time::tick % modulo == 1) {
         MIDI.sendNoteOff(48, 0, channel);
     } else if(Time::tick % 24 == 0) {
         MIDI.sendNoteOn(24, 64, channel);
-    } else if(Time::tick % 24 == 12) {
+    } else if(Time::tick % 24 == 1) {
         MIDI.sendNoteOff(24, 0, channel);
     }
 }
 
 bool Time::play_rand() {
-    return this->parameters[5].value <= random(6);
+    return this->parameters[3].value <= random(6);
 }
 
 void Time::turn_led() {
     byte modulo = 24;
-    byte ratio = this->parameters[3].value; // speed
+    byte ratio = this->parameters[1].value; // speed
     if(3 < ratio) {
         modulo = modulo / (ratio - 2);
     } else if (ratio < 3) {
@@ -118,9 +118,9 @@ void Time::clock_send() {
 
 void Time::execute() {
     Time::newTick = false;
-    if(this->parameters[0].value == 0) { // entrée désactivée
+    if(this->io[0].value == 2) { // entrée désactivée
         clock_send();
-    } else if(this->parameters[0].value == 1) { // entrée trigger
+    } else if(this->io[0].value == 0) { // entrée trigger
         if(listen_clock_pulse()) {
             // Korg Electribe : SYNC UNIT 1 Step
             Time::delta = (micros() - Time::lastClockIn) / 6;
@@ -130,7 +130,7 @@ void Time::execute() {
                 micros() - Time::lastClockIn < 1500000) {
             clock_send();
         }
-    } else if(this->parameters[0].value == 2) { // entrée midi
+    } else if(this->io[0].value == 1) { // entrée midi
         return;
     }
 }

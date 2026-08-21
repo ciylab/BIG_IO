@@ -15,8 +15,10 @@
 
 
 #define MAIN 0 // pratique pour se repérer dans le code
-#define PLAY 1 // pratique pour se repérer dans le code
-#define TIME 2 // pratique pour se repérer dans le code
+#define CONF 1 // pratique pour se repérer dans le code
+#define IO   2 // pratique pour se repérer dans le code
+#define PLAY 3 // pratique pour se repérer dans le code
+#define TIME 4 // pratique pour se repérer dans le code
 
 /**
  * @brief liste des leds de sorties 

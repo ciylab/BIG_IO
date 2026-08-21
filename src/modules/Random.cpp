@@ -90,11 +90,14 @@ byte Random::rand_note(byte min, byte max, byte tone, byte scale) {
  *
  */
 byte Random::getRandomNote() {
-    return rand_note(min, max, parameters[5].value, parameters[4].value);
+    return rand_note(parameters[5].value, // min 
+            parameters[6].value, // max 
+            parameters[3].value, // tone
+            parameters[2].value); // scale
 }
 
 bool Random::isInRange(byte pitch) {
-    return min <= pitch && pitch < max;
+    return parameters[5].value <= pitch && pitch < parameters[6].value;
 }
 
 void Random::l_handlePress() {
@@ -103,8 +106,8 @@ void Random::l_handlePress() {
 }
 
 void Random::startPlay() {
-    current_index = Time::tick / 6 % this->parameters[3].value;
-    if(this->parameters[6].value) { // frozen
+    current_index = Time::tick / 6 % this->parameters[0].value;
+    if(this->parameters[4].value) { // frozen
         if(!isInRange(sequence[current_index])) {
             lastPitch = 255;
             return;
@@ -113,17 +116,16 @@ void Random::startPlay() {
         sequence[current_index] = getRandomNote(); // new random note
     }
     lastPitch = sequence[current_index];
-    this->parameters[0].buffer = this->parameters[0].value;
-    this->parameters[1].buffer = this->parameters[1].value;
-    if(this->parameters[0].value != 0) {
-        MIDI.sendNoteOn(lastPitch,
-                127, this->parameters[0].value);
+    if(2 < this->io[1].value) {
+        this->io[1].buffer = this->io[1].value;
+        MIDI.sendNoteOn(lastPitch, 127, this->io[1].value - 2);
     }
-    if(this->parameters[1].value != 0) {
-        digitalWrite(pins[parameters[1].value], LOW);
+    if(1 < this->io[3].value) {
+        this->io[3].buffer = this->io[3].value;
+        digitalWrite(pins[this->io[3].value - 1], LOW);
     }
-    if(this->parameters[2].value != 0) {        
-        dac_write(this->parameters[2].value - 1, 
+    if(this->io[2].value != 0) {        
+        dac_write(this->io[2].value - 1, 
                 Modules::getVoltage(lastPitch));
     }
 }
@@ -132,46 +134,31 @@ void Random::stopPlay() {
     if(lastPitch == 255) {
         return;
     }
-    if(this->parameters[0].buffer != 0) {
-        MIDI.sendNoteOff(lastPitch, 0, this->parameters[0].buffer);
+    if(2 < this->io[1].value) {
+        MIDI.sendNoteOff(lastPitch, 0, this->io[1].buffer - 2);
     }
-    if(this->parameters[1].buffer != 0) {
-        digitalWrite(pins[parameters[1].buffer], HIGH);
+    if(1 < this->io[3].buffer) {
+        digitalWrite(pins[this->io[3].buffer - 1], HIGH);
     }            
 }
 
 void Random::execute() {
-    if(this->parameters[3].value == 0) {
+    if(this->parameters[0].value == 0) {
         return;
     }
-    if(max <= min) {
+    if(this->parameters[6].value <= this->parameters[5].value ) {
         return;
     }
     if(Time::newTick) {
         if(Time::tick % 6 == 0) {
             startPlay();
             start = Time::tick;
-        } else if (Time::tick == start + this->parameters[8].value) {
+        } else if (Time::tick == start + this->parameters[1].value) {
             stopPlay();
         }
     }
 }
 
 void Random::r_handlePress() {
-    if(Display::cursor_num == 1) {
-        hidden = !hidden;
-        new_value = false;
-        r_handleRotate(0);
-    } else if(Display::cursor_num == 7) {
-        hidden = true;
-        if(showMax) {
-            this->parameters[7].value = max;
-        } else {
-            this->parameters[7].value = min + 108;
-        }
-        showMax = !showMax;
-        new_value = false;
-        r_handleRotate(0);
-    }
 }
 

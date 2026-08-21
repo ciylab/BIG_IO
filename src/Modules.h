@@ -6,7 +6,7 @@
 #ifndef MODULES_H
 #define MODULES_H
 #include "Module.h"
-#define MODULES_SIZE 10
+#define MODULES_SIZE 12
 /** 
  * @brief  
  * 
@@ -15,6 +15,7 @@
 class Modules {
     public:
         static byte current;
+        static byte to_config;
         static unsigned int C4RefVolt;
         Module *modules[MODULES_SIZE];
         Modules();          

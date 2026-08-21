@@ -12,43 +12,43 @@ using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
 bool Simple::isInRange(byte pitch) {
-    return this->parameters[4].value <= pitch &&
-        pitch < this->parameters[5].value;
+    return this->parameters[0].value <= pitch &&
+        pitch < this->parameters[1].value;
 }
 
 void Simple::handleNoteOn(byte channel, byte pitch, byte velocity) {
-    if(!isInRange(pitch) || channel != this->parameters[0].value) {
+    if(!isInRange(pitch) || channel != this->io[0].value - 2) {
         return;
     }
-    if(this->parameters[1].value != 0) {
+    if(2 < this->io[1].value) {
         // pour prévenir un éventuel changement de sortie midi
         // en cours de jeu... limité à une note !!!
-        this->parameters[1].buffer = this->parameters[1].value;
+        this->io[1].buffer = this->io[1].value;
         // pour prévenir un éventuel changement de transposition 
         // en cours de jeu.
-        pitch_send[pitch] = pitch + this->parameters[6].value;
+        pitch_send[pitch] = pitch + this->parameters[2].value;
         MIDI.sendNoteOn(pitch_send[pitch],
-                velocity, this->parameters[1].buffer);
+                velocity, this->io[1].value - 2);
     }
-    if(this->parameters[2].value != 0) {
-        digitalWrite(pins[parameters[2].value], LOW);
+    if(1 < this->io[3].value) {
+        this->io[3].buffer = this->io[3].value;
+        digitalWrite(pins[this->io[3].value - 1], LOW);
     }
-    if(this->parameters[3].value != 0) {
-        dac_write(this->parameters[3].value - 1, 
+    if(this->io[2].value != 0) {
+        dac_write(this->io[2].value - 1, 
                 Modules::getVoltage(pitch));
     }
 }
 
 void Simple::handleNoteOff(byte channel, byte pitch, byte velocity) {
-    if(!isInRange(pitch) || channel != this->parameters[0].value) {
+    if(!isInRange(pitch) || channel != this->io[0].value - 2) {
         return;
     }
-    if(this->parameters[1].buffer != 0) {
-        MIDI.sendNoteOff(pitch_send[pitch], 0, 
-                this->parameters[1].buffer);
+    if(2 < this->io[1].buffer) {
+        MIDI.sendNoteOff(pitch_send[pitch], 0, this->io[1].buffer - 2);
     }
-    if(this->parameters[2].value != 0) {
-        digitalWrite(pins[parameters[2].value], HIGH);
+    if(1 < this->io[3].buffer) {
+        digitalWrite(pins[this->io[3].buffer - 1], HIGH);
     }
 }
 

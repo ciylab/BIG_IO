@@ -8,14 +8,15 @@
 #define DISPLAY_H
 
 #include "config.h"
+#define TEXT_SIZE 64 
 
 class Display {
     public:
         static byte cursor_num; /**< Index de 0 à 7 du curseur dans la liste. */
         static byte cursor_pos; /**< Position de 0 à 63 du curseur à l'écran. */
         //static byte current_page; /**< id de la page courante. */
-        static char buffer[64]; /**<tampon de l'écran */ 
-        char screen[64]; /**<contenu de l'écran */
+        static char buffer[TEXT_SIZE]; /**<tampon de l'écran */ 
+        char screen[TEXT_SIZE]; /**<contenu de l'écran */
         static byte charIndex; /**<position dans le tampon */
         static byte endPosition; /**<dernière position à afficher */
         Display();

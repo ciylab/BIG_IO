@@ -27,8 +27,7 @@ class Main: public Module {
          * Le bpm est compris entre 30 et 240 (Arturia keystep)
          * */
         Main() : Module() {
-            //strcpy(this->name, "MAIN");
-            this->add({" TIME  ", 0, 0, 0, 0, 0});
+            this->add({" CONFIG", 0, 0, 0, 0, 0});
             this->add({" CALIBR", 128, 128, 0, 255, 16});
             this->add({" PLAY  ", 0, 0, 0, 7, 32});
             this->add({" LOAD  ", 0, 0, 0, 7, 48});

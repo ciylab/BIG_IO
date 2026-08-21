@@ -1,23 +1,23 @@
 /**
- * @file Play.h
- * @brief Fonctions pour la page des algos.
+ * @file Conf.h
+ * @brief Fonctions pour la page des input/output.
  */
-#ifndef PLAY_H
-#define PLAY_H
+#ifndef CONF_H
+#define CONF_H
 #include "Module.h"
 #include "Modules.h"
 
 extern Modules *myModules;
 extern char *names[];
 
-class Play: public Module {
+class Conf: public Module {
     public:
         /**
          * @brief Constructeur par défauti.
          *
          * Le bpm est compris entre 30 et 240 (Arturia keystep)
          * */
-        Play() : Module() {
+        Conf() : Module() {
             this->size = 0;
             this->add({" 1:    ", 0, 0, 0, 0, 0});
             this->add({" 2:    ", 0, 0, 1, 5, 8});
@@ -40,11 +40,8 @@ class Play: public Module {
             Display::newPage();
         }
         void r_handlePress() {
-            Module *m = myModules->modules[Display::cursor_num + TIME];
-            if(m->size == 0) {
-                return;
-            }
-            Modules::current = Display::cursor_num + TIME;
+            Modules::to_config = Display::cursor_num + TIME;
+            Modules::current = IO;
             Display::newPage();
         }
 };

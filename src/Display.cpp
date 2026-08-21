@@ -18,12 +18,11 @@ extern Modules *myModules;
 
 U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
-char Display::buffer[64];
+char Display::buffer[TEXT_SIZE];
 byte Display::charIndex = 0; /**<position dans le tampon */
 byte Display::endPosition = 63; /**<dernière position à afficher */
 byte Display::cursor_num = 0; /**<le premier item de la page */
 byte Display::cursor_pos = 0; /**< curseur en (0, 0). */
-//byte Display::current_page = 0; /**< on affiche la page principale. */
 
 int count = 0;
 
@@ -48,10 +47,10 @@ char *out[28] = {
 };
 
 /**
- * @brief Initialisation avec 64 espaces.
+ * @brief Initialisation avec TEXT_SIZE espaces.
  */
 Display::Display() {
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < TEXT_SIZE; i++) {
         screen[i] = ' ';
     }
     screen[63] = '\0';
@@ -116,9 +115,10 @@ void Display::display() {
 void Display::newPage() {
     sprintf(buffer, myModules->modules[Modules::current]->text);
 #ifdef DEBUG
-    for(int i = 0; i < 64; i++) {
+    for(int i = 0; i < TEXT_SIZE; i++) {
         Serial.print(buffer[i]);
     }
+    Serial.println();
 #endif
     charIndex = 0;
     endPosition = 63;

@@ -11,14 +11,14 @@
 
 class Module {
     public:
-        parameter parameters[9]; //!<Tableau des paramètres dont un caché.
+        parameter io[4]; //!<Tableau des paramètres input/output.
+        parameter parameters[8]; //!<Tableau des paramètres de jeu.
         int size; //!<Nombre de paramètres pour ce module.
         char name[8]; //!<Nom du module qui figure sur l'écran.
-        char text[64]; //!<Texte de la page du module.
-        bool hidden; //!<Indique si le paramètre caché est caché.
+        char text[TEXT_SIZE]; //!<Texte des paramètres du module.
         bool new_value; //!<Indique qu'on affiche avant modification.
         byte indexInList; //!<Rang dans la liste des modules pour l'import
-        Module();         
+        Module(); 
         /**
          * @brief Ajout d'un paramètre au module.
          *
@@ -26,7 +26,7 @@ class Module {
          */
         void add(parameter p);
         /**
-         * @brief Construit le texte destiné à être affiché.
+         * @brief Construit le texte destiné à être affiché pour les IO
          */
         void setMenu();
         /**

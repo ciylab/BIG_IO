@@ -8,17 +8,19 @@
 
 #include "Module.h"
 
+char *names[6] = {
+    "TIME  ", "BASS  ", "RANDOM", "REDIR ", "DRUM  ", "NONE"
+};
+
 /**
  * @brief Constructeur.
  */
 
 Module::Module() {
     size = 0;
-    indexInList = 0;
-    strcpy(this->name, "NONE");
+    indexInList = 5;
     new_value = false;
-    hidden = true;
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < TEXT_SIZE; i++) {
         text[i] = ' ';
     }
 }

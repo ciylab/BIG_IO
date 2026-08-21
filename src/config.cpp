@@ -4,7 +4,6 @@
  */
 
 #include "config.h"
-// TODO : mettre la suite des include dans config.h ? 
 
 void pin_init() {
     for(int i = 0; i < 5; i++) {

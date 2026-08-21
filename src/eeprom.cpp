@@ -12,6 +12,7 @@
 #define CONFIG_SIZE 24
 
 extern Modules *myModules;
+extern char *names[];
 
 void writeEEPROM(int deviceaddress, unsigned int eeaddress, byte data ) {
     Wire.beginTransmission(deviceaddress);
@@ -69,7 +70,7 @@ void save(int slot_num) {
     int offset = slot_num * CONFIG_SIZE;
     for(int i = 0; i < 8; i++) {
         writeEEPROM(eeprom, offset + 3 * i + 2, 
-            myModules->modules[i + 2]->indexInList);
+            myModules->modules[i + TIME]->indexInList);
     }
 }
 
@@ -83,20 +84,20 @@ void save(int slot_num) {
 void load(int slot_num) {
     byte action;
     int offsetInMemory = slot_num * CONFIG_SIZE;
-    byte offsetInPlayPage;
+    byte offsetInPage; // CONF and PLAY page
     for(int i = 0; i < 8; i++) {
         action = readEEPROM(eeprom, offsetInMemory + 3 * i + 2);
-        myModules->modules[i + 2] = Modules::getModule(action);
-        myModules->modules[i + 2]->indexInList = action;
-        myModules->modules[PLAY]->parameters[i].value = action;
-        myModules->modules[PLAY]->parameters[i].buffer = action;
-        offsetInPlayPage = 
-            myModules->modules[PLAY]->parameters[i].cursor_pos;
+        myModules->modules[i + TIME] = Modules::getModule(action);
+        myModules->modules[CONF]->parameters[i].value = action;
+        myModules->modules[CONF]->parameters[i].buffer = action;
+        offsetInPage = 
+            myModules->modules[CONF]->parameters[i].cursor_pos;
         for (int j = 0; j < 4; j++) {
-            myModules->modules[PLAY]->text[j + offsetInPlayPage + 3] = 
-                myModules->modules[i + 2]->name[j];
+            myModules->modules[CONF]->text[j + offsetInPage + 3] = 
+                names[action][j];
+            myModules->modules[PLAY]->text[j + offsetInPage + 3] = 
+                names[action][j];
         }
-
     }
 }
 
@@ -106,14 +107,14 @@ void load(int slot_num) {
 
 void write_factory() {
     algo t[8] = {
-        {0, 0, 1}, // TIME
-        {0, 0, 4}, // SIMPLE
-        {0, 0, 5}, // TRIG
-        {0, 0, 2}, // MINISQ
-        {0, 0, 6}, // RECORD
-        {0, 0, 3}, // RAND
-        {0, 0, 0}, // NONE
-        {0, 0, 5}  // TRIG
+        {0, 0, 0}, // TIME
+        {0, 0, 3}, // SIMPLE
+        {0, 0, 4}, // TRIG
+        {0, 0, 1}, // MINISQ
+        {0, 0, 5}, // RECORD
+        {0, 0, 2}, // RAND
+        {0, 0, 5}, // NONE
+        {0, 0, 4}  // TRIG
     };
     for(int i = 0; i < 8; i++) {
         writeEEPROM(eeprom, 3 * i, t[i].in);
@@ -128,14 +129,14 @@ void write_factory() {
 
 void write_simple() {
     algo t[8] = {
-        {0, 0, 1}, // clock
-        {0, 0, 4}, // canal 1 -> CV/GATE
-        {0, 0, 4}, // canal 2 -> CV/GATE
-        {0, 0, 4}, // canal 3 -> CV/GATE 
-        {0, 0, 4},  // changement de canal MIDI 4 -> 5
-        {0, 0, 0}, 
-        {0, 0, 0}, 
-        {0, 0, 0} 
+        {0, 0, 0}, // clock
+        {0, 0, 3}, // canal 1 -> CV/GATE
+        {0, 0, 3}, // canal 2 -> CV/GATE
+        {0, 0, 3}, // canal 3 -> CV/GATE 
+        {0, 0, 3},  // changement de canal MIDI 4 -> 5
+        {0, 0, 5}, 
+        {0, 0, 5}, 
+        {0, 0, 5} 
     };
     for(int i = 0; i < 8; i++) {
         writeEEPROM(eeprom, CONFIG_SIZE + 3 * i, t[i].in);
