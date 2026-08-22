@@ -23,6 +23,7 @@
 #include "modules/Miniseq.h"
 #include "modules/Random.h"
 #include "modules/Simple.h"
+#include "modules/Looper.h"
 
 byte Modules::current = MAIN;
 byte Modules::to_config = MAIN;
@@ -71,6 +72,9 @@ Module *Modules::getModule(byte num) {
             break;
         case 4:
             return new Trigger();
+            break;
+        case 5:
+            return new Looper();
             break;
         default:
             return new Module();
