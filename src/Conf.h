@@ -41,6 +41,7 @@ class Conf: public Module {
         }
         void r_handlePress() {
             Modules::to_config = Display::cursor_num + TIME;
+            myModules->modules[Modules::to_config]->new_value = false;
             Modules::current = IO;
             Display::newPage();
         }

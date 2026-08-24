@@ -8,8 +8,8 @@
 
 #include "Module.h"
 
-char *names[6] = {
-    "TIME  ", "BASS  ", "RANDOM", "REDIR ", "DRUM  ", "NONE"
+char *names[7] = {
+    "TIME  ", "BASS  ", "RANDOM", "REDIR ", "DRUM  ", "SEQ   ", "NONE"
 };
 
 /**
@@ -18,7 +18,7 @@ char *names[6] = {
 
 Module::Module() {
     size = 0;
-    indexInList = 5;
+    indexInList = 6;
     new_value = false;
     for (int i = 0; i < TEXT_SIZE; i++) {
         text[i] = ' ';

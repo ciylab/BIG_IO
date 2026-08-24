@@ -12,6 +12,15 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
+void Miniseq::panic() {
+    if(2 < this->io[1].value) {
+        for (byte pitch = 1; pitch <= 108; pitch++) {
+            MIDI.sendNoteOff(pitch, 0, this->io[1].value - 2);
+        }
+        this->io[1].value = 2;
+    }
+}
+
 void Miniseq::startPlay() {
     if(2 < this->io[1].value) {
         // pour prévenir le changement de note

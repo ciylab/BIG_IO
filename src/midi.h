@@ -8,4 +8,5 @@ void handleClock();
 void handleStart();
 void handleStop();
 void handleTime();
+void panic();
 #endif

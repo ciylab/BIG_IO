@@ -42,6 +42,7 @@ class Miniseq: public Module {
         void execute();
         void startPlay();
         void stopPlay();
+        void panic();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:

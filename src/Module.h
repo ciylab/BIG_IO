@@ -50,6 +50,10 @@ class Module {
          */
         virtual void handleStop() {}
         /**
+         * @brief Méthode MIDI spécifique au module.
+         */
+        virtual void panic() {}
+        /**
          * @brief Méthode de l'encodeur spécifique au module.
          */
         virtual void l_handlePress();

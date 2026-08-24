@@ -44,6 +44,7 @@ class Play: public Module {
             if(m->size == 0) {
                 return;
             }
+            m->new_value = false;
             Modules::current = Display::cursor_num + TIME;
             Display::newPage();
         }

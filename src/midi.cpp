@@ -19,7 +19,7 @@ extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
  */
 
 void handleNoteOn(byte channel, byte pitch, byte velocity) {
-    for(int i = 3; i < 6; i++) {
+    for(int i = TIME; i < 8 + TIME; i++) {
         myModules->modules[i]->handleNoteOn(
             channel, pitch, velocity);
     }
@@ -32,7 +32,7 @@ void handleNoteOn(byte channel, byte pitch, byte velocity) {
  */
 
 void handleNoteOff(byte channel, byte pitch, byte velocity) {
-    for(int i = 3; i < 6; i++) {
+    for(int i = TIME; i < 8 + TIME; i++) {
         myModules->modules[i]->handleNoteOff(
             channel, pitch, velocity);
     }
@@ -50,3 +50,8 @@ void handleStop() {
     myModules->modules[TIME]->handleStop();    
 }
 
+void panic() {
+    for(int i = TIME; i < 8 + TIME; i++) {
+        myModules->modules[i]->panic();
+    }
+}

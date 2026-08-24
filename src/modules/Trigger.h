@@ -60,6 +60,7 @@ class Trigger: public Module {
         void stopPlay();
         void l_handlePress();
         void r_handlePress();
+        void panic();
 };
 
 #endif

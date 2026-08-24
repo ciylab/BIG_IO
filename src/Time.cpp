@@ -61,7 +61,7 @@ void Time::r_handlePress() {
 }
 
 void Time::metronome() {
-    if(this->io[1].value == 2) {
+    if(this->io[1].value <= 2) {
         return;
     }
     byte modulo = 24 * (this->parameters[2].value + 3);
@@ -75,6 +75,14 @@ void Time::metronome() {
     } else if(Time::tick % 24 == 1) {
         MIDI.sendNoteOff(24, 0, channel);
     }
+}
+
+void Time::panic() {
+    if(2 < this->io[1].value) {
+        MIDI.sendNoteOff(48, 0, this->io[1].value - 2);
+        MIDI.sendNoteOff(24, 0, this->io[1].value - 2);
+    }
+    this->io[1].value = 2;
 }
 
 bool Time::play_rand() {

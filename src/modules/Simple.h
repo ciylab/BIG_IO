@@ -55,6 +55,7 @@ class Simple: public Module {
         }
         void r_handlePress();
         void l_handlePress();        
+        void panic();
 };
 
 #endif

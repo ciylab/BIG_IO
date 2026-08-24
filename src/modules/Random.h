@@ -65,6 +65,7 @@ class Random: public Module {
         bool isInRange(byte pitch);
         void startPlay();
         void stopPlay();
+        void panic();
         void execute();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {

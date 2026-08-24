@@ -162,3 +162,12 @@ void Random::execute() {
 void Random::r_handlePress() {
 }
 
+void Random::panic() {
+    if(2 < this->io[1].value) {
+        for (byte pitch = 1; pitch <= 108; pitch++) {
+            MIDI.sendNoteOff(pitch, 0, this->io[1].value - 2);
+        }
+        this->io[1].value = 2;
+    }
+}
+

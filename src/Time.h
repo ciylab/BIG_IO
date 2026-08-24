@@ -44,6 +44,7 @@ class Time: public Module {
         void handleClock();
         void handleStart();
         void handleStop();
+        void panic();
         void l_handlePress();
         void r_handlePress();
         void execute();
