@@ -5,6 +5,7 @@
 #include <MIDI.h>
 #include "../Time.h"
 #include "../Modules.h"
+#include "../midi.h"
 #include "../dac.h"
 #include "Simple.h"
 
@@ -18,9 +19,7 @@ bool Simple::isInRange(byte pitch) {
 
 void Simple::panic() {
     if(2 < this->io[1].value) {
-        for (byte pitch = 1; pitch <= 108; pitch++) {
-            MIDI.sendNoteOff(pitch, 0, this->io[1].value - 2);
-        }
+        clear_channel(this->io[1].value - 2);
         this->io[1].value = 2;
     }
 }
@@ -29,10 +28,10 @@ void Simple::handleNoteOn(byte channel, byte pitch, byte velocity) {
     if(!isInRange(pitch) || channel != this->io[0].value - 2) {
         return;
     }
+    // pour prévenir un éventuel changement de sortie midi
+    // en cours de jeu... limité à une note !!!
+    this->io[1].buffer = this->io[1].value;
     if(2 < this->io[1].value) {
-        // pour prévenir un éventuel changement de sortie midi
-        // en cours de jeu... limité à une note !!!
-        this->io[1].buffer = this->io[1].value;
         // pour prévenir un éventuel changement de transposition 
         // en cours de jeu.
         pitch_send[pitch] = pitch + this->parameters[2].value;

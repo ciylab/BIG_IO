@@ -55,3 +55,9 @@ void panic() {
         myModules->modules[i]->panic();
     }
 }
+
+void clear_channel(byte channel) {
+    for (byte pitch = 1; pitch <= 108; pitch++) {
+        MIDI.sendNoteOff(pitch, 0, channel);
+    }
+}

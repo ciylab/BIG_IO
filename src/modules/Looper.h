@@ -15,8 +15,12 @@ class Looper: public Module {
     private:
         const char *ONOFF[2] = {" OFF", " ON "};
         const char *MODE[2] =  {"STbyST", "RealTi"};
+        const char *PROGRESS[6] = {
+            "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
+        };
         unsigned long start;
         int index;
+        int stepIndex;
         byte pitchOn[6 * 16 * 4]; // 384
         byte pitchOff[6 * 16 * 4]; // 384
     public:
@@ -26,9 +30,10 @@ class Looper: public Module {
          */
         Looper() : Module() {
             this->add({" LENGTH", 0, 0, 0, 16, 0});
-            this->add({" MODE  ", 0, 0, 0, 16, 16});
+            this->add({" MODE  ", 1, 1, 0, 1, 16});
             this->add({" RECORD", 0, 0, 0, 1, 32});
-            this->add({" DELETE", 0, 0, 0, 1, 48});
+            this->add({" DELETE", 0, 0, 0, 0, 40});
+            this->add({" GATE  ", 1, 1, 1, 5, 48});
             this->setMenu();
             this->indexInList = 5;
             this->io[0] = {" IN    ", 2, 2, 2, 18, 0};
@@ -36,6 +41,8 @@ class Looper: public Module {
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
             this->io[3] = {" GT OUT", 2, 2, 1, 5, 48};
             this->del();
+            this->index = 0;
+            this->stepIndex = 0;
         }
         void execute();
         void startPlay();
@@ -47,6 +54,14 @@ class Looper: public Module {
                     break;
                 case 1:
                     sprintf(temp, " %.6s", MODE[val]);
+                    this->stepIndex = 0;
+                    break;
+                case 3:
+                    sprintf(temp, " ERASED");
+                    this->stepIndex = 0;
+                    break;
+                case 4:
+                    sprintf(temp, " %.5s ", PROGRESS[val]);
                     break;
                 default:
                     sprintf(temp, " %.4s  ", ONOFF[val]); 
@@ -63,6 +78,5 @@ class Looper: public Module {
 };
 
 #endif
-
 
 

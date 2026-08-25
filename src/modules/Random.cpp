@@ -5,6 +5,7 @@
 #include <MIDI.h>
 #include "../Time.h"
 #include "../Modules.h"
+#include "../midi.h"
 #include "../dac.h"
 #include "Random.h"
 #include "../encoder.h"
@@ -116,8 +117,8 @@ void Random::startPlay() {
         sequence[current_index] = getRandomNote(); // new random note
     }
     lastPitch = sequence[current_index];
+    this->io[1].buffer = this->io[1].value;
     if(2 < this->io[1].value) {
-        this->io[1].buffer = this->io[1].value;
         MIDI.sendNoteOn(lastPitch, 127, this->io[1].value - 2);
     }
     if(1 < this->io[3].value) {
@@ -134,7 +135,7 @@ void Random::stopPlay() {
     if(lastPitch == 255) {
         return;
     }
-    if(2 < this->io[1].value) {
+    if(2 < this->io[1].buffer) {
         MIDI.sendNoteOff(lastPitch, 0, this->io[1].buffer - 2);
     }
     if(1 < this->io[3].buffer) {
@@ -164,9 +165,7 @@ void Random::r_handlePress() {
 
 void Random::panic() {
     if(2 < this->io[1].value) {
-        for (byte pitch = 1; pitch <= 108; pitch++) {
-            MIDI.sendNoteOff(pitch, 0, this->io[1].value - 2);
-        }
+        clear_channel(this->io[1].value - 2);
         this->io[1].value = 2;
     }
 }

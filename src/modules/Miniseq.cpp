@@ -5,6 +5,7 @@
 #include <MIDI.h>
 #include "../Time.h"
 #include "../Modules.h"
+#include "../midi.h"
 #include "../dac.h"
 #include "../encoder.h"
 #include "Miniseq.h"
@@ -14,22 +15,20 @@ extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
 void Miniseq::panic() {
     if(2 < this->io[1].value) {
-        for (byte pitch = 1; pitch <= 108; pitch++) {
-            MIDI.sendNoteOff(pitch, 0, this->io[1].value - 2);
-        }
+        clear_channel(this->io[1].value - 2);
         this->io[1].value = 2;
     }
 }
 
 void Miniseq::startPlay() {
+    // pour prévenir l'absence de note off
+    this->io[1].buffer = this->io[1].value;
     if(2 < this->io[1].value) {
         // pour prévenir le changement de note
         this->parameters[2 + noteIndex].buffer =
             this->parameters[2 + noteIndex].value;
-        // pour prévenir l'absence de note off
-        this->io[1].buffer = this->io[1].value;
         MIDI.sendNoteOn(this->parameters[2 + noteIndex].value, 
-                127, this->io[1].buffer - 2);
+                127, this->io[1].value - 2);
     }
     if(1 < this->io[3].value) {
         this->io[3].buffer = this->io[3].value;
@@ -48,6 +47,7 @@ void Miniseq::stopPlay() {
     }
     if(1 < this->io[3].buffer) {
         digitalWrite(pins[this->io[3].buffer - 1], HIGH);
+        this->io[3].buffer = this->io[3].value;
     }            
     noteIndex = (noteIndex + 1) % this->parameters[0].value; 
 }

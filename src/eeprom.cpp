@@ -8,6 +8,7 @@
 #include "eeprom.h"
 #include "Modules.h"
 #include "midi.h"
+#include "Time.h"
 
 #define eeprom 0x50
 /** 
@@ -56,22 +57,24 @@ void updateEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
 }
 
 /**
+ * @brief Fonction d'initialisation de l'eeprom.
+ */
+
+void init_eeprom() {
+    write_factory(); // FACT
+    write_simple();  // SLOT A
+    for(int i = 2; i < 8; i++) {
+        write_null(i); // SLOT B to G
+    }
+}
+
+/**
  * @brief Fonction d'initialisation.
  */
 
 void init_from_eeprom() {
     Wire.begin();
-    /**
-     * code pour initialiser l'EEPROM :
-     */
-    /*
-    write_factory();
-    write_simple();
-
-    for(int i = 2; i < 8; i++) {
-        write_null(i);
-    }
-    */
+    // init_eeprom();
     load(0); // load from factory preset FACT.
 }
 
@@ -122,13 +125,10 @@ void save_module(int offset, byte module_num) {
 
 void free_memory() {
     // very important !!!!
-    if(other_config) {
-        for (byte module_num = 0; module_num < 8; module_num++) {
-            delete myModules->modules[TIME + module_num];
-            myModules->modules[TIME + module_num] = NULL;
-        }
+    for (byte module_num = 0; module_num < 8; module_num++) {
+        delete myModules->modules[TIME + module_num];
+        myModules->modules[TIME + module_num] = NULL;
     }
-    other_config = true;
 }
 
 /**
@@ -139,16 +139,20 @@ void free_memory() {
  */
 
 void load(int slot_num) {    
+    // On envoie plus rien sur les gates
+    pin_init();
     // Le byte à partir duquel on écrit.
     int offset = 8 * slot_num * CONFIG_SIZE;
-    free_memory();
+    Time::tick = 0;
+    if(other_config) {
+        // MIDI panic !!!
+        panic();
+        free_memory();
+        other_config = true;
+    }
     for(int i = 0; i < 8; i++) {
         load_module(offset + i * CONFIG_SIZE, i);
     }
-    // On envoie plus rien sur les gates
-    pin_init();
-    // MIDI panic !!!
-    panic();
 }
 
 /**
@@ -226,7 +230,6 @@ void write_simple() {
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
         updateEEPROM(eeprom, offset++, data[i]);
     }
-
 }
 
 /**

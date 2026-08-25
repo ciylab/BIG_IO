@@ -6,6 +6,7 @@
 #include "../Time.h"
 #include "Trigger.h"
 #include "../Modules.h"
+#include "../midi.h"
 #include "../encoder.h"
 
 using namespace MIDI_NAMESPACE;
@@ -13,9 +14,7 @@ extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
 void Trigger::panic() {
     if(2 < this->io[1].value) {
-        for (byte pitch = 1; pitch <= 108; pitch++) {
-            MIDI.sendNoteOff(pitch, 0, this->io[1].value - 2);
-        }
+        clear_channel(this->io[1].value - 2);
         this->io[1].value = 2;        
     }
 }
@@ -37,10 +36,10 @@ bool Trigger::isPulse() {
 }
 
 void Trigger::startPlay() {
+    this->io[1].buffer = this->io[1].value;
     if(2 < this->io[1].value) {
-        this->io[1].buffer = this->io[1].value;
         parameters[6].buffer = parameters[6].value;
-        MIDI.sendNoteOn(parameters[6].buffer, 127, this->io[1].buffer - 2);
+        MIDI.sendNoteOn(parameters[6].buffer, 127, this->io[1].value - 2);
     }
     if(1 < this->io[3].value) {
         digitalWrite(pins[this->io[3].value - 1], LOW);

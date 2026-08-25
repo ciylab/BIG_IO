@@ -9,4 +9,5 @@ void handleStart();
 void handleStop();
 void handleTime();
 void panic();
+void clear_channel(byte channel);
 #endif

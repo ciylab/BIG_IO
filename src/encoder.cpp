@@ -39,13 +39,11 @@ void l_handleRotate(int8_t rotation) {
         // On modifie les valeurs du module to_config mais
         // on est sur le module IO !
         if(myModules->modules[Modules::to_config]->new_value) {
-            Serial.println("new value");
             Display::no_show_value(m->parameters[Display::cursor_num]);
             myModules->modules[Modules::to_config]->new_value = false;
         }
     } else {
         if(m->new_value) {
-            Serial.println("new value");
             Display::no_show_value(m->parameters[Display::cursor_num]);
             m->new_value = false;
         }
@@ -53,7 +51,7 @@ void l_handleRotate(int8_t rotation) {
     byte index = Display::cursor_num + m->size;
     if(0 < rotation) {
         index++;
-    } else {
+    } else if(rotation < 0) {
         index--;
     }
     Display::cursor_num = index % m->size;
@@ -102,26 +100,12 @@ void change_value(int8_t rotation) {
         Display::show_value(p->value);
         return;
     }
-    Serial.print("max : ");
-    Serial.println(p->max);
-    Serial.print("avant : ");
-    Serial.println(p->value);
     if(0 < rotation && p->value < p->max) {
         p->value++;
     } else if(rotation < 0 && p->min < p->value) {
         p->value--;
     } else {
         return; // nothing to do
-    }
-    Serial.print("après : ");
-    Serial.println(p->value);
-    if(Modules::current == PLAY) {
-        // TODO : changer le texte de la page ou
-        // changer le texte de l'action et changer la page 
-        // une fois sélectionnée
-        //myModules->modules[Display::cursor_num + 2] = 
-        //    Modules::getModule(p->value);
-        //Serial.println(p->value);
     }
     Display::show_value(p->value);
     // Ici on agit immédiatement = temps réel.
