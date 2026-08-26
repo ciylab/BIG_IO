@@ -21,6 +21,11 @@
  */
 #define CONFIG_SIZE 13
 
+/**
+ * @brief for Serial output during test.
+ */
+#define SEP " "
+
 extern Modules *myModules;
 extern char *names[];
 
@@ -116,7 +121,7 @@ void save_module(int offset, byte module_num) {
     for(int i = m->size; i < 8; i++) {
         updateEEPROM(eeprom, offset++, 0);
     }
-    serial_data(module_num);
+    read_memory(module_num);
 }
 
 /**
@@ -197,9 +202,9 @@ void write_factory() {
     byte data[8 * CONFIG_SIZE] = {
         0, 2, 3, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
         4, 2, 4, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
-        1, 2, 5, 1, 3,  3,   1, 24, 28, 31, 35, 38, 41, // BASS 
-        5, 3, 6, 2, 4,  4,   1,  0,  0,  0,  0,  0,  0, // SEQ 
-        2, 2, 7, 3, 5,  4,   1,  0,  0,  0, 24, 72,  0, // RAND
+        1, 2, 5, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
+        5, 3, 6, 2, 4,  4,   1,  0,  0,  2,  0,  0,  0, // SEQ 
+        2, 2, 7, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
@@ -248,10 +253,37 @@ void write_null(int id) {
 }
 
 /**
- * @brief Print serial preset to test.
+ * @brief Serial print formatted byte with 3 char.
  */
+void print_format(byte b) {
+    if(b < 10) {
+        Serial.print("  ");
+    } else if (b < 100) {
+        Serial.print(" ");
+    }
+    Serial.print(b);
+}
 
-void serial_data(byte module_num) {
+/**
+ * @brief Read data from eeprom.
+ */
+void read_eeprom(int begin, int length) {
+    byte b;
+    for(int i = 0; i < length; i++) {
+        b = readEEPROM(eeprom, begin + i);
+        print_format(b);
+        Serial.print(SEP);
+        if((i + 1) % CONFIG_SIZE == 0) { 
+            Serial.println();
+        }
+    }
+    Serial.println();
+}
+
+/**
+ * @brief Read data from memory.
+ */
+void read_memory(byte module_num) {
     Module *m = myModules->modules[TIME + module_num];
     Serial.print(m->indexInList);
     Serial.print(", ");

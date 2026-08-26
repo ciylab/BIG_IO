@@ -1,91 +1,70 @@
-//
-//    FILE: I2C_small_eeprom_test.ino
-//  AUTHOR: Tyler Freeman
-// VERSION: 0.1.2
-// PURPOSE: show/test I2C_EEPROM library with small EEPROMS
-//     URL: https://github.com/RobTillaart/I2C_EEPROM
-// HISTORY
-// 0.1.0    2014-05-xx initial version
-// 0.1.1    2020-07-14 fix #1 compile for ESP; fix author
-// 0.1.2    2025-08-27 add print filename and version number of library
-
-#include <U8x8lib.h>
 #include <Wire.h>
-#include <I2C_eeprom.h>
 
-#define TEST_ADDR 16
-#define DEVICEADDRESS 0x50 
+#define eeprom 0x50
+#define CONFIG_SIZE 13
 
-// #define SERIAL_DEBUG SerialUSB
-#define SERIAL_DEBUG Serial
-U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
-I2C_eeprom eeprom(DEVICEADDRESS, I2C_DEVICESIZE_24LC256);
-
-void readAndWriteVar() {
-    SERIAL_DEBUG.println("----------------------------------------------");
-    SERIAL_DEBUG.print("SINGLE BYTE: writing and retreiving EEPROM on I2C at address ");
-    SERIAL_DEBUG.println(DEVICEADDRESS);
-    SERIAL_DEBUG.println("----------------------------------------------");
-
-    byte curval = eeprom.readByte(TEST_ADDR);
-
-    SERIAL_DEBUG.print("last value: ");
-    SERIAL_DEBUG.println(curval);
-
-
-    curval += 1;
-    eeprom.writeByte(TEST_ADDR, curval);
-
-    SERIAL_DEBUG.print("updating to: ");
-    SERIAL_DEBUG.println(curval);
-    delay(10);
-
-    curval = eeprom.readByte(TEST_ADDR);
-    SERIAL_DEBUG.print("new value: ");
-    SERIAL_DEBUG.println(curval);
+void writeEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
+    Wire.beginTransmission(deviceaddress);
+    Wire.write((int)(eeaddress >> 8));      //writes the MSB
+    Wire.write((int)(eeaddress & 0xFF));    //writes the LSB
+    Wire.write(data);
+    Wire.endTransmission();
+    delay(5); // important!
 }
 
-
-void test() {
-    int val;
-    int offset = 128;
-    eeprom.setBlock(offset, 1, 16);
-    delay(100);
-    for (int i = 0; i < 16; i++) {
-        val = eeprom.readByte(offset + i);
-        Serial.println(val);
+byte readEEPROM(int deviceaddress, unsigned int eeaddress) {
+    byte rdata = 0xFF;
+    Wire.beginTransmission(deviceaddress);
+    Wire.write((int)(eeaddress >> 8));      //writes the MSB
+    Wire.write((int)(eeaddress & 0xFF));    //writes the LSB
+    Wire.endTransmission();
+    Wire.requestFrom(deviceaddress,1);
+    if (Wire.available()) { 
+        rdata = Wire.read();
     }
-
+    return rdata;
 }
 
-
-void setup()
-{
-  SERIAL_DEBUG.begin(57600);
-  while (!SERIAL_DEBUG);  //  wait for SERIAL_DEBUG port to connect. Needed for Leonardo only
-  SERIAL_DEBUG.println();
-  SERIAL_DEBUG.println(__FILE__);
-  SERIAL_DEBUG.print("I2C_EEPROM_VERSION: ");
-  SERIAL_DEBUG.println(I2C_EEPROM_VERSION);
-  SERIAL_DEBUG.println();
-
-  SERIAL_DEBUG.println("IT IS BEGINNING");
-  SERIAL_DEBUG.println("WAIT FOR IT");
-  u8x8.begin();
-  Wire.begin();
-  u8x8.setFont(u8x8_font_7x14_1x2_r);
-  u8x8.drawString(0,0,"Hello HEX!");
-  eeprom.begin();
-  test();
-  //readAndWriteVar();
-  SERIAL_DEBUG.println("\nDone...");
-
+void updateEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
+    byte temp;
+    temp = readEEPROM(deviceaddress, eeaddress);
+    if (temp != data) {
+        writeEEPROM(deviceaddress, eeaddress, data);
+    }
 }
 
+void print_format(byte b) {
+    if(b < 10) {
+        Serial.print("   ");
+    } else if (b < 100) {
+        Serial.print("  ");
+    } else {
+        Serial.print(" ");
+    }
+    Serial.print(b);
+}
 
-void loop()
-{
-  //  Nothing to do during loop
+void read_eeprom_to(int length) {
+    byte b;
+    for(int i = 0; i < length; i++) {
+        b = readEEPROM(eeprom, i);
+        print_format(b);
+        if((i + 1) % CONFIG_SIZE == 0) { 
+            Serial.println();
+        }
+    }
+    Serial.println();
+}
+
+void setup() {
+    Serial.begin(9600);
+    Wire.begin();
+    delay(5000);
+    read_eeprom_to(8 * CONFIG_SIZE);
+}
+
+void loop() {
+    //  Nothing to do during loop
 }
 
 

@@ -13,5 +13,6 @@ void write_simple();
 void write_null(int i);
 void load(int slot_num);
 void load_module(int offset, byte module_num);
-void serial_data(byte module_num);
+void read_memory(byte module_num);
+void read_eeprom(int begin, int length); 
 #endif

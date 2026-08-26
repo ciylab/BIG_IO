@@ -33,7 +33,7 @@ class Time: public Module {
             this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 0});
             this->add({" SPEED ", 3, 3, 0, 6, 16});
             this->add({" METER ", 1, 1, 0, 2, 32});
-            this->add({" RAND  ", 0, 0, 0, 5, 48});
+            this->add({" CHAOS ", 0, 0, 0, 5, 48});
             this->setMenu();
             this->indexInList = 0;
             this->io[0] = {" IN    ", 2, 2, 0, 2, 0};

@@ -65,7 +65,13 @@ void Looper::l_handlePress() {
 }
 
 void Looper::r_handlePress() {
-    if(Display::cursor_num == 3) {
+    if(Display::cursor_num == 2) {
+        if(this->parameters[2].value == 1) {
+            r_handleRotate(-1);
+        } else {
+            r_handleRotate(1);
+        }
+    } else if(Display::cursor_num == 3) {
         del();
         r_handleRotate(0);
     }
@@ -98,7 +104,8 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
     if(!this->parameters[1].value) {
         return;
     }
-    if(this->parameters[2].buffer) { // record on
+    if(this->parameters[2].buffer && // record on
+            this->parameters[1].value) { // RT
         pitchOff[Time::tick % (6 * this->parameters[0].value)] = pitch;
         this->parameters[2].buffer = 0;
     }

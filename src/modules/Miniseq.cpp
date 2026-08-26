@@ -21,6 +21,9 @@ void Miniseq::panic() {
 }
 
 void Miniseq::startPlay() {
+    if(count != 0) {
+        return;
+    }
     // pour prévenir l'absence de note off
     this->io[1].buffer = this->io[1].value;
     if(2 < this->io[1].value) {
@@ -30,8 +33,8 @@ void Miniseq::startPlay() {
         MIDI.sendNoteOn(this->parameters[2 + noteIndex].value, 
                 127, this->io[1].value - 2);
     }
+    this->io[3].buffer = this->io[3].value;
     if(1 < this->io[3].value) {
-        this->io[3].buffer = this->io[3].value;
         digitalWrite(pins[this->io[3].value - 1], LOW);
     }
     if(this->io[2].value != 0) {        
@@ -41,15 +44,17 @@ void Miniseq::startPlay() {
 }
 
 void Miniseq::stopPlay() {
-    if(2 < this->io[1].buffer) {
-        MIDI.sendNoteOff(this->parameters[2 + noteIndex].buffer, 
-                0, this->io[1].buffer - 2);
+    if(count == 0) {
+        if(2 < this->io[1].buffer) {
+            MIDI.sendNoteOff(this->parameters[2 + noteIndex].buffer, 
+                    0, this->io[1].buffer - 2);
+        }
+        if(1 < this->io[3].buffer) {
+            digitalWrite(pins[this->io[3].buffer - 1], HIGH);
+        }            
+        noteIndex = (noteIndex + 1) % this->parameters[0].value; 
     }
-    if(1 < this->io[3].buffer) {
-        digitalWrite(pins[this->io[3].buffer - 1], HIGH);
-        this->io[3].buffer = this->io[3].value;
-    }            
-    noteIndex = (noteIndex + 1) % this->parameters[0].value; 
+    count = (count + 1) % this->parameters[7].value;
 }
 
 void Miniseq::execute() {

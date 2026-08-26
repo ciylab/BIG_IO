@@ -31,6 +31,7 @@ class Random: public Module {
         static byte count[NUM_SCALE][12];  
         static byte pitchs[NUM_SCALE][12]; // i-th pitch in C
         static byte scales[NUM_SCALE][12];
+        static int shift[5];
         byte sequence[R_SEQ_SIZE];
         byte lastPitch;
     public:
@@ -46,6 +47,7 @@ class Random: public Module {
             this->add({" SCALE ", 0, 0, 0, 3, 16});
             this->add({" KEY   ", 0, 0, 0, 11, 24});
             this->add({" FREEZE", 0, 0, 0, 1, 32});
+            this->add({" HUMAN ", 0, 0, 0, 5, 40});
             this->add({" MIN   ", 24, 24, 0, 108, 48});
             this->add({" MAX   ", 72, 72, 0, 108, 56});
             this->setMenu();
@@ -73,7 +75,7 @@ class Random: public Module {
                     sprintf(temp, " %2d    ", val);
                     break;
                 case 1:
-                    sprintf(temp, " %s ", PROGRESS[val]);
+                    sprintf(temp, " %s", PROGRESS[val]);
                     break;
                 case 2:
                     sprintf(temp, " %.6s", SCALES[val]);
@@ -84,6 +86,9 @@ class Random: public Module {
                 case 4:
                     sprintf(temp, " %.3s   ", ONOFF[val]);
                     break;                
+                case 5:
+                    sprintf(temp, " %s", PROGRESS[val]);
+                    break; 
                 default:
                     sprintf(temp, " %.2s%d  ", 
                             notes[val % 12], val / 12);

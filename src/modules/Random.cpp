@@ -45,6 +45,11 @@ byte Random::pitchs[NUM_SCALE][12] = { // i-th pitch in C
 };
 
 /**
+ * @brief Les décalages aléatoires possibles (octave et quinte).
+ */
+int Random::shift[5] = {-12, -5, 0, 7, 12};
+
+/**
  * @brief Retourne un nombre de notes.
  *
  * Pour une gamme donnée et une hauteur donnée, retourne
@@ -91,14 +96,14 @@ byte Random::rand_note(byte min, byte max, byte tone, byte scale) {
  *
  */
 byte Random::getRandomNote() {
-    return rand_note(parameters[5].value, // min 
-            parameters[6].value, // max 
+    return rand_note(parameters[6].value, // min 
+            parameters[7].value, // max 
             parameters[3].value, // tone
             parameters[2].value); // scale
 }
 
 bool Random::isInRange(byte pitch) {
-    return parameters[5].value <= pitch && pitch < parameters[6].value;
+    return parameters[6].value <= pitch && pitch < parameters[7].value;
 }
 
 void Random::l_handlePress() {
@@ -107,8 +112,12 @@ void Random::l_handlePress() {
 }
 
 void Random::startPlay() {
-    current_index = Time::tick / 6 % this->parameters[0].value;
+    int decay = 0;
+    current_index = (Time::tick / 6) % this->parameters[0].value;
     if(this->parameters[4].value) { // frozen
+        if(random(0, 5) < this->parameters[5].value) {
+            decay = shift[random(0, 5)];
+        }
         if(!isInRange(sequence[current_index])) {
             lastPitch = 255;
             return;
@@ -117,6 +126,9 @@ void Random::startPlay() {
         sequence[current_index] = getRandomNote(); // new random note
     }
     lastPitch = sequence[current_index];
+    if(0 < decay + lastPitch) {
+        lastPitch += decay;
+    }
     this->io[1].buffer = this->io[1].value;
     if(2 < this->io[1].value) {
         MIDI.sendNoteOn(lastPitch, 127, this->io[1].value - 2);
@@ -147,7 +159,7 @@ void Random::execute() {
     if(this->parameters[0].value == 0) {
         return;
     }
-    if(this->parameters[6].value <= this->parameters[5].value ) {
+    if(this->parameters[7].value <= this->parameters[6].value ) {
         return;
     }
     if(Time::newTick) {
@@ -161,6 +173,13 @@ void Random::execute() {
 }
 
 void Random::r_handlePress() {
+    if(Display::cursor_num == 4) {
+        if(this->parameters[4].value == 1) {
+            r_handleRotate(-1);
+        } else {
+            r_handleRotate(1);
+        }
+    }
 }
 
 void Random::panic() {
