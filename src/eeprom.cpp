@@ -1,8 +1,5 @@
 /**
  * @file eeprom.cpp
- * @brief Définition des fonctions de gestion de la mémoire.
- *
- * Il faut attendre 5 millisecondes par transmission pour écriture.
  */
 #include <Wire.h>
 #include "eeprom.h"
@@ -12,12 +9,11 @@
 
 #define eeprom 0x50
 /** 
- * @brief La taille en byte du nombre de paramètres à sauvegarder 
- * par module.
+ * @brief byte size for one module 
  *
- * - l'index pour caractériser le type de module
- * - les 4 paramètres IN/OUT
- * - les 8 paramètres 
+ * - module type
+ * - 4 parameters IN/OUT
+ * - 8 parameters (max used on a page)
  */
 #define CONFIG_SIZE 13
 
@@ -26,9 +22,19 @@
  */
 #define SEP " "
 
+/**
+ * @see BIG_IO.ino
+ */
 extern Modules *myModules;
-extern char *names[];
 
+/**
+ * @see Modules.cpp
+ */
+extern char *names[7];
+
+/**
+ * @brief basic write
+ */
 void writeEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
     Wire.beginTransmission(deviceaddress);
     Wire.write((int)(eeaddress >> 8));      //writes the MSB
@@ -38,6 +44,9 @@ void writeEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
     delay(5); // important!
 }
 
+/**
+ * @brief basic read
+ */
 byte readEEPROM(int deviceaddress, unsigned int eeaddress) {
     byte rdata = 0xFF;
     Wire.beginTransmission(deviceaddress);
@@ -51,6 +60,11 @@ byte readEEPROM(int deviceaddress, unsigned int eeaddress) {
     return rdata;
 }
 
+/**
+ * @brief basic update
+ *
+ * Better than write.
+ */
 void updateEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
     byte temp;
     temp = readEEPROM(deviceaddress, eeaddress);
@@ -60,9 +74,8 @@ void updateEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
 }
 
 /**
- * @brief Fonction d'initialisation de l'eeprom.
+ * @brief Factory init
  */
-
 void init_eeprom() {
     write_factory(); // FACT
     write_simple();  // SLOT A
@@ -71,22 +84,11 @@ void init_eeprom() {
     }
 }
 
-/**
- * @brief Fonction d'initialisation.
- */
-
 void init_from_eeprom() {
     Wire.begin();
     // init_eeprom();
     load(0); // load from factory preset FACT.
 }
-
-/**
- * @brief Cette fonction enregistre en eeprom la configuration
- * courante.
- *
- * @param slot_num le rang dans la mémoire.
- */
 
 void save(int slot_num) {
     if(slot_num == 0) {
@@ -99,13 +101,6 @@ void save(int slot_num) {
     }
 }
 
-/**
- * @brief Cette fonction enregistre le i-ième module courant
- * à partir de l'offset du slot.
- *
- * @param offset numéro du premier byte
- * @param module_num numéro du module de 0 à 7
- */
 void save_module(int offset, byte module_num) {
     Module *m = myModules->modules[TIME + module_num];
     byte temp;
@@ -122,25 +117,6 @@ void save_module(int offset, byte module_num) {
     read_memory(module_num);
 }
 
-/**
- * @brief Pour libérer la mémoire.
- */
-
-void free_memory() {
-    // very important !!!!
-    for (byte module_num = 0; module_num < 8; module_num++) {
-        delete myModules->modules[TIME + module_num];
-        myModules->modules[TIME + module_num] = NULL;
-    }
-}
-
-/**
- * @brief Cette fonction remplace la configuration courante par
- * des données en eeprom.
- *
- * @param slot_num le rang dans la mémoire.
- */
-
 void load(int slot_num) {    
     // On envoie plus rien sur les gates
     pin_init();
@@ -152,13 +128,6 @@ void load(int slot_num) {
     }
 }
 
-/**
- * @brief Cette fonction charge le i-ième module courant
- * à partir de l'offset du slot.
- *
- * @param offset numéro du premier byte
- * @param module_num numéro du module de 0 à 7
- */
 void load_module_from_eeprom(int offset, byte module_num) {
     byte index = readEEPROM(eeprom, offset++);
     myModules->load_module_from_memory(index, module_num);
@@ -172,10 +141,6 @@ void load_module_from_eeprom(int offset, byte module_num) {
             readEEPROM(eeprom, offset++);
     }
 }
-
-/**
- * @brief Write default values (factory preset) in the first slot.
- */
 
 void write_factory() {
     byte data[8 * CONFIG_SIZE] = {
@@ -193,10 +158,6 @@ void write_factory() {
         updateEEPROM(eeprom, i, data[i]);
     }
 }
-
-/**
- * @brief Write simple the second slot.
- */
 
 void write_simple() {    
     byte data[8 * CONFIG_SIZE] = {
@@ -216,12 +177,8 @@ void write_simple() {
     }
 }
 
-/**
- * @brief Write null values (factory preset) in the other slot.
- */
-
-void write_null(int id) {
-    int offset = 8 * CONFIG_SIZE * id;
+void write_null(int slot_num) {
+    int offset = 8 * CONFIG_SIZE * slot_num;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
         if(i % CONFIG_SIZE == 0) {
             updateEEPROM(eeprom, offset++, 6);
@@ -232,7 +189,7 @@ void write_null(int id) {
 }
 
 /**
- * @brief Serial print formatted byte with 3 char.
+ * @brief Serial print formatted byte with 3 chars only for test.
  */
 void print_format(byte b) {
     if(b < 10) {
@@ -243,9 +200,6 @@ void print_format(byte b) {
     Serial.print(b);
 }
 
-/**
- * @brief Read data from eeprom.
- */
 void read_eeprom(int begin, int length) {
     byte b;
     for(int i = 0; i < length; i++) {
@@ -259,9 +213,6 @@ void read_eeprom(int begin, int length) {
     Serial.println();
 }
 
-/**
- * @brief Read data from memory.
- */
 void read_memory(byte module_num) {
     Module *m = myModules->modules[TIME + module_num];
     Serial.print(m->indexInList);

@@ -8,23 +8,38 @@
 #include "src/eeprom.h"
 #include "src/midi.h"
 #include "src/Modules.h"
-#include "src/Main.h"
-#include "src/Time.h"
-#include "src/Play.h"
 
+/**
+ * Turn to change cursor position and press to go back in menus.
+ */
 Versatile_RotaryEncoder *left;
+/**
+ * Turn to change value and press to vamidate some choice.
+ */
 Versatile_RotaryEncoder *right;
-MIDI_CREATE_DEFAULT_INSTANCE();
-
-Display oled; /**<l'écran */
+/**
+ * Display with empty text.
+ */
+Display oled;
+/**
+ * A shell for the modules.
+ * - Main page
+ * - Conf page
+ * - io page
+ * - Play page
+ */
 Modules *myModules = new Modules();
+
+MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
     Serial.begin(9600);
-    pinMode(CLOCK_IN, INPUT);
-    pin_init();
-    oled.begin();
-    pin_test();
+    pin_init();   // init all pins
+    pin_test();   // string lights
+    oled.begin(); // font and welcome page
+    /*
+     * Midi part.
+     */
     MIDI.begin(MIDI_CHANNEL_OMNI);
     MIDI.turnThruOff();
     MIDI.setHandleNoteOn(handleNoteOn);
@@ -32,25 +47,39 @@ void setup() {
     MIDI.setHandleClock(handleClock);
     MIDI.setHandleStart(handleStart);
     MIDI.setHandleStop(handleStop);
-    pinMode(PA0, INPUT_PULLUP);
-    pinMode(PA1, INPUT_PULLUP);
-    pinMode(PA2, INPUT_PULLUP);
-    pinMode(PB0, INPUT_PULLUP);
-    pinMode(PB1, INPUT_PULLUP);
-    pinMode(PB10, INPUT_PULLUP);
+    /*
+     * left encoder
+     */
     left = new Versatile_RotaryEncoder(PB0, PB1, PB10);
     left->setHandleRotate(l_handleRotate);
     left->setHandlePress(l_handlePress);
     left->setHandleLongPress(l_handleLongPress);
+    /*
+     * right encoder
+     */
     right = new Versatile_RotaryEncoder(PA1, PA0, PA2);
     right->setHandleRotate(r_handleRotate);
     right->setHandlePress(r_handlePress);
+    /*
+     * load data from eeprom
+     */
     init_from_eeprom();
+    /*
+     * SPI dac
+     */
     init_dac();
-    delay(1000);
-    oled.newPage();
+    delay(1000);    // to have time to read the welcome page
+    oled.newPage(); //
 }
 
+/**
+ * Main loop :
+ *
+ * 1. read midi
+ * 2. read encoders
+ * 3. write display
+ * 4. execute each module
+ */
 void loop () {
     MIDI.read();
     left->ReadEncoder();
