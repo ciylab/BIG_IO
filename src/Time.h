@@ -13,7 +13,8 @@ class Time: public Module {
         const char *SPEED[7] = {"/4", "/3", "/2", "x1", "x2", "x3", "x4"};
         const char *METER[3] = {"3/4", "4/4", "5/4"};
         const char *PROGRESS[6] = {
-            "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
+            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
+            "\'\'\'\' ", "\'\'\'\'\'"
         };
         
    public:

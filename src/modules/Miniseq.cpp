@@ -13,13 +13,6 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
-void Miniseq::panic() {
-    if(2 < this->io[1].value) {
-        clear_channel(this->io[1].value - 2);
-        this->io[1].value = 2;
-    }
-}
-
 void Miniseq::startPlay() {
     if(count != 0) {
         return;

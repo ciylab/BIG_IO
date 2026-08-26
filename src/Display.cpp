@@ -13,6 +13,7 @@
 #include "Display.h"
 #include "config.h"
 #include "Modules.h"
+#include "my_u8x8_font_7x14_1x2_r.h"
 
 extern Modules *myModules;
 
@@ -54,7 +55,6 @@ Display::Display() {
         screen[i] = ' ';
     }
     screen[63] = '\0';
-    u8x8.setFont(u8x8_font_7x14_1x2_r);
 }
 
 /**
@@ -62,6 +62,7 @@ Display::Display() {
  */
 void Display::begin() {
     u8x8.begin();
+    u8x8.setFont(my_u8x8_font_7x14_1x2_r);
     welcome();
 }
     

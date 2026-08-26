@@ -22,6 +22,7 @@ class Modules {
         void execute();
         static int getVoltage(byte pitch);
         static Module *getModule(byte num);
+        void load_module_from_memory(byte index, byte module_num);
 };
 
 #endif

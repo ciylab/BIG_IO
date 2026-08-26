@@ -16,7 +16,8 @@ class Looper: public Module {
         const char *ONOFF[2] = {" OFF", " ON "};
         const char *MODE[2] =  {"STbyST", "RealTi"};
         const char *PROGRESS[6] = {
-            "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
+            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
+            "\'\'\'\' ", "\'\'\'\'\'"
         };
         unsigned long start;
         int index;
@@ -74,7 +75,6 @@ class Looper: public Module {
         void del();
         void handleNoteOn(byte channel, byte pitch, byte velocity);
         void handleNoteOff(byte channel, byte pitch, byte velocity);
-        void panic();
 };
 
 #endif

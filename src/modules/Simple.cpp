@@ -17,13 +17,6 @@ bool Simple::isInRange(byte pitch) {
         pitch < this->parameters[1].value;
 }
 
-void Simple::panic() {
-    if(2 < this->io[1].value) {
-        clear_channel(this->io[1].value - 2);
-        this->io[1].value = 2;
-    }
-}
-
 void Simple::handleNoteOn(byte channel, byte pitch, byte velocity) {
     if(!isInRange(pitch) || channel != this->io[0].value - 2) {
         return;

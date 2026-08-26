@@ -39,6 +39,9 @@ Modules::Modules() {
     this->modules[1] = new Conf();
     this->modules[2] = new io();
     this->modules[3] = new Play();
+    for (int i = TIME; i < TIME + 8; i++) {
+        this->modules[i] = NULL;
+    }
 }
 
 /**
@@ -78,6 +81,39 @@ Module *Modules::getModule(byte num) {
             break;
         default:
             return new Module();
+    }
+}
+
+void Modules::load_module_from_memory(byte index, byte module_num) {
+    if(this->modules[TIME + module_num] != NULL) {
+        this->modules[TIME + module_num]->panic();
+        byte pin_num = this->modules[TIME + module_num]->io[3].value;
+        switch(pin_num) {
+            case 0:
+                digitalWrite(pins[0], HIGH);
+                break;
+            case 1:
+                break;
+            default:
+                digitalWrite(pins[pin_num - 1], HIGH);
+        }
+        this->modules[TIME + module_num]->io[3].value = 1;
+        delete this->modules[TIME + module_num];
+        this->modules[TIME + module_num] = NULL;
+    }
+    this->modules[TIME + module_num] = Modules::getModule(index);
+    this->modules[CONF]->parameters[module_num].value = index;
+    // CONF and PLAY text page
+    byte offsetInPage = 
+        this->modules[CONF]->parameters[module_num].cursor_pos;
+    for (int i = 0; i < 4; i++) {
+        this->modules[CONF]->text[i + offsetInPage + 3] = 
+            names[index][i];
+        this->modules[PLAY]->text[i + offsetInPage + 3] = 
+            names[index][i];
+    }
+    if(this->modules[TIME + module_num]->size == 0) {
+        return;
     }
 }
 

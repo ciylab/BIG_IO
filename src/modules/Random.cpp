@@ -182,10 +182,3 @@ void Random::r_handlePress() {
     }
 }
 
-void Random::panic() {
-    if(2 < this->io[1].value) {
-        clear_channel(this->io[1].value - 2);
-        this->io[1].value = 2;
-    }
-}
-

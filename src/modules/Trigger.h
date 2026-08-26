@@ -14,8 +14,9 @@ class Trigger: public Module {
             "F#", " G", "G#", " A", "A#", " B"
         };
         const char *PROGRESS[6] = {
-            "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
-        };
+            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
+            "\'\'\'\' ", "\'\'\'\'\'"
+        }; 
     public:
         unsigned long start;
         /**
@@ -60,7 +61,6 @@ class Trigger: public Module {
         void stopPlay();
         void l_handlePress();
         void r_handlePress();
-        void panic();
 };
 
 #endif

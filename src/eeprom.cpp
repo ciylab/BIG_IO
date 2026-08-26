@@ -29,8 +29,6 @@
 extern Modules *myModules;
 extern char *names[];
 
-bool other_config = false;
-
 void writeEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
     Wire.beginTransmission(deviceaddress);
     Wire.write((int)(eeaddress >> 8));      //writes the MSB
@@ -149,14 +147,8 @@ void load(int slot_num) {
     // Le byte à partir duquel on écrit.
     int offset = 8 * slot_num * CONFIG_SIZE;
     Time::tick = 0;
-    if(other_config) {
-        // MIDI panic !!!
-        panic();
-        free_memory();
-        other_config = true;
-    }
     for(int i = 0; i < 8; i++) {
-        load_module(offset + i * CONFIG_SIZE, i);
+        load_module_from_eeprom(offset + i * CONFIG_SIZE, i);
     }
 }
 
@@ -167,22 +159,9 @@ void load(int slot_num) {
  * @param offset numéro du premier byte
  * @param module_num numéro du module de 0 à 7
  */
-void load_module(int offset, byte module_num) {
+void load_module_from_eeprom(int offset, byte module_num) {
     byte index = readEEPROM(eeprom, offset++);
-    myModules->modules[TIME + module_num] = Modules::getModule(index);
-    myModules->modules[CONF]->parameters[module_num].value = index;
-    // CONF and PLAY text page
-    byte offsetInPage = 
-        myModules->modules[CONF]->parameters[module_num].cursor_pos;
-    for (int i = 0; i < 4; i++) {
-        myModules->modules[CONF]->text[i + offsetInPage + 3] = 
-            names[index][i];
-        myModules->modules[PLAY]->text[i + offsetInPage + 3] = 
-            names[index][i];
-    }
-    if(myModules->modules[TIME + module_num]->size == 0) {
-        return;
-    }
+    myModules->load_module_from_memory(index, module_num);
     // and then data
     for(int i = 0; i < 4; i++) {
         myModules->modules[TIME + module_num]->io[i].value =

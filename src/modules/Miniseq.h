@@ -13,7 +13,8 @@ class Miniseq: public Module {
             "F#", " G", "G#", " A", "A#", " B"
         };
         const char *PROGRESS[6] = {
-            "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
+            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
+            "\'\'\'\' ", "\'\'\'\'\'"
         };
         /// note on tick for note off tick is start + gate
         unsigned long start;
@@ -47,7 +48,6 @@ class Miniseq: public Module {
         void execute();
         void startPlay();
         void stopPlay();
-        void panic();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:

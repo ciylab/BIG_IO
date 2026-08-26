@@ -21,7 +21,8 @@ class Random: public Module {
             "F#", " G", "G#", " A", "A#", " B"
         };
         const char *PROGRESS[6] = {
-            "     ", "|    ", "||   ", "||| ", "|||| ", "|||||"
+            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
+            "\'\'\'\' ", "\'\'\'\'\'"
         };
         const char *SCALES[NUM_SCALE] = {"CHROMA", "MAJOR ", 
             "PENTA ", "HARMON"};
@@ -67,7 +68,6 @@ class Random: public Module {
         bool isInRange(byte pitch);
         void startPlay();
         void stopPlay();
-        void panic();
         void execute();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {

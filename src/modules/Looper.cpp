@@ -111,10 +111,3 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
     }
 }
 
-void Looper::panic() {
-    if(2 < this->io[1].value) {
-        clear_channel(this->io[1].value - 2);
-        this->io[1].value = 2;
-    }
-}
-

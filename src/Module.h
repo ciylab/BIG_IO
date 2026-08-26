@@ -8,6 +8,7 @@
 #define MODULE_H
 #include "config.h"
 #include "Display.h"
+#include "midi.h"
 
 class Module {
     public:
@@ -52,7 +53,12 @@ class Module {
         /**
          * @brief Méthode MIDI spécifique au module.
          */
-        virtual void panic() {}
+        void panic() {
+            if(2 < this->io[1].value) {
+                clear_channel(this->io[1].value - 2);
+                this->io[1].value = 2;
+            }
+        }
         /**
          * @brief Méthode de l'encodeur spécifique au module.
          */

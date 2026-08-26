@@ -12,13 +12,6 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
-void Trigger::panic() {
-    if(2 < this->io[1].value) {
-        clear_channel(this->io[1].value - 2);
-        this->io[1].value = 2;        
-    }
-}
-
 bool Trigger::isPulse() {
     byte length = parameters[0].value;
     if ((parameters[2].value *

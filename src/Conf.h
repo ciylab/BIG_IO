@@ -20,13 +20,13 @@ class Conf: public Module {
         Conf() : Module() {
             this->size = 0;
             this->add({" 1:    ", 0, 0, 0, 0, 0});
-            this->add({" 2:    ", 0, 0, 1, 5, 8});
-            this->add({" 3:    ", 0, 0, 1, 5, 16});
-            this->add({" 4:    ", 0, 0, 1, 5, 24});
-            this->add({" 5:    ", 0, 0, 1, 5, 32});
-            this->add({" 6:    ", 0, 0, 1, 5, 40});
-            this->add({" 7:    ", 0, 0, 1, 5, 48});
-            this->add({" 8:    ", 0, 0, 1, 5, 56});
+            this->add({" 2:    ", 0, 0, 1, 6, 8});
+            this->add({" 3:    ", 0, 0, 1, 6, 16});
+            this->add({" 4:    ", 0, 0, 1, 6, 24});
+            this->add({" 5:    ", 0, 0, 1, 6, 32});
+            this->add({" 6:    ", 0, 0, 1, 6, 40});
+            this->add({" 7:    ", 0, 0, 1, 6, 48});
+            this->add({" 8:    ", 0, 0, 1, 6, 56});
             this->setMenu();
         }
         void getString(int val, char temp[8]) {
@@ -40,8 +40,14 @@ class Conf: public Module {
             Display::newPage();
         }
         void r_handlePress() {
-            Modules::to_config = Display::cursor_num + TIME;
-            myModules->modules[Modules::to_config]->new_value = false;
+            byte index = this->parameters[Display::cursor_num].value;
+            byte module_num = Display::cursor_num;
+            Modules::to_config = module_num + TIME;
+            delete myModules->modules[Modules::to_config];
+            myModules->load_module_from_memory(index, module_num);
+            if(myModules->modules[TIME + module_num]->size == 0) {
+                return;
+            }
             Modules::current = IO;
             Display::newPage();
         }
