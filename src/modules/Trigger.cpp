@@ -1,6 +1,5 @@
 /**
  * @file Trigger.cpp
- * @brief Gestion du temps.
  */
 #include <MIDI.h>
 #include "../Time.h"
@@ -10,7 +9,7 @@
 #include "../encoder.h"
 
 using namespace MIDI_NAMESPACE;
-extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
+extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI;
 
 bool Trigger::isPulse() {
     byte length = parameters[0].value;
@@ -19,7 +18,6 @@ bool Trigger::isPulse() {
             parameters[2].value) {
         return true;
     }
-    // idem pour la deuxième séquence
     if ((parameters[4].value *
                 (length - parameters[5].value + Time::tick / 6)) % length < 
             parameters[4].value) {
@@ -28,24 +26,15 @@ bool Trigger::isPulse() {
     return false;
 }
 
-void Trigger::startPlay() {
-    this->io[1].buffer = this->io[1].value;
-    if(2 < this->io[1].value) {
-        parameters[6].buffer = parameters[6].value;
-        MIDI.sendNoteOn(parameters[6].buffer, 127, this->io[1].value - 2);
-    }
-    if(1 < this->io[3].value) {
-        digitalWrite(pins[this->io[3].value - 1], LOW);
-    }
+void Trigger::startPlay(byte pitch) {
+    parameters[6].buffer = pitch;
+    startPlayMIDI(pitch);
+    startPlayGate();
 }
 
-void Trigger::stopPlay() {
-    if(2 < this->io[1].buffer) {
-        MIDI.sendNoteOff(parameters[6].buffer, 0, this->io[1].buffer - 2);
-    }
-    if(1 < this->io[3].value) {
-        digitalWrite(pins[this->io[3].value - 1], HIGH);
-    }
+void Trigger::stopPlay(byte pitch) {
+    stopPlayMIDI(pitch);
+    stopPlayGate();
 }
 
 void Trigger::execute() {
@@ -55,10 +44,10 @@ void Trigger::execute() {
     }
     if(Time::newTick) {
         if(Time::tick % 6 == 0 && isPulse()) {
-            startPlay();
+            startPlay(parameters[6].value);
             start = Time::tick;
         } else if (Time::tick == start + parameters[1].value) {
-            stopPlay();
+            stopPlay(parameters[6].buffer);
         }
     }
 }

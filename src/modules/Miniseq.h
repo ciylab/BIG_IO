@@ -1,6 +1,8 @@
 /**
  * @file Miniseq.h
- * @brief Fonctions élémentaires de traitement in -> out.
+ * @brief Just a bass line generator up to 5 notes
+ *
+ * tempo parameter is used to slow down
  */
 #ifndef MINISEQ_H
 #define MINISEQ_H
@@ -22,11 +24,9 @@ class Miniseq: public Module {
         byte noteIndex;
         /// for tempo play when count % tempo = 0
         byte count;
+        void startPlay(byte pitch);
+        void stopPlay(byte pitch);
     public:
-        /**
-         * @brief Constructeur par défaut.
-         *
-         * */
         Miniseq() : Module() {
             this->add({" LENGTH", 0, 0, 0, 5, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});
@@ -41,13 +41,11 @@ class Miniseq: public Module {
             this->count = 0;
             this->indexInList = 1;
             this->io[0] = {" IN    ", 2, 2, 2, 2, 0};
-            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 1, 1, 1, 5, 48};
+            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
         }
         void execute();
-        void startPlay();
-        void stopPlay();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:

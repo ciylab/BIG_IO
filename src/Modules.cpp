@@ -1,10 +1,9 @@
 /**
  * @file Modules.cpp
- * @brief Gestion d'un module.
  */
 
 /**
- * @brief Les modules de base.
+ * @brief The necessary modules.
  */
 
 #include "Module.h"
@@ -16,7 +15,7 @@
 #include "io.h"
 
 /**
- * @brief Les modules disponibles.
+ * @brief The available modules.
  */
 
 #include "modules/Trigger.h"
@@ -26,13 +25,7 @@
 #include "modules/Looper.h"
 
 byte Modules::current = MAIN;
-byte Modules::to_config = MAIN;
-
-unsigned int Modules::C4RefVolt = 3277;
-
-/**
- * @brief Constructeur par défaut.
- */
+byte Modules::to_config = TIME;
 
 Modules::Modules() {
     this->modules[0] = new Main();
@@ -44,19 +37,10 @@ Modules::Modules() {
     }
 }
 
-/**
- * @brief Méthode principale.
- */
-
 void Modules::execute() {
     for (int i = TIME; i < TIME + 8; i++) {
         this->modules[i]->execute();
     }
-}
-
-int Modules::getVoltage(byte pitch) {
-    return min(4095, 
-            (int) round(1. * pitch * Modules::C4RefVolt / 48));
 }
 
 Module *Modules::getModule(byte num) {
@@ -85,23 +69,13 @@ Module *Modules::getModule(byte num) {
 }
 
 void Modules::load_module_from_memory(byte index, byte module_num) {
-    if(this->modules[TIME + module_num] != NULL) {
-        this->modules[TIME + module_num]->panic();
-        byte pin_num = this->modules[TIME + module_num]->io[3].value;
-        switch(pin_num) {
-            case 0:
-                digitalWrite(pins[0], HIGH);
-                break;
-            case 1:
-                break;
-            default:
-                digitalWrite(pins[pin_num - 1], HIGH);
-        }
-        this->modules[TIME + module_num]->io[3].value = 1;
-        delete this->modules[TIME + module_num];
-        this->modules[TIME + module_num] = NULL;
+    Modules::to_config = module_num + TIME;
+    if(this->modules[Modules::to_config] != NULL) {
+        this->modules[Modules::to_config]->panic();     // clean midi out
+        this->modules[Modules::to_config]->closeGate(); // no more gate
+        Module::del(this->modules[Modules::to_config]); // free memory
     }
-    this->modules[TIME + module_num] = Modules::getModule(index);
+    this->modules[Modules::to_config] = Modules::getModule(index);
     this->modules[CONF]->parameters[module_num].value = index;
     // CONF and PLAY text page
     byte offsetInPage = 
@@ -111,9 +85,6 @@ void Modules::load_module_from_memory(byte index, byte module_num) {
             names[index][i];
         this->modules[PLAY]->text[i + offsetInPage + 3] = 
             names[index][i];
-    }
-    if(this->modules[TIME + module_num]->size == 0) {
-        return;
     }
 }
 

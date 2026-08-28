@@ -1,14 +1,18 @@
 /**
  * @file Looper.h
- * @brief Gestion du looper.
+ * @brief Handle looper.
+ * 
+ * Two recording modes
+ * - step by step
+ * - real time 
  *
- * Le looper offre la possibilité d'enregistrer des notes et
- * de les jouer en boucle.
+ * The max length is 64 = 4 bars 
+ *
+ * Record and delete with push button
  */
 
 #ifndef LOOPER_H
 #define LOOPER_H
-#include <MIDI.h>
 #include "../Module.h"
 
 class Looper: public Module {
@@ -24,13 +28,12 @@ class Looper: public Module {
         int stepIndex;
         byte pitchOn[6 * 16 * 4]; // 384
         byte pitchOff[6 * 16 * 4]; // 384
+        void startPlay(byte pitch);
+        void stopPlay(byte pitch);
+        void del_seq();
     public:
-        /**
-         * @brief Constructeur par défaut.
-         *
-         */
         Looper() : Module() {
-            this->add({" LENGTH", 0, 0, 0, 16, 0});
+            this->add({" LENGTH", 0, 0, 0, 64, 0});
             this->add({" MODE  ", 1, 1, 0, 1, 16});
             this->add({" RECORD", 0, 0, 0, 1, 32});
             this->add({" DELETE", 0, 0, 0, 0, 40});
@@ -38,16 +41,14 @@ class Looper: public Module {
             this->setMenu();
             this->indexInList = 5;
             this->io[0] = {" IN    ", 2, 2, 2, 18, 0};
-            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 2, 2, 1, 5, 48};
-            this->del();
+            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
+            this->del_seq();
             this->index = 0;
             this->stepIndex = 0;
         }
         void execute();
-        void startPlay();
-        void stopPlay();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 0:
@@ -72,7 +73,6 @@ class Looper: public Module {
         }
         void l_handlePress();
         void r_handlePress();
-        void del();
         void handleNoteOn(byte channel, byte pitch, byte velocity);
         void handleNoteOff(byte channel, byte pitch, byte velocity);
 };

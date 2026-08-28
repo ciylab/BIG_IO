@@ -1,9 +1,8 @@
 /**
- * @file config.cpp
- * @brief Fichier de configuration du projet.
+ * @file gate.cpp
  */
 
-#include "config.h"
+#include "gate.h"
 
 void pin_init() {
     pinMode(CLOCK_IN, INPUT);
@@ -14,15 +13,15 @@ void pin_init() {
     pinMode(PB1, INPUT_PULLUP);
     pinMode(PB10, INPUT_PULLUP);
     for(int i = 0; i < 5; i++) {
-        pinMode(pins[i], OUTPUT);
-        digitalWrite(pins[i], HIGH);
+        pinMode(gates[i], OUTPUT);
+        digitalWrite(gates[i], HIGH);
     }
 }
 
-void pin_test() {
+void gates_test() {
     for(int i = 0; i < 5; i++) {
-        digitalWrite(pins[i], LOW);
+        digitalWrite(gates[i], LOW);
         delay(100);
-        digitalWrite(pins[i], HIGH);
+        digitalWrite(gates[i], HIGH);
     }
 }

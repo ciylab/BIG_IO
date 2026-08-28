@@ -1,6 +1,9 @@
 /**
  * @file Simple.h
- * @brief Fonctions élémentaires de traitement in -> out.
+ * @brief simple in -> out 
+ *
+ * to send for example midi channel onto cv/gate
+ * we can choose range and apply transposition
  */
 #ifndef SIMPLE_H
 #define SIMPLE_H
@@ -14,11 +17,8 @@ class Simple: public Module {
             "F#", " G", "G#", " A", "A#", " B"
         };
         byte pitch_send[128];
+        bool isInRange(byte pitch);
     public:
-        /**
-         * @brief Constructeur par défaut.
-         *
-         * */
         Simple(): Module() {
             this->add({" MIN   ", 0, 0, 0, 108, 0});
             this->add({" MAX   ", 108, 108, 0, 108, 16});
@@ -29,11 +29,10 @@ class Simple: public Module {
                 pitch_send[i] = 0;
             }
             this->io[0] = {" IN    ", 2, 2, 2, 18, 0};
-            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 1, 1, 1, 5, 48};
+            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
         }
-        bool isInRange(byte pitch);
         void handleNoteOn(byte channel, byte pitch, byte velocity);
         void handleNoteOff(byte channel, byte pitch, byte velocity);
         void getString(int val, char temp[8]) {

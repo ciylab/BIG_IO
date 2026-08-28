@@ -13,37 +13,22 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
-void Looper::del() {
+void Looper::del_seq() {
     memset(pitchOn, 0, 384);
     memset(pitchOff, 0, 384);
 }
 
-void Looper::startPlay() {
-    // pour prévenir le changement de canal de sortie
-    // mais pas totalement fiable !!!
-    this->io[1].buffer = this->io[1].value;
-    if(2 < this->io[1].value) {
-        MIDI.sendNoteOn(pitchOn[index], 127, this->io[1].value - 2);
-    }
-    if(1 < this->io[3].value) {
-        // pour prévenir un changement de gate
-        this->io[3].buffer = this->io[3].value;
-        digitalWrite(pins[this->io[3].value - 1], LOW);
-    }
-    if(this->io[2].value != 0) {        
-        dac_write(this->io[2].value - 1, pitchOn[index]); 
-    }
+void Looper::startPlay(byte pitch) {
+    startPlayMIDI(pitch);
+    startPlayCV(pitch);
+    startPlayGate();
 }
 
-void Looper::stopPlay() {
-    if(2 < this->io[1].buffer) {
-        MIDI.sendNoteOff(pitchOff[index], 0, this->io[1].buffer - 2);
-    }
-    if(1 < this->io[3].buffer) {
-        digitalWrite(pins[this->io[3].buffer - 1], HIGH);
-    }            
+void Looper::stopPlay(byte pitch) {
+    stopPlayMIDI(pitch);
+    stopPlayCV(pitch);
+    stopPlayGate();
 }
-
 
 void Looper::execute() {
     if(this->parameters[0].value == 0) {
@@ -52,9 +37,9 @@ void Looper::execute() {
     if(Time::newTick) {
         this->index = Time::tick % (6 * this->parameters[0].value);
         if(this->pitchOn[index] != 0) {
-            startPlay();
+            startPlay(this->pitchOn[index]);
         } else if (this->pitchOff[index] != 0) {
-            stopPlay();
+            stopPlay(this->pitchOff[index]);
         }
     }
 }
@@ -72,19 +57,17 @@ void Looper::r_handlePress() {
             r_handleRotate(1);
         }
     } else if(Display::cursor_num == 3) {
-        del();
+        del_seq();
         r_handleRotate(0);
     }
 }
 
 void Looper::handleNoteOn(byte channel, byte pitch, byte velocity) {
-    if(channel != this->io[0].value - 2) {
+    if(channel != this->io[0].value) {
         return;
     }
-    MIDI.sendNoteOn(pitch, velocity, this->io[1].value - 2);
+    MIDI.sendNoteOn(pitch, velocity, this->io[1].value);
     if(this->parameters[2].value) { // record on
-        // pour prévenir un arrêt de l'enregistrement alors
-        // qu'une note est jouée.
         this->parameters[2].buffer = this->parameters[2].value;
         if(this->parameters[1].value) { // RT
             pitchOn[Time::tick % (6 * this->parameters[0].value)] = pitch;
@@ -97,10 +80,10 @@ void Looper::handleNoteOn(byte channel, byte pitch, byte velocity) {
 }
 
 void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
-    if(channel != this->io[0].value - 2) {
+    if(channel != this->io[0].value) {
         return;
     }
-    MIDI.sendNoteOff(pitch, velocity, this->io[1].value - 2);
+    MIDI.sendNoteOff(pitch, velocity, this->io[1].value);
     if(!this->parameters[1].value) {
         return;
     }

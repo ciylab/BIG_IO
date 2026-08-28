@@ -4,12 +4,18 @@
 #include "dac.h"
 #include <SPI.h>
 
+/**
+ * The cv value send to the dac for 4 volts.
+ */
+unsigned int C4RefVolt;
+
 void init_dac() {
     pinMode(CS1, OUTPUT);
     pinMode(CS2, OUTPUT);
     digitalWrite(CS1, HIGH);
     digitalWrite(CS2, HIGH);    
     SPI.begin();
+    C4RefVolt = 3277;
 }
 
 void dac_write(byte ch, int cv) {
@@ -31,10 +37,15 @@ void dac_write(byte ch, int cv) {
     }
 }
 
-unsigned int calibrate(byte val) {
+void calibrate(byte val) {
     unsigned int cv = 3276 - 128 + val;
     dac_write(0, cv);
     dac_write(1, cv / 2);
     dac_write(2, cv / 4);
-    return cv;
+    C4RefVolt = cv;
 }
+
+int getVoltage(byte pitch) {
+    return min(4095, (int) round(1. * pitch * C4RefVolt / 48));
+}
+

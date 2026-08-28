@@ -1,10 +1,20 @@
 /**
  * @file Main.h
- * @brief Fonctions pour la page principale.
+ * @brief Functions and parameters for the Main page.
+ * 
+ * 1. CONFIG : input/output
+ * 2. CALIB : the default value is 3276 (= 5 * 4095 / 4)
+ * and it is possible to adjust form -128 to + 127.
+ * 3. PLAY : to change values in real time
+ * 4. LOAD : a preset of 8 modules. Fact can't be saved.
+ * 5. SAVE : choose slot for current conf.
  */
 #ifndef MAIN_H
 #define MAIN_H
 #include "Module.h"
+/**
+ * @brief For load/save.
+ */
 #include "eeprom.h"
 
 class Main: public Module {
@@ -21,11 +31,6 @@ class Main: public Module {
         };
 
     public:
-        /**
-         * @brief Constructeur par défaut.
-         *
-         * Le bpm est compris entre 30 et 240 (Arturia keystep)
-         * */
         Main() : Module() {
             this->add({" CONFIG", 0, 0, 0, 0, 0});
             this->add({" CALIBR", 128, 128, 0, 255, 16});

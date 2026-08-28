@@ -13,38 +13,21 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
-void Miniseq::startPlay() {
+void Miniseq::startPlay(byte pitch) {
     if(count != 0) {
         return;
     }
-    // pour prévenir l'absence de note off
-    this->io[1].buffer = this->io[1].value;
-    if(2 < this->io[1].value) {
-        // pour prévenir le changement de note
-        this->parameters[2 + noteIndex].buffer =
-            this->parameters[2 + noteIndex].value;
-        MIDI.sendNoteOn(this->parameters[2 + noteIndex].value, 
-                127, this->io[1].value - 2);
-    }
-    this->io[3].buffer = this->io[3].value;
-    if(1 < this->io[3].value) {
-        digitalWrite(pins[this->io[3].value - 1], LOW);
-    }
-    if(this->io[2].value != 0) {        
-        dac_write(this->io[2].value - 1, 
-                Modules::getVoltage(this->parameters[2 + noteIndex].value));
-    }
+    this->parameters[2 + noteIndex].buffer = pitch;
+    startPlayMIDI(pitch);
+    startPlayCV(pitch);
+    startPlayGate();
 }
 
-void Miniseq::stopPlay() {
+void Miniseq::stopPlay(byte pitch) {
     if(count == 0) {
-        if(2 < this->io[1].buffer) {
-            MIDI.sendNoteOff(this->parameters[2 + noteIndex].buffer, 
-                    0, this->io[1].buffer - 2);
-        }
-        if(1 < this->io[3].buffer) {
-            digitalWrite(pins[this->io[3].buffer - 1], HIGH);
-        }            
+        stopPlayMIDI(pitch);
+        stopPlayCV(pitch);
+        stopPlayGate();
         noteIndex = (noteIndex + 1) % this->parameters[0].value; 
     }
     count = (count + 1) % this->parameters[7].value;
@@ -56,10 +39,10 @@ void Miniseq::execute() {
     }
     if(Time::newTick) {
         if(Time::tick % 6 == 0) {
-            startPlay();
+            startPlay(this->parameters[2 + noteIndex].value);
             start = Time::tick;
         } else if (Time::tick == start + this->parameters[1].value) {
-            stopPlay();
+            stopPlay(this->parameters[2 + noteIndex].buffer);
         }
     }
 }

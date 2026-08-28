@@ -11,7 +11,7 @@
 #define CS2 PC15   //!< simple DAC.
 
 /**
- * @brief SPI output pins.
+ * @brief SPI output gates.
  */
 void init_dac();
 
@@ -38,5 +38,14 @@ void dac_write(byte ch, int cv);
  * @return the cv for exactly 4 volts for the project is C4RefVolt.
  * @see Modules::C4RefVolt
  */
-unsigned int calibrate(byte val);
+void calibrate(byte val);
+
+/**
+ * @brief For cv
+ * 
+ * The value is calculated from C4RefVolt
+ * @param pitch the midi note number
+ * @return the cv value
+ */
+int getVoltage(byte pitch);
 #endif

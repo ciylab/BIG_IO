@@ -11,7 +11,7 @@
 #include "../encoder.h"
 
 using namespace MIDI_NAMESPACE;
-extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
+extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI;
 /**
  * Nombre de notes dont la hauteur est inférieure
  * ou égale au rang.
@@ -37,7 +37,7 @@ byte Random::scales[NUM_SCALE][12] = {
 /**
  * Rang des notes de la gamme.
  */
-byte Random::pitchs[NUM_SCALE][12] = { // i-th pitch in C
+byte Random::pitchs[NUM_SCALE][12] = {       // i-th pitch in C
     {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},  // chromatic
     {0, 2, 4, 5, 7, 9, 11},                  // major
     {0, 2, 4, 7, 9},                         // pentatonic
@@ -97,9 +97,9 @@ byte Random::rand_note(byte min, byte max, byte tone, byte scale) {
  */
 byte Random::getRandomNote() {
     return rand_note(parameters[6].value, // min 
-            parameters[7].value, // max 
-            parameters[3].value, // tone
-            parameters[2].value); // scale
+            parameters[7].value,          // max 
+            parameters[3].value,          // tone
+            parameters[2].value);         // scale
 }
 
 bool Random::isInRange(byte pitch) {
@@ -129,30 +129,18 @@ void Random::startPlay() {
     if(0 < decay + lastPitch) {
         lastPitch += decay;
     }
-    this->io[1].buffer = this->io[1].value;
-    if(2 < this->io[1].value) {
-        MIDI.sendNoteOn(lastPitch, 127, this->io[1].value - 2);
-    }
-    if(1 < this->io[3].value) {
-        this->io[3].buffer = this->io[3].value;
-        digitalWrite(pins[this->io[3].value - 1], LOW);
-    }
-    if(this->io[2].value != 0) {        
-        dac_write(this->io[2].value - 1, 
-                Modules::getVoltage(lastPitch));
-    }
+    startPlayMIDI(lastPitch);
+    startPlayCV(lastPitch);
+    startPlayGate();
 }
 
-void Random::stopPlay() {
-    if(lastPitch == 255) {
+void Random::stopPlay(byte pitch) {
+    if(pitch == 255) {
         return;
     }
-    if(2 < this->io[1].buffer) {
-        MIDI.sendNoteOff(lastPitch, 0, this->io[1].buffer - 2);
-    }
-    if(1 < this->io[3].buffer) {
-        digitalWrite(pins[this->io[3].buffer - 1], HIGH);
-    }            
+    stopPlayMIDI(pitch);
+    stopPlayCV(pitch);
+    stopPlayGate();
 }
 
 void Random::execute() {
@@ -167,7 +155,7 @@ void Random::execute() {
             startPlay();
             start = Time::tick;
         } else if (Time::tick == start + this->parameters[1].value) {
-            stopPlay();
+            stopPlay(lastPitch);
         }
     }
 }

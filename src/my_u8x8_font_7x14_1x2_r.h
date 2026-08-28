@@ -1,9 +1,11 @@
-/*
-  Fontname: -Misc-Fixed-Medium-R-Normal--14-130-75-75-C-70-ISO10646-1
-  Copyright: Public domain font.  Share and enjoy.
-  Glyphs: 95/2576
-  BBX Build Mode: 3
-*/
+/**
+ * @brief Modified font for > and |
+ *
+ * - Fontname: -Misc-Fixed-Medium-R-Normal--14-130-75-75-C-70-ISO10646-1
+ * - Copyright: Public domain font.  Share and enjoy.
+ * - Glyphs: 95/2576
+ * - BBX Build Mode: 3
+ */
 const uint8_t my_u8x8_font_7x14_1x2_r[1524] U8X8_FONT_SECTION("my_u8x8_font_7x14_1x2_r") = 
   " ~\1\2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\360\0\0\0\0\0\0\0\77\0\0\0"
   "\0\0\0\0\360\360\0\0\0\0\0\0\77\77\0\0\0\0\0\0\0\200\360\200\360\200\0\0\0\4\77\4"

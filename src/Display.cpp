@@ -4,7 +4,6 @@
 
 #include <U8x8lib.h>
 #include "Display.h"
-#include "config.h"
 #include "Modules.h"
 #include "my_u8x8_font_7x14_1x2_r.h"
 
@@ -12,8 +11,7 @@ extern Modules *myModules;
 
 U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
-char Display::screen[TEXT_SIZE];
-char Display::buffer[TEXT_SIZE];
+char Display::buffer[64];
 byte Display::charIndex = 0;
 byte Display::endPosition = 63;
 byte Display::cursor_num = 0;
@@ -42,7 +40,7 @@ char *out[28] = {
 };
 
 Display::Display() {
-    for (int i = 0; i < TEXT_SIZE; i++) {
+    for (int i = 0; i < 64; i++) {
         screen[i] = ' ';
     }
     screen[63] = '\0';
@@ -84,7 +82,7 @@ void Display::display() {
 void Display::newPage() {
     sprintf(buffer, myModules->modules[Modules::current]->text);
 #ifdef DEBUG
-    for(int i = 0; i < TEXT_SIZE; i++) {
+    for(int i = 0; i < 64; i++) {
         Serial.print(buffer[i]);
     }
     Serial.println();
@@ -106,7 +104,9 @@ void Display::show_value(int val) {
     print_here(temp);
 }
 
-void Display::no_show_value(parameter p) {
+void Display::show_name() {
+    parameter p = 
+        myModules->modules[Modules::current]->parameters[cursor_num];
     if(Modules::current == PLAY) {
         return;
     }

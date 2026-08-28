@@ -3,7 +3,7 @@
 #include <U8x8lib.h>
 #include "src/encoder.h"
 #include "src/Display.h"
-#include "src/config.h"
+#include "src/gate.h"
 #include "src/dac.h"
 #include "src/eeprom.h"
 #include "src/midi.h"
@@ -35,7 +35,7 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 void setup() {
     Serial.begin(9600);
     pin_init();   // init all pins
-    pin_test();   // string lights
+    gates_test();  // lights
     oled.begin(); // font and welcome page
     /*
      * Midi part.

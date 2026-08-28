@@ -1,86 +1,152 @@
 /**
- * @class Module.
- * @brief Déclaration de la classe.
- * @details Classe de base déclarant les variables et méthodes communes.
+ * @file Module.h
+ * @brief Base class of the project to handle events.
  */
 
 #ifndef MODULE_H
 #define MODULE_H
-#include "config.h"
 #include "Display.h"
 #include "midi.h"
+#include "gate.h"
+
+#define MAIN 0
+#define CONF 1
+#define IO   2
+#define PLAY 3
+#define TIME 4
+
+/**
+ * @struct parameter
+ * @brief For any parameter of the project.
+ * 
+ * Value changes by right encoder. Buffer can be used when
+ * value change during note off for example. 
+ * Its id is **cursor_num**.
+ */
+struct parameter {
+    char name[8];    //!<  name to display
+    byte value;      //!<  uses when playing
+    byte buffer;     //!<  value sometime used to prevent bug on change
+    byte min;        //!<  min value often 0
+    byte max;        //!<  max value
+    byte cursor_pos; //!<  on screen from 0 to 63
+};
 
 class Module {
     public:
-        parameter io[4]; //!<Tableau des paramètres input/output.
-        parameter parameters[8]; //!<Tableau des paramètres de jeu.
-        int size; //!<Nombre de paramètres pour ce module.
-        char name[8]; //!<Nom du module qui figure sur l'écran.
-        char text[TEXT_SIZE]; //!<Texte des paramètres du module.
-        bool new_value; //!<Indique qu'on affiche avant modification.
-        byte indexInList; //!<Rang dans la liste des modules pour l'import
+        parameter io[4]; //!< Array of input/output parameters.
+        parameter parameters[8]; //!< Array of data to play.
+        int size;
+        char name[8]; //!< Name on the screen.
+        char text[64]; //!< Page text.
+        bool new_value; //!< Flag to only show value before change.
+        byte indexInList; //!< Num of modules in base list.
         Module(); 
         /**
-         * @brief Ajout d'un paramètre au module.
+         * @brief Add a new parameter. 
          *
-         * @param le paramètre p au format {"", , , , , }
+         * @param p parameter format {"", , , , , }
          */
         void add(parameter p);
         /**
-         * @brief Construit le texte destiné à être affiché pour les IO
+         * @brief Set the text page.
          */
         void setMenu();
         /**
-         * @brief Méthode MIDI spécifique au module.
+         * @brief Specific midi function.
          */
-        virtual void handleNoteOn(byte channel, byte pitch, byte velocity) {} 
+        virtual void handleNoteOn(
+                byte channel, byte pitch, byte velocity) {} 
         /**
-         * @brief Méthode MIDI spécifique au module.
+         * @brief Specific midi function.
          */
-        virtual void handleNoteOff(byte channel, byte pitch, byte velocity) {}
+        virtual void handleNoteOff(
+                byte channel, byte pitch, byte velocity) {}
         /**
-         * @brief Méthode MIDI spécifique au module.
+         * @brief Specific midi function.
          */
         virtual void handleClock() {}
         /**
-         * @brief Méthode MIDI spécifique au module.
+         * @brief Specific midi function.
          */
         virtual void handleStart() {}
         /**
-         * @brief Méthode MIDI spécifique au module.
+         * @brief Specific midi function.
          */
         virtual void handleStop() {}
         /**
-         * @brief Méthode MIDI spécifique au module.
+         * @brief Classic midi panic function.
          */
         void panic() {
-            if(2 < this->io[1].value) {
-                clear_channel(this->io[1].value - 2);
-                this->io[1].value = 2;
+            if(this->io[1].value != 0) {
+                clear_channel(this->io[1].value);
+                this->io[1].value = 0;
             }
         }
         /**
-         * @brief Méthode de l'encodeur spécifique au module.
+         * @brief Close gate.
+         */
+        void closeGate() {
+            byte gate = this->io[3].value;
+            if(gate != 0) {
+                digitalWrite(gates[gate - 1], HIGH);
+            }
+            this->io[3].value = 0;
+        }
+        /**
+         * @brief Specific handle encoder event.
          */
         virtual void l_handlePress();
         /**
-         * @brief Méthode de l'encodeur spécifique au module.
+         * @brief Specific handle encoder event.
          */
         virtual void r_handlePress();
         /**
-         * @brief Méthode définissant la chaîne affichée.
-         *
-         * @param val est la valeur du paramètre
-         * @param temp est la chaîne
-         *
-         * @remark Dépend du numéro de curseur Display::cursor_num 
+         * @brief Put string for val in temp.
+         * 
+         * It depends on string, int, note...
+         * @param val parameter value
+         * @param temp string to show       
+         * @remark Depends on Display::cursor_num 
          */
         virtual void getString(int val, char temp[8]) {}
         /**
-         * @brief Méthode lancée à chaque boucle.
+         * @brief Each BluePill loop execute all modules.
          */ 
         virtual void execute() {}
-
+        /**
+         * @brief General function to send midi note
+         */
+        virtual void startPlayMIDI(byte pitch);
+        /**
+         * @brief General function to send cv
+         */
+        virtual void startPlayCV(byte pitch);
+        /**
+         * @brief General function to send gate
+         */
+        virtual void startPlayGate(); 
+        /**
+         * @brief General function to send midi note
+         */
+        virtual void stopPlayMIDI(byte pitch);
+        /**
+         * @brief General function to send cv
+         */
+        virtual void stopPlayCV(byte pitch);
+        /**
+         * @brief General function to send gate
+         */
+        virtual void stopPlayGate(); 
+        /**
+         * @brief free memory
+         */
+        static void del(Module *m) {
+            if(m != NULL) {
+                delete m;
+                m = NULL;
+            }
+        }
 };
 
 #endif

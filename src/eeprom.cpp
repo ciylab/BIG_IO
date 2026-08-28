@@ -5,7 +5,6 @@
 #include "eeprom.h"
 #include "Modules.h"
 #include "midi.h"
-#include "Time.h"
 
 #define eeprom 0x50
 /** 
@@ -26,11 +25,6 @@
  * @see BIG_IO.ino
  */
 extern Modules *myModules;
-
-/**
- * @see Modules.cpp
- */
-extern char *names[7];
 
 /**
  * @brief basic write
@@ -118,11 +112,8 @@ void save_module(int offset, byte module_num) {
 }
 
 void load(int slot_num) {    
-    // On envoie plus rien sur les gates
-    pin_init();
-    // Le byte à partir duquel on écrit.
+    // the first byte address 
     int offset = 8 * slot_num * CONFIG_SIZE;
-    Time::tick = 0;
     for(int i = 0; i < 8; i++) {
         load_module_from_eeprom(offset + i * CONFIG_SIZE, i);
     }
@@ -144,11 +135,11 @@ void load_module_from_eeprom(int offset, byte module_num) {
 
 void write_factory() {
     byte data[8 * CONFIG_SIZE] = {
-        0, 2, 3, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
-        4, 2, 4, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
-        1, 2, 5, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
-        5, 3, 6, 2, 4,  4,   1,  0,  0,  2,  0,  0,  0, // SEQ 
-        2, 2, 7, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
+        0, 0, 1, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+        4, 0, 2, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
+        1, 0, 3, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
+        5, 1, 4, 2, 4,  4,   1,  0,  0,  2,  0,  0,  0, // SEQ 
+        2, 0, 5, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
@@ -161,10 +152,10 @@ void write_factory() {
 
 void write_simple() {    
     byte data[8 * CONFIG_SIZE] = {
-        0, 1, 2, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
-        3, 3, 2, 1, 3,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
-        3, 4, 2, 2, 4,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
-        3, 5, 2, 3, 5,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
+        0, 0, 0, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+        3, 3, 1, 1, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
+        3, 4, 2, 2, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
+        3, 5, 3, 3, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
@@ -178,13 +169,19 @@ void write_simple() {
 }
 
 void write_null(int slot_num) {
+    byte data[8 * CONFIG_SIZE] = {
+        0, 0, 1, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
+    };
     int offset = 8 * CONFIG_SIZE * slot_num;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
-        if(i % CONFIG_SIZE == 0) {
-            updateEEPROM(eeprom, offset++, 6);
-        } else {
-            updateEEPROM(eeprom, offset++, 0);
-        }
+        updateEEPROM(eeprom, offset++, data[i]);
     }
 }
 

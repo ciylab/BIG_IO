@@ -1,18 +1,22 @@
 /**
  * @file Random.h
- * @brief Fonctions de génération aléatoire.
+ * @brief Random pitch generator
+ *
+ * We can choose scale and key
+ * Freeze possibility
+ * human parameter to set some melodic variation
  */
 #ifndef RANDOM_H
 #define RANDOM_H
 #include "../Module.h"
 
 /**
- * taille de la mémoire pour enregistrer 4 mesures de 16 double-croches 
+ * @brief memory size for 4 bars 
  */
 
 #define R_SEQ_SIZE 64 
 
-#define NUM_SCALE 4 /**<nombre de gammes */
+#define NUM_SCALE 4 
 
 class Random: public Module {
     private:
@@ -35,13 +39,16 @@ class Random: public Module {
         static int shift[5];
         byte sequence[R_SEQ_SIZE];
         byte lastPitch;
-    public:
+        void startPlay();
+        void stopPlay(byte pitch);
+        static byte get_count(byte scale, byte note);
+        static byte get_pitch(byte scale, byte rank);
+        static byte rand_note(byte min, byte max, byte tone, byte scale);
+        byte getRandomNote();
+        bool isInRange(byte pitch);
         unsigned long start;
         byte current_index;
-        /**
-         * @brief Constructeur par défaut.
-         *
-         */
+    public:
         Random() : Module() {
             this->add({" LENGTH", 0, 0, 0, 16, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});
@@ -54,20 +61,13 @@ class Random: public Module {
             this->setMenu();
             this->indexInList = 2;
             this->io[0] = {" IN    ", 2, 2, 2, 2, 0};
-            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 1, 1, 1, 5, 48};
+            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
             for(int i = 0; i < R_SEQ_SIZE; i++) {
                 this->sequence[i] = 0;
             }
         }
-        static byte get_count(byte scale, byte note);
-        static byte get_pitch(byte scale, byte rank);
-        static byte rand_note(byte min, byte max, byte tone, byte scale);
-        byte getRandomNote();
-        bool isInRange(byte pitch);
-        void startPlay();
-        void stopPlay();
         void execute();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {

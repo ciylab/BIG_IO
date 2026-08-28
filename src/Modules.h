@@ -1,27 +1,43 @@
 /**
  * @file Modules.h
- * @brief Déclaration du singleton réunissant tous les modules.
+ * @brief  
  */
 
 #ifndef MODULES_H
 #define MODULES_H
 #include "Module.h"
-#define MODULES_SIZE 12
-/** 
- * @brief  
- * 
- */
 
 class Modules {
     public:
+        /**
+         * @brief The module of the page from 0 to 11 include MAIN...
+         */
         static byte current;
+        /**
+         * @brief The module we work with from 4 to 11 exclude MAIN...
+         *
+         * When current = IO we have to_config != current.
+         */
         static byte to_config;
-        static unsigned int C4RefVolt;
-        Module *modules[MODULES_SIZE];
-        Modules();          
+        /**
+         * Array of the 4 + 8 modules.
+         */
+        Module *modules[12];
+        Modules();
+        /**
+         * To execute all the modules at each loop.
+         */        
         void execute();
-        static int getVoltage(byte pitch);
+        /**
+         * @param num the index in list of aviable modules.
+         * @return the module (example TIME for 0)
+         */
         static Module *getModule(byte num);
+        /**
+         * Load module from the list.
+         * @param index in the list of aviable modules
+         * @param module_num rank from 0 to 7
+         */
         void load_module_from_memory(byte index, byte module_num);
 };
 

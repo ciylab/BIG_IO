@@ -5,9 +5,6 @@
 #ifndef CONF_H
 #define CONF_H
 
-/**
- * @brief This class inherits from Module.
- */
 #include "Module.h"
 
 #include "Modules.h"
@@ -53,23 +50,28 @@ class Conf: public Module {
             temp[7] = '\0';
         }
         /**
-         * Come back on main page.
+         * @brief Come back on main page.
          */
         void l_handlePress() {
             Modules::current = MAIN;
             Display::newPage();
         }
         /**
-         * Select module type and show io parameters.
+         * @brief Select module type and show io parameters.
          */
         void r_handlePress() {
-            byte index = this->parameters[Display::cursor_num].value;
             byte module_num = Display::cursor_num;
             Modules::to_config = module_num + TIME;
-            delete myModules->modules[Modules::to_config];
-            // load the current module
-            myModules->load_module_from_memory(index, module_num);
-            if(myModules->modules[TIME + module_num]->size == 0) {
+            byte index = this->parameters[Display::cursor_num].value;
+            /**
+             * If we change the current module.
+             */
+            if(index != 
+                    myModules->modules[Modules::to_config]->indexInList) {
+                // load the new module
+                myModules->load_module_from_memory(index, module_num);
+            }
+            if(myModules->modules[Modules::to_config]->size == 0) {
                 return; // Quit for NONE module.
             }
             Modules::current = IO;

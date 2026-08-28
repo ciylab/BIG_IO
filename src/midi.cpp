@@ -1,6 +1,5 @@
 /**
  * @file midi.cpp
- * @brief Gestion des messages MIDI.
  */
 
 #include <MIDI.h>
@@ -9,14 +8,7 @@
 
 extern Modules *myModules;
 using namespace MIDI_NAMESPACE;
-extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
-
-
-/**
- * @brief Gestion note on de la librairie
- * 
- * On renvoie à tous les modules
- */
+extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI;
 
 void handleNoteOn(byte channel, byte pitch, byte velocity) {
     for(int i = TIME; i < 8 + TIME; i++) {
@@ -24,12 +16,6 @@ void handleNoteOn(byte channel, byte pitch, byte velocity) {
             channel, pitch, velocity);
     }
 }
-
-/**
- * @brief Gestion note off de la librairie
- * 
- * On renvoie à tous les modules
- */
 
 void handleNoteOff(byte channel, byte pitch, byte velocity) {
     for(int i = TIME; i < 8 + TIME; i++) {

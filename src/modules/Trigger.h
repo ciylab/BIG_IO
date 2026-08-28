@@ -1,6 +1,6 @@
 /**
  * @file Trigger.h
- * @brief Fonctions de déclenchement de gates.
+ * @brief Dual euclidian generator 
  */
 #ifndef TRIGGER_H
 #define TRIGGER_H
@@ -17,12 +17,17 @@ class Trigger: public Module {
             "     ", "\'    ", "\'\'   ", "\'\'\' ", 
             "\'\'\'\' ", "\'\'\'\'\'"
         }; 
-    public:
-        unsigned long start;
         /**
-         * @brief Constructeur par défaut.
-         *
+         * @brief if true then we play
+         */       
+        bool isPulse();
+        void startPlay(byte pitch);
+        void stopPlay(byte pitch);
+        /**
+         * @brief to handle gate off
          */
+        unsigned long start;
+    public:
         Trigger() : Module() {
             this->add({" LENGTH", 16, 16, 0, 16, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});
@@ -33,10 +38,10 @@ class Trigger: public Module {
             this->add({" PITCH ", 48, 48, 21, 108, 48});
             this->setMenu();
             this->indexInList = 4;
-            this->io[0] = {" IN    ", 2, 2, 2, 2, 0};
-            this->io[1] = {" CH OUT", 2, 2, 2, 18, 16};
+            this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
+            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 1, 1, 1, 5, 48};
+            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
         }
         void execute();
         void getString(int val, char temp[8]) {
@@ -56,9 +61,6 @@ class Trigger: public Module {
             }
             temp[7] = '\0';
         }
-        bool isPulse();
-        void startPlay();
-        void stopPlay();
         void l_handlePress();
         void r_handlePress();
 };
