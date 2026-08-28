@@ -1,5 +1,5 @@
 /**
- * @file io.h
+ * @class io
  * @brief A class to set and show input/output values.
  */
 #ifndef IO_H

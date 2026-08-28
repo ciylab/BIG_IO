@@ -1,5 +1,5 @@
 /**
- * @file Time.h
+ * @class Time
  * @brief Functions to handle time.
  * 
  * The time is divided in 24 ticks (PPQN). 

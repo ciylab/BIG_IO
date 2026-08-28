@@ -1,6 +1,6 @@
 /**
- * @file Looper.h
- * @brief Handle looper.
+ * @class Looper
+ * @brief Handle looper/sequencer.
  * 
  * Two recording modes
  * - step by step

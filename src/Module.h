@@ -1,5 +1,5 @@
 /**
- * @file Module.h
+ * @class Module
  * @brief Base class of the project to handle events.
  */
 

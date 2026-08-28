@@ -1,6 +1,5 @@
 /**
  * @class Display
- * @file Display.h
  * @brief Group of parameters and functions for oled screen.
  *
  * For real time midi, cv and gate we choose to write at most one 

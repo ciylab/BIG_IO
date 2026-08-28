@@ -1,6 +1,8 @@
 /**
- * @file Modules.h
- * @brief  
+ * @class Modules
+ * @brief All the modules of the project
+ *
+ * 4 modules on main page and config, and 8 to play 
  */
 
 #ifndef MODULES_H

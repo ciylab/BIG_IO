@@ -1,6 +1,6 @@
 /**
- * @file Play.h
- * @brief Fonctions pour la page des algos.
+ * @class Play
+ * @brief Page to change parameters 
  */
 #ifndef PLAY_H
 #define PLAY_H
@@ -12,11 +12,6 @@ extern char *names[];
 
 class Play: public Module {
     public:
-        /**
-         * @brief Constructeur par défauti.
-         *
-         * Le bpm est compris entre 30 et 240 (Arturia keystep)
-         * */
         Play() : Module() {
             this->size = 0;
             this->add({" 1:    ", 0, 0, 0, 0, 0});

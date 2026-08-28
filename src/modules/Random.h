@@ -1,5 +1,5 @@
 /**
- * @file Random.h
+ * @class Random
  * @brief Random pitch generator
  *
  * We can choose scale and key

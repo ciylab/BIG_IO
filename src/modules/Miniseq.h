@@ -1,5 +1,5 @@
 /**
- * @file Miniseq.h
+ * @class Miniseq
  * @brief Just a bass line generator up to 5 notes
  *
  * tempo parameter is used to slow down

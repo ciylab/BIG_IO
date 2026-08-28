@@ -1,5 +1,5 @@
 /**
- * @file Simple.h
+ * @class Simple
  * @brief simple in -> out 
  *
  * to send for example midi channel onto cv/gate

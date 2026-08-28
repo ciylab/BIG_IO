@@ -1,5 +1,5 @@
 /**
- * @file Trigger.h
+ * @class Trigger
  * @brief Dual euclidian generator 
  */
 #ifndef TRIGGER_H
