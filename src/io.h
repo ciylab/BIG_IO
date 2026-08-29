@@ -66,6 +66,11 @@ class io: public Module {
             Display::newPage();
         }
         void r_handlePress() {
+            Module *m = myModules->modules[Modules::to_config];
+            parameter *p = &(m->io)[Display::cursor_num];
+            if(m->new_value) {
+                p->value = m->temp;
+            }
         }
 };
 

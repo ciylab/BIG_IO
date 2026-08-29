@@ -22,11 +22,11 @@ void l_handlePress();
  */
 void l_handleLongPress();
 /**
- * @brief To change value.
+ * @brief To change temporary value.
  */
 void r_handleRotate(int8_t rotation);
 /**
- * @brief To select. Rare use.
+ * @brief To validate temporary value as new value.
  */
 void r_handlePress();
 #endif

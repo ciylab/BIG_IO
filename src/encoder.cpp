@@ -68,36 +68,50 @@ void change_value(int8_t rotation) {
             Modules::current != PLAY) {
         m->new_value = true;
         Display::show_value(p->value);
+        m->temp = p->value;
         return;
     }
-    if(0 < rotation && p->value < p->max) {
-        p->value++;
-    } else if(rotation < 0 && p->min < p->value) {
-        p->value--;
+    if(0 < rotation && m->temp < p->max) {
+        m->temp++;
+    } else if(rotation < 0 && p->min < m->temp) {
+        m->temp--;
     } else {
         return; // nothing to do
     }
-    Display::show_value(p->value);
-    // Ici on agit immédiatement = temps réel.
+    Display::show_value(m->temp);
+    // in real time 
     if(Modules::current == MAIN && Display::cursor_num == 1) {
+        p->value = m->temp;
         calibrate(p->value);
     }
 }
 
 void r_handleRotate(int8_t rotation) {
-    if(Modules::current == MAIN && Display::cursor_num == 0) {
-        Modules::current = CONF; 
-        Display::newPage();
-    } else if(Modules::current == MAIN && Display::cursor_num == 2) {
-        Modules::current = PLAY; 
-        Display::newPage();
-    } else if(Modules::current == PLAY) {
+    if(Modules::current == PLAY) {      // do nothing
         return;
-    } else {
-        change_value(rotation);
     } 
+    if(Modules::current == MAIN) {
+        if(Display::cursor_num == 0) {  // go to CONF
+            Modules::current = CONF;
+            Display::newPage();
+            return;
+        }
+        if(Display::cursor_num == 2) {  // go to PLAY
+            Modules::current = PLAY; 
+            Display::newPage();
+            return;
+        }
+    }
+    change_value(rotation);
 }
 
 void r_handlePress() {
+    if (3 < Modules::current) {
+        Module *m = myModules->modules[Modules::current];
+        parameter *p = &(m->parameters)[Display::cursor_num];
+        if(m->new_value) {
+            p->value = m->temp;
+        }
+    }
     myModules->modules[Modules::current]->r_handlePress();
 }

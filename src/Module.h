@@ -33,9 +33,14 @@ struct parameter {
 };
 
 class Module {
-    public:
+        public:
         parameter io[4]; //!< Array of input/output parameters.
         parameter parameters[8]; //!< Array of data to play.
+        /**
+         * @brief temporary parameter value : no direct change only when 
+         * pushing
+         */
+        byte temp;
         int size;
         char name[8]; //!< Name on the screen.
         char text[64]; //!< Page text.
