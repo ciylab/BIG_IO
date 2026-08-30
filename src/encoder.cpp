@@ -39,6 +39,8 @@ void l_handleRotate(int8_t rotation) {
     Display::cursor_num = index % m->size;
     Display::cursor_pos = m->parameters[Display::cursor_num].cursor_pos;
     Display::putChar(Display::cursor_pos, '>');
+    Serial.print("Display::cursor_num : ");
+    Serial.println(Display::cursor_num);
 }
 
 void l_handlePress() {
@@ -79,11 +81,6 @@ void change_value(int8_t rotation) {
         return; // nothing to do
     }
     Display::show_value(m->temp);
-    // in real time 
-    if(Modules::current == MAIN && Display::cursor_num == 1) {
-        p->value = m->temp;
-        calibrate(p->value);
-    }
 }
 
 void r_handleRotate(int8_t rotation) {
@@ -96,9 +93,13 @@ void r_handleRotate(int8_t rotation) {
             Display::newPage();
             return;
         }
-        if(Display::cursor_num == 2) {  // go to PLAY
+        if(Display::cursor_num == 1) {  // go to PLAY
             Modules::current = PLAY; 
             Display::newPage();
+            return;
+        }
+        if(Display::cursor_num == 4) {  // calibrate
+            calibrate(rotation);
             return;
         }
     }

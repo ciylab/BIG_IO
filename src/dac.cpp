@@ -19,6 +19,11 @@ void init_dac() {
 }
 
 void dac_write(byte ch, int cv) {
+    if (cv < 0) {
+        cv = 0;
+    } else if(4095 < cv) {
+        cv = 4095;
+    }
     if (ch == 0) {
         digitalWrite(CS1, LOW);
         SPI.transfer((cv >> 8) | 0x30);  // H0x30=OUTA/1x
@@ -37,15 +42,16 @@ void dac_write(byte ch, int cv) {
     }
 }
 
-void calibrate(byte val) {
-    unsigned int cv = 3276 - 128 + val;
-    dac_write(0, cv);
-    dac_write(1, cv / 2);
-    dac_write(2, cv / 4);
-    C4RefVolt = cv;
+void calibrate(int8_t rotation) {
+    if(rotation < 0) {
+        C4RefVolt--;
+    } else if(0 < rotation) {
+        C4RefVolt++;
+    }
+    dac_write(0, C4RefVolt);
 }
 
 int getVoltage(byte pitch) {
-    return min(4095, (int) round(1. * pitch * C4RefVolt / 48));
+    return (int) round(1. * pitch * C4RefVolt / 48);
 }
 

@@ -66,6 +66,9 @@ void Looper::handleNoteOn(byte channel, byte pitch, byte velocity) {
     if(channel != this->io[0].value) {
         return;
     }
+    startPlayMIDI(pitch);
+    startPlayCV(pitch);
+    startPlayGate();
     MIDI.sendNoteOn(pitch, velocity, this->io[1].value);
     if(this->parameters[2].value) { // record on
         this->parameters[2].buffer = this->parameters[2].value;
@@ -83,7 +86,9 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
     if(channel != this->io[0].value) {
         return;
     }
-    MIDI.sendNoteOff(pitch, velocity, this->io[1].value);
+    stopPlayMIDI(pitch);
+    stopPlayCV(pitch);
+    stopPlayGate();
     if(!this->parameters[1].value) {
         return;
     }

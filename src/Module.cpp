@@ -55,7 +55,7 @@ void Module::setMenu() {
 void Module::startPlayMIDI(byte pitch){
     this->io[1].buffer = this->io[1].value;
     if(this->io[1].value != 0) {
-        MIDI.sendNoteOn(pitch, 27, this->io[1].value);
+        MIDI.sendNoteOn(pitch, 127, this->io[1].value);
     }
 }
 

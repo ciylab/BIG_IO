@@ -17,7 +17,7 @@ bool Simple::isInRange(byte pitch) {
 }
 
 void Simple::handleNoteOn(byte channel, byte pitch, byte velocity) {
-    if(!isInRange(pitch) || channel != this->io[0].value - 2) {
+    if(!isInRange(pitch) || channel != this->io[0].value) {
         return;
     }
     pitch_send[pitch] = pitch + this->parameters[2].value;
@@ -27,7 +27,7 @@ void Simple::handleNoteOn(byte channel, byte pitch, byte velocity) {
 }
 
 void Simple::handleNoteOff(byte channel, byte pitch, byte velocity) {
-    if(!isInRange(pitch) || channel != this->io[0].value - 2) {
+    if(!isInRange(pitch) || channel != this->io[0].value) {
         return;
     }
     stopPlayMIDI(pitch_send[pitch]);

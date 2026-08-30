@@ -96,7 +96,10 @@ void Display::newPage() {
 }
 
 void Display::show_value(int val) {
-    if(Modules::current == MAIN && (cursor_num == 0 || cursor_num == 2)) {
+    if(Modules::current == MAIN && 
+            (cursor_num == 0    // CONF
+             || cursor_num == 1 // PLAY
+             )) {
         return;
     }
     char temp[8];

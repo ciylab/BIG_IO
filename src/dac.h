@@ -31,14 +31,12 @@ void init_dac();
 void dac_write(byte ch, int cv);
 
 /**
- * @brief To calibrate CVs.
- *
- * 4 volts = C4 on CV1 (2 volts = C2 on CV2 and 1 volt = C1 on CV3).
- * @param val value on encoder. 
- * @return the cv for exactly 4 volts for the project is C4RefVolt.
- * @see Modules::C4RefVolt
+ * @brief To calibrate CVs with right encoder.
+ * 
+ * No need to send midi note just get 4 volts (= C4) on CV1 
+ * @param rotation of encoder
  */
-void calibrate(byte val);
+void calibrate(int8_t rotation);
 
 /**
  * @brief For cv

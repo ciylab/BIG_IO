@@ -25,10 +25,7 @@ class Simple: public Module {
             this->add({" TRANSP", 0, 0, 0, 11, 32});
             this->setMenu();
             this->indexInList = 3;
-            for (int i = 0; i < 128; i++) {
-                pitch_send[i] = 0;
-            }
-            this->io[0] = {" IN    ", 2, 2, 2, 18, 0};
+            this->io[0] = {" IN    ", 0, 0, 0, 16, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
