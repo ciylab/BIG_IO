@@ -40,7 +40,7 @@ class Looper: public Module {
             this->add({" GATE  ", 1, 1, 1, 5, 48});
             this->setMenu();
             this->indexInList = 5;
-            this->io[0] = {" IN    ", 2, 2, 2, 18, 0};
+            this->io[0] = {" IN    ", 0, 0, 0, 16, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};

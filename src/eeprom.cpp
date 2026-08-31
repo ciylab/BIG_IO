@@ -107,7 +107,6 @@ void save_module(int offset, byte module_num) {
     for(int i = m->size; i < 8; i++) {
         updateEEPROM(eeprom, offset++, 0);
     }
-    read_memory(module_num);
 }
 
 void load(int slot_num) {    
@@ -209,6 +208,7 @@ void read_eeprom(int begin, int length) {
 
 void read_memory(byte module_num) {
     Module *m = myModules->modules[TIME + module_num];
+    Serial.println("******************** MEM");
     Serial.print(m->indexInList);
     Serial.print(", ");
     for(int i = 0; i < 4; i++) {

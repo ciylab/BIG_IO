@@ -62,10 +62,13 @@ void Display::display() {
 void Display::newPage() {
     sprintf(buffer, myModules->modules[Modules::current]->text);
 #ifdef DEBUG
+    Serial.println("******************** DISP");
     for(int i = 0; i < 64; i++) {
         Serial.print(buffer[i]);
+        if((i + 1) % 16 == 0) {
+            Serial.println();
+        }
     }
-    Serial.println();
 #endif
     charIndex = 0;
     endPosition = 63;

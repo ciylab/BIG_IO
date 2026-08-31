@@ -60,7 +60,7 @@ class Random: public Module {
             this->add({" MAX   ", 72, 72, 0, 108, 56});
             this->setMenu();
             this->indexInList = 2;
-            this->io[0] = {" IN    ", 2, 2, 2, 2, 0};
+            this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};

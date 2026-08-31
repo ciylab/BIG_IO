@@ -6,7 +6,6 @@
 #define CONF_H
 
 #include "Module.h"
-
 #include "Modules.h"
 
 /**
@@ -63,6 +62,16 @@ class Conf: public Module {
             byte module_num = Display::cursor_num;
             Modules::to_config = module_num + TIME;
             byte index = this->parameters[Display::cursor_num].value;
+#ifdef DEBUG            
+            Serial.println("******************** PUSH");
+            Serial.print("module_num : ");
+            Serial.println(module_num);
+            Serial.print("index : ");
+            Serial.println(index);
+            Serial.print("indexInList : ");
+            Serial.println(
+                    myModules->modules[Modules::to_config]->indexInList);
+#endif            
             /**
              * If we change the current module.
              */
@@ -71,6 +80,9 @@ class Conf: public Module {
                 // load the new module
                 myModules->load_module_from_memory(index, module_num);
             }
+#ifdef DEBUG  
+            read_memory(module_num);
+#endif            
             if(myModules->modules[Modules::to_config]->size == 0) {
                 return; // Quit for NONE module.
             }

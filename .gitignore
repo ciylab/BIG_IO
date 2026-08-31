@@ -2,4 +2,4 @@ tags
 html
 docs
 bin
-
+tests/*/build

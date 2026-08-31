@@ -110,11 +110,19 @@ void r_handleRotate(int8_t rotation) {
 }
 
 void r_handlePress() {
-    if (3 < Modules::current) {
+    if(3 < Modules::current || Modules::current == CONF) {
         Module *m = myModules->modules[Modules::current];
         parameter *p = &(m->parameters)[Display::cursor_num];
         if(m->new_value) {
+#ifdef DEBUG
+            Serial.println("******************** CONF");
+            Serial.print("p->value : ");
+            Serial.println(p->value);
+            Serial.print("m->temp : ");
+            Serial.println(m->temp);
+#endif
             p->value = m->temp;
+            m->new_value = false;
         }
     }
     myModules->modules[Modules::current]->r_handlePress();
