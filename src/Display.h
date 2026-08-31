@@ -78,7 +78,7 @@ class Display {
         /**
          * @brief Print a 7 chars word at **cursor_pos**
          */
-        static void print_here(char *word);
+        static void print_here(const char *word);
 };
 
 #endif

@@ -19,7 +19,7 @@
 
 class Main: public Module {
     private:
-        char *memory[8] = {
+        const char *memory[8] = {
             "FACT  ", // 0
             "SLOT A", // 1
             "SLOT B", // 2

@@ -18,7 +18,7 @@ extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
  * @see Conf.h
  * @see Play.h
  */
-char *names[7] = {
+const char *names[7] = {
     "TIME  ", 
     "BASS  ", 
     "RANDOM", 
@@ -78,7 +78,7 @@ void Module::stopPlayMIDI(byte pitch) {
     }
 }
 
-void Module::stopPlayCV(byte pitch) {
+void Module::stopPlayCV() {
     if(this->io[2].value != 0) {        
         dac_write(this->io[2].value - 1, 0);
     }

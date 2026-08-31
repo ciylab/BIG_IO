@@ -31,7 +31,7 @@ void Simple::handleNoteOff(byte channel, byte pitch, byte velocity) {
         return;
     }
     stopPlayMIDI(pitch_send[pitch]);
-    stopPlayCV(pitch_send[pitch]);
+    stopPlayCV();
     stopPlayGate();
 }
 

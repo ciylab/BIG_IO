@@ -97,7 +97,6 @@ void save(int slot_num) {
 
 void save_module(int offset, byte module_num) {
     Module *m = myModules->modules[TIME + module_num];
-    byte temp;
     writeEEPROM(eeprom, offset++, m->indexInList);
     for(int i = 0; i < 4; i++) {
         updateEEPROM(eeprom, offset++, m->io[i].value);
@@ -144,7 +143,6 @@ void write_factory() {
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
     };
-    byte temp;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
         updateEEPROM(eeprom, i, data[i]);
     }
@@ -162,7 +160,6 @@ void write_simple() {
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
     };
     int offset = 8 * CONFIG_SIZE;
-    byte temp;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
         updateEEPROM(eeprom, offset++, data[i]);
     }

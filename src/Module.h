@@ -46,7 +46,8 @@ class Module {
         char text[64]; //!< Page text.
         bool new_value; //!< Flag to only show value before change.
         byte indexInList; //!< Num of modules in base list.
-        Module(); 
+        Module();
+        virtual ~Module() {}
         /**
          * @brief Add a new parameter. 
          *
@@ -138,7 +139,7 @@ class Module {
         /**
          * @brief General function to send cv
          */
-        virtual void stopPlayCV(byte pitch);
+        virtual void stopPlayCV();
         /**
          * @brief General function to send gate
          */

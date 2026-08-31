@@ -2,23 +2,24 @@
 
 **Alimentation** :
 
-* Bus Eurorack : +12v 31mA
+* Bus Eurorack : 5v 0mA
 
 **Dimensions** :
 
 * largeur : 12HP
-* profondeur : 27mm
+* profondeur : 0mm
 
 **Librairies** :
 
 * MIDI Library            5.0.2
-* SPI                     1.0
+* SPI                     1.1.0
 * Versatile_RotaryEncoder 1.3.1
-* U8g2                    2.35.30 
-* Wire                    1.0
+* U8g2                    2.36.19
+* Wire                    1.0.0
+* SrcWrapper              1.0.1
+* USBDevice               1.0.0
 
 **Plateforme** :
 
-* arduino:avr             1.8.6
-* arduino:megaavr         1.8.8
-* thinary:avr             1.0.0 
+* STMicroelectronics:stm32 2.12.0
+

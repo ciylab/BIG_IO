@@ -24,11 +24,14 @@ void l_handleRotate(int8_t rotation) {
             Display::show_name();
             myModules->modules[Modules::to_config]->new_value = false;
         }
-    } else {
-        if(m->new_value) {
+    } else if(m->new_value) {
+        if(Modules::current == CONF) {
+            parameter p = m->parameters[Display::cursor_num];
+            Display::show_value(p.value);
+        } else {
             Display::show_name();
-            m->new_value = false;
         }
+        m->new_value = false;
     }
     byte index = Display::cursor_num + m->size;
     if(0 < rotation) {
@@ -65,13 +68,13 @@ void change_value(int8_t rotation) {
         m = myModules->modules[Modules::current];
         p = &(m->parameters)[Display::cursor_num];
     }
-    if(!m->new_value && 
-            Modules::current != CONF && 
-            Modules::current != PLAY) {
+    if(!m->new_value) {
         m->new_value = true;
-        Display::show_value(p->value);
         m->temp = p->value;
-        return;
+        if(Modules::current != CONF) {
+            Display::show_value(p->value);
+            return;
+        }
     }
     if(0 < rotation && m->temp < p->max) {
         m->temp++;

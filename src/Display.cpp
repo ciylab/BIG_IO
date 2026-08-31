@@ -19,26 +19,6 @@ byte Display::cursor_pos = 0;
 
 int count = 0;
 
-char *in[18] = {
-    "NONE ", // 0
-    "CH1  ", "CH2  ", "CH3  ", "CH4  ", // 1
-    "CH5  ", "CH6  ", "CH7  ", "CH8  ", // 5
-    "CH9  ", "CH10 ", "CH11 ", "CH12 ", // 9
-    "CH13 ", "CH14 ", "CH15 ", "CH16 ", // 13
-    "TRIG0"  // 17
-};   
-
-char *out[28] = {
-    "NONE ", // 0
-    "CH1  ", "CH2  ", "CH3  ", "CH4  ", // 1
-    "CH5  ", "CH6  ", "CH7  ", "CH8  ", // 5
-    "CH9  ", "CH10 ", "CH11 ", "CH12 ", // 9 
-    "CH13 ", "CH14 ", "CH15 ", "CH16 ", // 13
-    "TRIG1", "TRIG2", "TRIG3", "TRIG4", "TRIG5", // 17
-    "CV1  ", "CV2  ", "CV3  ", // 22
-    "CVGT1", "CVGT2", "CVGT3"  // 25
-};
-
 Display::Display() {
     for (int i = 0; i < 64; i++) {
         screen[i] = ' ';
@@ -116,7 +96,7 @@ void Display::show_name() {
     print_here(p.name);
 }
 
-void Display::print_here(char *word) {
+void Display::print_here(const char *word) {
     charIndex = cursor_pos;
     endPosition = charIndex + 7;
     for (int i = 0; i < 7 && word[i] != '\0'; i++) {

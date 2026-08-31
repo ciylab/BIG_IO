@@ -139,7 +139,7 @@ void Random::stopPlay(byte pitch) {
         return;
     }
     stopPlayMIDI(pitch);
-    stopPlayCV(pitch);
+    stopPlayCV();
     stopPlayGate();
 }
 

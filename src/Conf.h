@@ -21,7 +21,7 @@ extern Modules *myModules;
  *
  * @see Module.cpp
  */
-extern char *names[];
+extern char *names[7];
 
 class Conf: public Module {
     public:
