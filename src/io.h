@@ -26,11 +26,31 @@ class io: public Module {
     public:
         io() : Module() {
             this->size = 0;
-            this->add({" IN    ", 0, 0, 0, 17, 0});
-            this->add({" CH OUT", 0, 0, 0, 17, 16});
-            this->add({" CV OUT", 0, 0, 0, 3, 32});
-            this->add({" GT OUT", 0, 0, 0, 5, 48});
-            this->setMenu();
+            this->add({" IN    ", 0, 0, 0, 17, 8});
+            this->add({" CH OUT", 0, 0, 0, 17, 24});
+            this->add({" CV OUT", 0, 0, 0, 3, 40});
+            this->add({" GT OUT", 0, 0, 0, 5, 56});
+        }
+        /**
+         * @brief Special function because values are right shifted
+         */
+        void setMenu() {
+            Module *m = myModules->modules[Modules::to_config];
+            byte offset = 0;
+            char temp[8];
+            for (int i = 0; i < 4; i++) {
+                offset = 16 * i;
+                for(int j = 0; j < 7; j++) {
+                    this->text[offset++] = parameters[i].name[j];
+                }
+                Display::cursor_num = i;
+                getString(m->io[i].value, temp);
+                offset = 16 * i + 8;
+                for(int j = 0; j < 7; j++) {
+                    this->text[offset++] = temp[j];
+                }
+            }
+            this->text[63] = '\0';
         }
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {

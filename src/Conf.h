@@ -87,6 +87,10 @@ class Conf: public Module {
                 return; // Quit for NONE module.
             }
             Modules::current = IO;
+            /**
+             * Specific IO menu
+             */
+            myModules->modules[Modules::current]->setMenu();
             Display::newPage();
         }
 };

@@ -57,7 +57,7 @@ class Module {
         /**
          * @brief Set the text page.
          */
-        void setMenu();
+        virtual void setMenu();
         /**
          * @brief Specific midi function.
          */

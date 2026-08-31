@@ -40,7 +40,7 @@ class Trigger: public Module {
             this->indexInList = 4;
             this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
-            this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
+            this->io[2] = {" CV OUT", 0, 0, 0, 0, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
         }
         void execute();

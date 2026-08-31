@@ -62,6 +62,12 @@ class Display {
          */
         void display();
         /**
+         * @brief from here to dest for '>'
+         *
+         * @param dest the new cursor_num
+         */
+        void static moveCursor(byte dest);
+        /**
          * @brief To prepare buffer for next page.
          */
         void static newPage();

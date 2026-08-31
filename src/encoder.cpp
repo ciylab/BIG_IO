@@ -16,7 +16,7 @@ extern Modules *myModules;
 
 void l_handleRotate(int8_t rotation) {
     Module *m = myModules->modules[Modules::current];
-    Display::putChar(Display::cursor_pos, ' ');
+    //Display::putChar(Display::cursor_pos, ' ');
     if(Modules::current == IO) {
         // On modifie les valeurs du module current mais
         // on est sur le module IO !
@@ -39,11 +39,11 @@ void l_handleRotate(int8_t rotation) {
     } else if(rotation < 0) {
         index--;
     }
-    Display::cursor_num = index % m->size;
-    Display::cursor_pos = m->parameters[Display::cursor_num].cursor_pos;
-    Display::putChar(Display::cursor_pos, '>');
+    Display::moveCursor(index % m->size);
+#ifdef DEBUG
     Serial.print("Display::cursor_num : ");
     Serial.println(Display::cursor_num);
+#endif
 }
 
 void l_handlePress() {

@@ -59,6 +59,14 @@ void Display::display() {
     charIndex++;
 }
 
+void Display::moveCursor(byte dest) {
+    cursor_num = dest;
+    putChar(cursor_pos, ' '); // here
+    cursor_pos = 
+        myModules->modules[Modules::current]->parameters[dest].cursor_pos;
+    putChar(cursor_pos, '>');
+}
+
 void Display::newPage() {
     sprintf(buffer, myModules->modules[Modules::current]->text);
 #ifdef DEBUG
@@ -72,10 +80,7 @@ void Display::newPage() {
 #endif
     charIndex = 0;
     endPosition = 63;
-    putChar(cursor_pos, ' ');
-    cursor_num = 0;
-    cursor_pos = 0;
-    putChar(cursor_pos, '>');
+    moveCursor(0);
 }
 
 void Display::show_value(int val) {

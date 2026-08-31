@@ -40,7 +40,7 @@ all: debug compile upload clean docs
 	
 compile: $(SRCINO)
 	$(info **************** build $(VERSION))
-	@arduino-cli compile --warnings all \
+	@arduino-cli compile  \
 	-b $(FQBN) $(CFLAGS) \
 	--board-options "pnum=BLUEPILL_F103CB" \
 	--board-options "usb=CDCgen" \
