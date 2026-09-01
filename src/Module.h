@@ -33,7 +33,9 @@ struct parameter {
 };
 
 class Module {
-        public:
+    public:
+        static const char *PROGRESS[6];
+        static const char *NOTES[12];
         parameter io[4]; //!< Array of input/output parameters.
         parameter parameters[8]; //!< Array of data to play.
         /**

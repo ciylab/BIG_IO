@@ -9,14 +9,6 @@
 
 class Trigger: public Module {
     private:
-        const char *notes[12] = {
-            " C", "C#", " D", "D#", " E", " F", 
-            "F#", " G", "G#", " A", "A#", " B"
-        };
-        const char *PROGRESS[6] = {
-            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
-            "\'\'\'\' ", "\'\'\'\'\'"
-        }; 
         /**
          * @brief if true then we play
          */       
@@ -50,10 +42,10 @@ class Trigger: public Module {
                     sprintf(temp, " %.5s ", PROGRESS[val]);
                     break;
                 case 6:
-                    sprintf(temp, " %.2s%d   ", notes[val % 12], val / 12);
+                    sprintf(temp, " %.2s%d   ", NOTES[val % 12], val / 12);
                     break;
                 case 7:
-                    sprintf(temp, " %.2s%d   ", notes[val % 12], val / 12);
+                    sprintf(temp, " %.2s%d   ", NOTES[val % 12], val / 12);
                     break;
                 default:
                     sprintf(temp, " %2d    ", val);

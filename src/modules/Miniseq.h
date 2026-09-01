@@ -10,14 +10,6 @@
 
 class Miniseq: public Module {
     private:
-        const char *notes[12] = {
-            " C", "C#", " D", "D#", " E", " F", 
-            "F#", " G", "G#", " A", "A#", " B"
-        };
-        const char *PROGRESS[6] = {
-            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
-            "\'\'\'\' ", "\'\'\'\'\'"
-        };
         /// note on tick for note off tick is start + gate
         unsigned long start;
         /// rank in the small sequence
@@ -59,7 +51,7 @@ class Miniseq: public Module {
                     break;
                 default:
                     sprintf(temp, " %.2s%d   ", 
-                            notes[val % 12], val / 12);
+                            NOTES[val % 12], val / 12);
                     break;
             }
             temp[7] = '\0';

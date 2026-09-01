@@ -19,10 +19,6 @@ class Looper: public Module {
     private:
         const char *ONOFF[2] = {" OFF", " ON "};
         const char *MODE[2] =  {"STbyST", "RealTi"};
-        const char *PROGRESS[6] = {
-            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
-            "\'\'\'\' ", "\'\'\'\'\'"
-        };
         unsigned long start;
         int index;
         int stepIndex;

@@ -20,14 +20,6 @@
 
 class Random: public Module {
     private:
-        const char *notes[12] = {
-            " C", "C#", " D", "D#", " E", " F", 
-            "F#", " G", "G#", " A", "A#", " B"
-        };
-        const char *PROGRESS[6] = {
-            "     ", "\'    ", "\'\'   ", "\'\'\' ", 
-            "\'\'\'\' ", "\'\'\'\'\'"
-        };
         const char *SCALES[NUM_SCALE] = {"CHROMA", "MAJOR ", 
             "PENTA ", "HARMON"};
         const char *ONOFF[2] = {"OFF", "ON "};
@@ -81,7 +73,7 @@ class Random: public Module {
                     sprintf(temp, " %.6s", SCALES[val]);
                     break;
                 case 3:
-                    sprintf(temp, " %.2s    ", notes[val]);
+                    sprintf(temp, " %.2s    ", NOTES[val]);
                     break;
                 case 4:
                     sprintf(temp, " %.3s   ", ONOFF[val]);
@@ -91,7 +83,7 @@ class Random: public Module {
                     break; 
                 default:
                     sprintf(temp, " %.2s%d  ", 
-                            notes[val % 12], val / 12);
+                            NOTES[val % 12], val / 12);
                     break;
             }
             temp[7] = '\0';
