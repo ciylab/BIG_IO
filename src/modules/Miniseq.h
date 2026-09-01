@@ -44,7 +44,7 @@ class Miniseq: public Module {
                     sprintf(temp, "  %d    ", val);
                     break;
                 case 1:
-                    sprintf(temp, " %s ", PROGRESS[val]);
+                    getProgressBar(val, temp); 
                     break;
                 case 7:
                     sprintf(temp, " /%d   ", val);

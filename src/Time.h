@@ -121,7 +121,7 @@ class Time: public Module {
                     sprintf(temp, " %.3s   ", METER[val]);
                     break;                
                 case 3:
-                    sprintf(temp, " %.5s ", PROGRESS[val]);
+                    getProgressBar(val, temp);         
                     break;
                default:
                     break;

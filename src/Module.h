@@ -34,7 +34,6 @@ struct parameter {
 
 class Module {
     public:
-        static const char *PROGRESS[6];
         static const char *NOTES[12];
         parameter io[4]; //!< Array of input/output parameters.
         parameter parameters[8]; //!< Array of data to play.
@@ -118,6 +117,19 @@ class Module {
          * @remark Depends on Display::cursor_num 
          */
         virtual void getString(int val, char temp[8]) {}
+        /**
+         * @brief Show progress bar.
+         */
+        void getProgressBar(int val, char temp[8]) {
+            temp[0] = ' ';
+            for (int i = 1; i <= val; i++) {
+                temp[i] = 134;
+            }
+            for (int i = val + 1; i <= 6; i++) {
+                temp[i] = ' ';
+            }
+            temp[7] = '\0';
+        }
         /**
          * @brief Each BluePill loop execute all modules.
          */ 

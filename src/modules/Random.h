@@ -67,7 +67,7 @@ class Random: public Module {
                     sprintf(temp, " %2d    ", val);
                     break;
                 case 1:
-                    sprintf(temp, " %s", PROGRESS[val]);
+                    getProgressBar(val, temp);
                     break;
                 case 2:
                     sprintf(temp, " %.6s", SCALES[val]);
@@ -79,7 +79,7 @@ class Random: public Module {
                     sprintf(temp, " %.3s   ", ONOFF[val]);
                     break;                
                 case 5:
-                    sprintf(temp, " %s", PROGRESS[val]);
+                    getProgressBar(val, temp);
                     break; 
                 default:
                     sprintf(temp, " %.2s%d  ", 

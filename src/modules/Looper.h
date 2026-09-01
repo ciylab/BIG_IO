@@ -59,7 +59,7 @@ class Looper: public Module {
                     this->stepIndex = 0;
                     break;
                 case 4:
-                    sprintf(temp, " %.5s ", PROGRESS[val]);
+                    getProgressBar(val, temp);
                     break;
                 default:
                     sprintf(temp, " %.4s  ", ONOFF[val]); 

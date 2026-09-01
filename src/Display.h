@@ -12,6 +12,8 @@
 #include <Arduino.h>
 #include "Module.h"
 
+#define CURSOR 127
+
 class Display {
     public:
         /**

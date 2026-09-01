@@ -64,7 +64,7 @@ void Display::moveCursor(byte dest) {
     putChar(cursor_pos, ' '); // here
     cursor_pos = 
         myModules->modules[Modules::current]->parameters[dest].cursor_pos;
-    putChar(cursor_pos, '>');
+    putChar(cursor_pos, CURSOR);
 }
 
 void Display::newPage() {

@@ -28,10 +28,6 @@ const char *names[7] = {
     "NONE"
 };
 
-const char *Module::PROGRESS[6] = {
-    "     ", "'    ", "''   ", "''' ", "'''' ", "'''''"
-};
-
 const char *Module::NOTES[12] = {
     " C", "C#", " D", "D#", " E", " F", 
     "F#", " G", "G#", " A", "A#", " B"

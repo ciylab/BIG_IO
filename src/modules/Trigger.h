@@ -39,7 +39,7 @@ class Trigger: public Module {
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 1:
-                    sprintf(temp, " %.5s ", PROGRESS[val]);
+                    getProgressBar(val, temp);
                     break;
                 case 6:
                     sprintf(temp, " %.2s%d   ", NOTES[val % 12], val / 12);
