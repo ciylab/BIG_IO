@@ -14,15 +14,21 @@
  */
 extern Modules *myModules;
 
+/**
+ * @brief We move cursor.
+ * 
+ * After we show previous value or name
+ */
 void l_handleRotate(int8_t rotation) {
     Module *m = myModules->modules[Modules::current];
-    //Display::putChar(Display::cursor_pos, ' ');
     if(Modules::current == IO) {
-        // On modifie les valeurs du module current mais
-        // on est sur le module IO !
-        if(myModules->modules[Modules::to_config]->new_value) {
-            Display::show_name();
-            myModules->modules[Modules::to_config]->new_value = false;
+        // we use IO module but we show the
+        // Modules::to_config io parameters !
+        Module *other = myModules->modules[Modules::to_config];
+        if(other->new_value) {
+            parameter p = other->io[Display::cursor_num];
+            Display::show_value(p.value);
+            other->new_value = false;
         }
     } else if(m->new_value) {
         if(Modules::current == CONF) {
@@ -71,9 +77,9 @@ void change_value(int8_t rotation) {
     if(!m->new_value) {
         m->new_value = true;
         m->temp = p->value;
-        if(Modules::current != CONF) {
+        if(Modules::current != CONF && Modules::current != IO) {
             Display::show_value(p->value);
-            return;
+            return; // no change, just show
         }
     }
     if(0 < rotation && m->temp < p->max) {
