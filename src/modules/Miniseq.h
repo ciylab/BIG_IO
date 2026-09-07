@@ -19,7 +19,7 @@ class Miniseq: public Module {
         void startPlay(byte pitch);
         void stopPlay(byte pitch);
     public:
-        Miniseq() : Module() {
+        Miniseq(byte indexInList) : Module(indexInList) {
             this->add({" LENGTH", 0, 0, 0, 5, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});
             this->add({" NOTE 1", 24, 24, 0, 109, 16});
@@ -31,11 +31,11 @@ class Miniseq: public Module {
             this->setMenu();
             this->noteIndex = 0;
             this->count = 0;
-            this->indexInList = 1;
             this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
+            strcpy(this->name, "BASS  ");
         }
         void execute();
         void getString(int val, char temp[8]) {

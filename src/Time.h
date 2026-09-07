@@ -72,19 +72,19 @@ class Time: public Module {
          */
         static bool newTick;
                 
-        Time() : Module() {
+        Time(byte indexInList) : Module(indexInList) {
             this->size = 0;
             this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 0});
             this->add({" SPEED ", 3, 3, 0, 6, 16});
             this->add({" METER ", 1, 1, 0, 2, 32});
             this->add({" CHAOS ", 0, 0, 0, 5, 48});
             this->setMenu();
-            this->indexInList = 0;
             this->io[0] = {" IN    ", 0, 0, 0, 2, 0};
             this->io[1] = {" CH OUT", 1, 1, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 0, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 1, 48};
             this->init();
+            strcpy(this->name, "TIME  ");
         }
         /**
          * @brief When clock is midi in.

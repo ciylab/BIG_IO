@@ -8,26 +8,6 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
-/**
- * @brief Names of the module by type.
- *
- * Used to show on pages PLAY and CONF. 
- * It is better to store the names in array than to extract from class
- * for direct access.
- *
- * @see Conf.h
- * @see Play.h
- */
-const char *names[7] = {
-    "TIME  ", 
-    "BASS  ", 
-    "RANDOM", 
-    "REDIR ", 
-    "DRUM  ", 
-    "SEQ   ", 
-    "NONE"
-};
-
 const char *Module::NOTES[12] = {
     " C", "C#", " D", "D#", " E", " F", 
     "F#", " G", "G#", " A", "A#", " B"
@@ -40,6 +20,17 @@ Module::Module() {
     for (int i = 0; i < 64; i++) {
         text[i] = ' ';
     }
+    strcpy(this->name, "NONE  ");
+}
+
+Module::Module(byte indexInList) {
+    size = 0;
+    this->indexInList = indexInList;
+    new_value = false;
+    for (int i = 0; i < 64; i++) {
+        text[i] = ' ';
+    }
+    strcpy(this->name, "XXXXXX");
 }
 
 void Module::add(parameter p) {

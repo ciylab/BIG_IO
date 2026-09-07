@@ -3,5 +3,6 @@ html
 docs
 bin
 *.swp
+a.out
 tests/*/build
 !font/bdf

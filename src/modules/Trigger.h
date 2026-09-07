@@ -20,7 +20,7 @@ class Trigger: public Module {
          */
         unsigned long start;
     public:
-        Trigger() : Module() {
+        Trigger(byte indexInList) : Module(indexInList) {
             this->add({" LENGTH", 16, 16, 0, 16, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});
             this->add({" BEATS ", 4, 4, 0, 16, 16});
@@ -29,11 +29,11 @@ class Trigger: public Module {
             this->add({" shift ", 0, 0, 0, 16, 40});
             this->add({" PITCH ", 48, 48, 21, 108, 48});
             this->setMenu();
-            this->indexInList = 4;
             this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 0, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
+            strcpy(this->name, "DRUM  ");
         }
         void execute();
         void getString(int val, char temp[8]) {

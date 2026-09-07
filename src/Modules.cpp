@@ -24,8 +24,34 @@
 #include "modules/Simple.h"
 #include "modules/Looper.h"
 
+/**
+ * @brief Names of modules on screen.
+ */
+/*
+const char *Modules::names[7] = {
+    "TIME  ", 
+    "BASS  ", 
+    "RANDOM", 
+    "REDIR ", 
+    "DRUM  ", 
+    "SEQ   ", 
+    "NONE  "
+};
+*/
 byte Modules::current = MAIN;
 byte Modules::to_config = TIME;
+
+/**
+ * @brief Names of the module by type.
+ *
+ * Used to show on pages PLAY and CONF. 
+ * It is better to store the names in array than to 
+ * extract from class for direct access.
+ *
+ * @see Conf.h
+ * @see Play.h
+ */
+char _names[7][8];
 
 Modules::Modules() {
     this->modules[0] = new Main();
@@ -34,6 +60,9 @@ Modules::Modules() {
     this->modules[3] = new Play();
     for (int i = TIME; i < TIME + 8; i++) {
         this->modules[i] = NULL;
+    }
+    for(int num = 0; num < 7; num++) {
+        strcpy(_names[num], getModule(num)->name);
     }
 }
 
@@ -46,22 +75,22 @@ void Modules::execute() {
 Module *Modules::getModule(byte num) {
     switch(num) {
         case 0:
-            return new Time();
+            return new Time(num);
             break;
         case 1:
-            return new Miniseq();
+            return new Miniseq(num);
             break;
         case 2:
-            return new Random();
+            return new Random(num);
             break;
         case 3:
-            return new Simple();
+            return new Simple(num);
             break;
         case 4:
-            return new Trigger();
+            return new Trigger(num);
             break;
         case 5:
-            return new Looper();
+            return new Looper(num);
             break;
         default:
             return new Module();
@@ -82,9 +111,9 @@ void Modules::load_module_from_memory(byte index, byte module_num) {
         this->modules[CONF]->parameters[module_num].cursor_pos;
     for (int i = 0; i < 4; i++) {
         this->modules[CONF]->text[i + offsetInPage + 3] = 
-            names[index][i];
+            _names[index][i];
         this->modules[PLAY]->text[i + offsetInPage + 3] = 
-            names[index][i];
+            _names[index][i];
     }
 }
 

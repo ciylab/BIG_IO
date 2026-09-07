@@ -48,6 +48,7 @@ class Module {
         bool new_value; //!< Flag to only show value before change.
         byte indexInList; //!< Num of modules in base list.
         Module();
+        Module(byte indexInList);
         virtual ~Module() {}
         /**
          * @brief Add a new parameter. 

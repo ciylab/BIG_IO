@@ -28,14 +28,13 @@ class Looper: public Module {
         void stopPlay(byte pitch);
         void del_seq();
     public:
-        Looper() : Module() {
+        Looper(byte indexInList) : Module(indexInList) {
             this->add({" LENGTH", 0, 0, 0, 64, 0});
             this->add({" MODE  ", 1, 1, 0, 1, 16});
             this->add({" RECORD", 0, 0, 0, 1, 32});
             this->add({" DELETE", 0, 0, 0, 0, 40});
             this->add({" GATE  ", 1, 1, 1, 5, 48});
             this->setMenu();
-            this->indexInList = 5;
             this->io[0] = {" IN    ", 0, 0, 0, 16, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
@@ -43,6 +42,7 @@ class Looper: public Module {
             this->del_seq();
             this->index = 0;
             this->stepIndex = 0;
+            strcpy(this->name, "LOOPER");
         }
         void execute();
         void getString(int val, char temp[8]) {

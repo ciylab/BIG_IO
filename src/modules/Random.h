@@ -41,7 +41,7 @@ class Random: public Module {
         unsigned long start;
         byte current_index;
     public:
-        Random() : Module() {
+        Random(byte indexInList) : Module(indexInList) {
             this->add({" LENGTH", 0, 0, 0, 16, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});
             this->add({" SCALE ", 0, 0, 0, 3, 16});
@@ -51,7 +51,6 @@ class Random: public Module {
             this->add({" MIN   ", 24, 24, 0, 108, 48});
             this->add({" MAX   ", 72, 72, 0, 108, 56});
             this->setMenu();
-            this->indexInList = 2;
             this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
@@ -59,6 +58,7 @@ class Random: public Module {
             for(int i = 0; i < R_SEQ_SIZE; i++) {
                 this->sequence[i] = 0;
             }
+            strcpy(this->name, "RANDOM");
         }
         void execute();
         void getString(int val, char temp[8]) {
