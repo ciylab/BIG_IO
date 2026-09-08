@@ -46,9 +46,15 @@ class Module {
         char name[8]; //!< Name on the screen.
         char text[64]; //!< Page text.
         bool new_value; //!< Flag to only show value before change.
-        byte indexInList; //!< Num of modules in base list.
+        /**
+         * @brief Num of modules in base list
+         *
+         * @see Modules.cpp
+         */
+        byte indexInList;
         Module();
         Module(byte indexInList);
+        Module(byte indexInList, const char *name);
         virtual ~Module() {}
         /**
          * @brief Add a new parameter. 

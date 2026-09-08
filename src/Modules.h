@@ -9,6 +9,8 @@
 #define MODULES_H
 #include "Module.h"
 
+#define NUM_MODULES 7
+
 class Modules {
     public:
         /**
@@ -24,7 +26,7 @@ class Modules {
         /**
          * Array of the 4 + 8 modules.
          */
-        static char names[7][8];
+        static char names[7][NUM_MODULES];
         /**
          * @brief Names of the module by type.
          *

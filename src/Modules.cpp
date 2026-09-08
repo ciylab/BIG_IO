@@ -27,7 +27,7 @@
 byte Modules::current = MAIN;
 byte Modules::to_config = TIME;
 
-char Modules::names[7][8];
+char Modules::names[7][NUM_MODULES];
 
 Modules::Modules() {
     this->modules[0] = new Main();
@@ -37,7 +37,7 @@ Modules::Modules() {
     for (int i = TIME; i < TIME + 8; i++) {
         this->modules[i] = NULL;
     }
-    for(int num = 0; num < 7; num++) {
+    for(int num = 0; num < NUM_MODULES; num++) {
         strcpy(names[num], getModule(num)->name);
     }
 }
@@ -51,25 +51,25 @@ void Modules::execute() {
 Module *Modules::getModule(byte num) {
     switch(num) {
         case 0:
-            return new Time(num);
+            return new Time(num, "TIME");
             break;
         case 1:
-            return new Miniseq(num);
+            return new Miniseq(num, "BASS");
             break;
         case 2:
-            return new Random(num);
+            return new Random(num, "RANDOM");
             break;
         case 3:
-            return new Simple(num);
+            return new Simple(num, "SIMPLE");
             break;
         case 4:
-            return new Trigger(num);
+            return new Trigger(num, "DRUM");
             break;
         case 5:
-            return new Looper(num);
+            return new Looper(num, "LOOPER");
             break;
         default:
-            return new Module();
+            return new Module(NUM_MODULES - 1, "____________");
     }
 }
 

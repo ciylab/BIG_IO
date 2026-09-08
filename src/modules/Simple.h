@@ -15,7 +15,8 @@ class Simple: public Module {
         byte pitch_send[128];
         bool isInRange(byte pitch);
     public:
-        Simple(byte indexInList): Module(indexInList) {
+        Simple(byte indexInList, const char *name): 
+            Module(indexInList, name) {
             this->add({" MIN   ", 0, 0, 0, 108, 0});
             this->add({" MAX   ", 108, 108, 0, 108, 16});
             this->add({" TRANSP", 0, 0, 0, 11, 32});
@@ -24,7 +25,6 @@ class Simple: public Module {
             this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
             this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
-            strcpy(this->name, "SIMPLE");
         }
         void handleNoteOn(byte channel, byte pitch, byte velocity);
         void handleNoteOff(byte channel, byte pitch, byte velocity);
