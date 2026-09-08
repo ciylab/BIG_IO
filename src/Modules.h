@@ -12,17 +12,6 @@
 class Modules {
     public:
         /**
-         * @brief Names of the module by type.
-         *
-         * Used to show on pages PLAY and CONF. 
-         * It is better to store the names in array than to 
-         * extract from class for direct access.
-         *
-         * @see Conf.h
-         * @see Play.h
-         */
-        //static const char *names[7];
-        /**
          * @brief The module of the page from 0 to 11 include MAIN...
          */
         static byte current;
@@ -34,6 +23,17 @@ class Modules {
         static byte to_config;
         /**
          * Array of the 4 + 8 modules.
+         */
+        static char names[7][8];
+        /**
+         * @brief Names of the module by type.
+         *
+         * Used to show on pages PLAY and CONF. 
+         * It is better to store the names in array than to 
+         * extract from class for direct access.
+         *
+         * @see Conf.h
+         * @see Play.h
          */
         Module *modules[12];
         Modules();

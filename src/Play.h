@@ -8,7 +8,6 @@
 #include "Modules.h"
 
 extern Modules *myModules;
-extern char _names[7][8];
 
 class Play: public Module {
     public:
@@ -26,8 +25,7 @@ class Play: public Module {
         }
         void getString(int val, char temp[8]) {
             sprintf(temp, " %d:%.4s", 
-                    Display::cursor_num + 1, _names[val]);
-                    //Modules::names[val]);
+                    Display::cursor_num + 1, Modules::names[val]);
             temp[7] = '\0';
         }
         void l_handlePress() {

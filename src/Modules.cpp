@@ -24,34 +24,10 @@
 #include "modules/Simple.h"
 #include "modules/Looper.h"
 
-/**
- * @brief Names of modules on screen.
- */
-/*
-const char *Modules::names[7] = {
-    "TIME  ", 
-    "BASS  ", 
-    "RANDOM", 
-    "REDIR ", 
-    "DRUM  ", 
-    "SEQ   ", 
-    "NONE  "
-};
-*/
 byte Modules::current = MAIN;
 byte Modules::to_config = TIME;
 
-/**
- * @brief Names of the module by type.
- *
- * Used to show on pages PLAY and CONF. 
- * It is better to store the names in array than to 
- * extract from class for direct access.
- *
- * @see Conf.h
- * @see Play.h
- */
-char _names[7][8];
+char Modules::names[7][8];
 
 Modules::Modules() {
     this->modules[0] = new Main();
@@ -62,7 +38,7 @@ Modules::Modules() {
         this->modules[i] = NULL;
     }
     for(int num = 0; num < 7; num++) {
-        strcpy(_names[num], getModule(num)->name);
+        strcpy(names[num], getModule(num)->name);
     }
 }
 
@@ -111,9 +87,9 @@ void Modules::load_module_from_memory(byte index, byte module_num) {
         this->modules[CONF]->parameters[module_num].cursor_pos;
     for (int i = 0; i < 4; i++) {
         this->modules[CONF]->text[i + offsetInPage + 3] = 
-            _names[index][i];
+            names[index][i];
         this->modules[PLAY]->text[i + offsetInPage + 3] = 
-            _names[index][i];
+            names[index][i];
     }
 }
 

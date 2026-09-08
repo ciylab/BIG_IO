@@ -14,7 +14,6 @@
  * @see BIG_IO.ino file
  */
 extern Modules *myModules;
-extern char _names[7][8];
 
 class Conf: public Module {
     public:
@@ -38,9 +37,7 @@ class Conf: public Module {
          */
         void getString(int val, char temp[8]) {
             sprintf(temp, " %d:%.4s", 
-                    Display::cursor_num + 1, 
-                    //Modules::names[val]);
-                _names[val]);
+                    Display::cursor_num + 1, Modules::names[val]);
             temp[7] = '\0';
         }
         /**
