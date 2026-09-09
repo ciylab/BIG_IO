@@ -82,6 +82,7 @@ void handleControlChange(byte channel, byte number, byte value) {
     }
     parameter *p = &(m->parameters)[number - 1];
     p->value = map(value, 0, 127, p->min, p->max);
+    m->new_value = true;
 }
 
 
