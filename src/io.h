@@ -26,8 +26,8 @@ class io: public Module {
     public:
         io() : Module() {
             this->size = 0;
-            this->add({" IN    ", 0, 0, 0, 17, 8});
-            this->add({" CH OUT", 0, 0, 0, 17, 24});
+            this->add({" IN    ", 0, 0, 0, 16, 8});
+            this->add({" CH OUT", 0, 0, 0, 16, 24});
             this->add({" CV OUT", 0, 0, 0, 3, 40});
             this->add({" GT OUT", 0, 0, 0, 5, 56});
         }

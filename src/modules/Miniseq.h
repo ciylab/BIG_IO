@@ -19,24 +19,24 @@ class Miniseq: public Module {
         void startPlay(byte pitch);
         void stopPlay(byte pitch);
     public:
-        Miniseq(byte indexInList) : Module(indexInList) {
-            this->add({" LENGTH", 0, 0, 0, 5, 0});
-            this->add({" GATE  ", 1, 1, 1, 5, 8});
-            this->add({" NOTE 1", 24, 24, 0, 109, 16});
-            this->add({" NOTE 2", 28, 28, 0, 109, 24});
-            this->add({" NOTE 3", 31, 31, 0, 109, 32});
-            this->add({" NOTE 4", 35, 35, 0, 109, 40});
-            this->add({" NOTE 5", 38, 38, 0, 109, 48});
-            this->add({" TEMPO ", 1, 1, 1, 4, 56});
-            this->setMenu();
-            this->noteIndex = 0;
-            this->count = 0;
-            this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
-            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
-            this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
-            strcpy(this->name, "BASS  ");
-        }
+        Miniseq(byte indexInList, const char* name) : 
+            Module(indexInList, name) {
+                this->add({" LENGTH", 0, 0, 0, 5, 0});
+                this->add({" GATE  ", 1, 1, 1, 5, 8});
+                this->add({" NOTE 1", 24, 24, 0, 109, 16});
+                this->add({" NOTE 2", 28, 28, 0, 109, 24});
+                this->add({" NOTE 3", 31, 31, 0, 109, 32});
+                this->add({" NOTE 4", 35, 35, 0, 109, 40});
+                this->add({" NOTE 5", 38, 38, 0, 109, 48});
+                this->add({" TEMPO ", 1, 1, 1, 4, 56});
+                this->setMenu();
+                this->noteIndex = 0;
+                this->count = 0;
+                this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
+                this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
+                this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
+                this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
+            }
         void execute();
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {

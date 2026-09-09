@@ -15,22 +15,30 @@ const char *Module::NOTES[12] = {
 
 Module::Module() {
     size = 0;
-    indexInList = 6;
     new_value = false;
     for (int i = 0; i < 64; i++) {
         text[i] = ' ';
     }
-    strcpy(this->name, "NONE  ");
+    strcpy(this->name, "NONE");
 }
 
-Module::Module(byte indexInList) {
+Module::Module(byte indexInList, const char* name) {
     size = 0;
     this->indexInList = indexInList;
     new_value = false;
     for (int i = 0; i < 64; i++) {
         text[i] = ' ';
     }
-    strcpy(this->name, "XXXXXX");
+    int i = 0;
+    while(i < 7 && name[i] != '\0') {
+        this->name[i] = name[i];
+        i++;
+    }
+    while(i < 7) {
+        this->name[i] = ' ';
+        i++;
+    }
+    this->name[i] = '\0';
 }
 
 void Module::add(parameter p) {

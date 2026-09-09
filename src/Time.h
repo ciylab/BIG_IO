@@ -72,7 +72,8 @@ class Time: public Module {
          */
         static bool newTick;
                 
-        Time(byte indexInList) : Module(indexInList) {
+        Time(byte indexInList, const char* name) : 
+            Module(indexInList, name) {
             this->size = 0;
             this->add({" BPM   ", DEFAULT_BPM, DEFAULT_BPM, 30, 240, 0});
             this->add({" SPEED ", 3, 3, 0, 6, 16});
@@ -84,7 +85,6 @@ class Time: public Module {
             this->io[2] = {" CV OUT", 0, 0, 0, 0, 32};
             this->io[3] = {" GT OUT", 0, 0, 0, 1, 48};
             this->init();
-            strcpy(this->name, "TIME  ");
         }
         /**
          * @brief When clock is midi in.

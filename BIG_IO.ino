@@ -47,6 +47,8 @@ void setup() {
     MIDI.setHandleClock(handleClock);
     MIDI.setHandleStart(handleStart);
     MIDI.setHandleStop(handleStop);
+    MIDI.setHandleProgramChange(handleProgramChange);
+    MIDI.setHandleControlChange(handleControlChange);
     /*
      * left encoder
      */

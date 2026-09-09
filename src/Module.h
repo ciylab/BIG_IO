@@ -49,6 +49,7 @@ class Module {
         byte indexInList; //!< Num of modules in base list.
         Module();
         Module(byte indexInList);
+        Module(byte indexInList, const char* name);
         virtual ~Module() {}
         /**
          * @brief Add a new parameter. 
