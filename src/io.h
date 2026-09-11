@@ -83,6 +83,7 @@ class io: public Module {
         }
         void l_handlePress() {
             Modules::current = CONF;
+            myModules->modules[CONF]->new_value = false;
             Display::newPage();
         }
         void r_handlePress() {
