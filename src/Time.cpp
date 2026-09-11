@@ -54,9 +54,6 @@ void Time::l_handlePress() {
     Display::newPage();
 }
 
-void Time::r_handlePress() {
-}
-
 void Time::metronome() {
     if(this->io[1].value == 0) {
         return;

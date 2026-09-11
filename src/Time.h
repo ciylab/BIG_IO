@@ -97,7 +97,6 @@ class Time: public Module {
          */
         void panic();
         void l_handlePress();
-        void r_handlePress();
         /**
          * @brief At each loop.
          *

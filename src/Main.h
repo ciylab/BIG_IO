@@ -59,8 +59,8 @@ class Main: public Module {
                 load(p->value);
                 Display::print_here(" LOADED");
             } else if(this->new_value && Display::cursor_num == 3) {
-                // p->value = this->temp;
-                // save(p->value);
+                p->value = this->temp;
+                save(p->value);
                 Display::print_here(" SAVED ");
             }
         }

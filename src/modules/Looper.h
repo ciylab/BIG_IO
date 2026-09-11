@@ -24,9 +24,11 @@ class Looper: public Module {
         int stepIndex;
         byte pitchOn[6 * 16 * 4]; // 384
         byte pitchOff[6 * 16 * 4]; // 384
-        void startPlay(byte pitch);
+        byte velocities[6 * 16 * 4]; // 384
+        void startPlay(byte pitch, byte velocity);
         void stopPlay(byte pitch);
         void del_seq();
+        byte count;
     public:
         Looper(byte indexInList, const char* name) : 
             Module(indexInList, name) {
@@ -43,6 +45,7 @@ class Looper: public Module {
             this->del_seq();
             this->index = 0;
             this->stepIndex = 0;
+            this->count = 0;
         }
         void execute();
         void getString(int val, char temp[8]) {
@@ -67,6 +70,7 @@ class Looper: public Module {
             }
             temp[7] = '\0';
         }
+        bool getData(int index, byte data[6]);
         void l_handlePress();
         void r_handlePress();
         void handleNoteOn(byte channel, byte pitch, byte velocity);

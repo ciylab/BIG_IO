@@ -56,11 +56,15 @@ void Module::setMenu() {
     }
 }
 
-void Module::startPlayMIDI(byte pitch){
+void Module::startPlayMIDI(byte pitch, byte velocity){
     this->io[1].buffer = this->io[1].value;
     if(this->io[1].value != 0) {
-        MIDI.sendNoteOn(pitch, 127, this->io[1].value);
+        MIDI.sendNoteOn(pitch, velocity, this->io[1].value);
     }
+}
+
+void Module::startPlayMIDI(byte pitch) {
+    startPlayMIDI(pitch, 127);
 }
 
 void Module::startPlayCV(byte pitch) {

@@ -141,6 +141,10 @@ class Module {
          */
         virtual void startPlayMIDI(byte pitch);
         /**
+         * @brief General function to send midi note
+         */
+        virtual void startPlayMIDI(byte pitch, byte velocity);
+        /**
          * @brief General function to send cv
          */
         virtual void startPlayCV(byte pitch);
@@ -168,6 +172,12 @@ class Module {
                 delete m;
                 m = NULL;
             }
+        }
+        /**
+         * @brief Only to save seuence of Looper
+         */
+        virtual bool getData(int index, byte data[6]) {
+            return false;
         }
 };
 
