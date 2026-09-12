@@ -10,8 +10,10 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 #include <Arduino.h>
-#include "Module.h"
 
+/**
+ * @brief The char number of filled triangle in my font.
+ */
 #define CURSOR 127
 
 class Display {

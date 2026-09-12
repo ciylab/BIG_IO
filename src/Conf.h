@@ -5,7 +5,6 @@
 #ifndef CONF_H
 #define CONF_H
 
-#include "Module.h"
 #include "Modules.h"
 
 /**

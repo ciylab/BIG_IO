@@ -4,7 +4,6 @@
  */
 #ifndef IO_H
 #define IO_H
-#include "Module.h"
 #include "Modules.h"
 
 extern Modules *myModules;

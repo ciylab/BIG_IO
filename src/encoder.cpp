@@ -2,8 +2,6 @@
  * @file encoder.cpp
  */
 
-#include <Arduino.h> // For Serial test 
-#include "Display.h" // To display names and values
 #include "dac.h"     // For calibrate
 #include "Modules.h" // To change values
 
