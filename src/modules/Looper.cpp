@@ -36,6 +36,14 @@ bool Looper::getData(int index, byte data[6]) {
     return true;
 }
 
+void Looper::setData(byte data[6]) {
+    byte indexOn = (data[2] << 8) + data[3];
+    byte indexOff = (data[4] << 8) + data[5];
+    pitchOn[indexOn] = data[0];
+    velocities[indexOn] = data[1];
+    pitchOff[indexOff] = data[0];
+}
+
 void Looper::startPlay(byte pitch, byte velocity) {
     startPlayMIDI(pitch, velocity);
     startPlayCV(pitch);

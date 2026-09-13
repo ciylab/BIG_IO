@@ -37,7 +37,7 @@ void Display::putChar(byte position, char c) {
 }
 
 void Display::welcome() {
-    sprintf(screen, "  BIG InOut       MIDI/CV/GATE    BY CIYLAB       %s",
+    sprintf(screen, "  THE BIG ONE     MIDI/CV/GATE    BY CIYLAB       %s",
             VERSION);
     for (int i = 0; i < 63; i++) {
         putChar(i, screen[i]);

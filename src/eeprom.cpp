@@ -120,7 +120,35 @@ void write_null(int slot_num) {
 }
 
 /**
- * @brief Factory init
+ * @brief Compute offset for sequence of data
+ *
+ * @param slot_num the slot number (FACT = 0)
+ * @param module_num the module number (TIME = 0)
+ */
+unsigned int get_offset(byte slot_num, byte module_num) {
+    unsigned int offset = 8 * CONFIG_SIZE * 8; // base config memory
+    offset += 15 * 32 * 8 * slot_num;          // slots memory for seq
+    offset += 15 * 32 * module_num;            // modules memory for seq
+    return offset;
+}
+
+/**
+ * @brief Set sequences to null for any module
+ * 
+ * The key is to set the end mark of sequence with data[0] = 0
+ */
+void init_data() {
+    unsigned int offset;
+    for(byte slot_num = 0; slot_num < 8; slot_num++) {
+        for (byte module_num = 0; module_num < 8; module_num++) {
+            offset = get_offset(slot_num, module_num);
+            updateEEPROM(EEPROM, offset, 0);
+        }
+    }
+}
+
+/**
+ * @brief Factory presets init with null sequence
  */
 void init_eeprom() {
     write_factory();             // FACT
@@ -128,19 +156,19 @@ void init_eeprom() {
     for(int i = 2; i < 8; i++) {
         write_null(i);           // SLOT B to G
     }
+    init_data();
 }
 
+/**
+ * @brief Starting with the slot 0 of factory preset 
+ *
+ * @remark The user cannot write on this preset.
+ */
 void init_from_eeprom() {
     Wire.begin();
-    //init_eeprom();
+    // Only to put the values in eeprom from factory CIYLab.
+    // init_eeprom();
     load(0); // load from factory preset FACT.
-}
-
-unsigned int get_offset(byte slot_num, byte module_num) {
-    unsigned int offset = 8 * CONFIG_SIZE * 8; // base config memory
-    offset += 15 * 32 * 8 * slot_num;          // slots memory for seq
-    offset += 15 * 32 * module_num;            // modules memory for seq
-    return offset;
 }
 
 void print_data(byte data[6], int count_note) {
@@ -159,8 +187,14 @@ void print_data(byte data[6], int count_note) {
     Serial.println();
 }
 
+/**
+ * @brief Get sequence from eeprom.
+ *
+ * @param slot_num the slot number (FACT = 0)
+ * @param module_num the module number (TIME = 0)
+ */
 void read_sequence(byte slot_num, byte module_num) {
-    //Module *m = myModules->modules[TIME + module_num];
+    Module *m = myModules->modules[TIME + module_num];
     byte data[6];
     unsigned int offset = get_offset(slot_num, module_num);
     int count_note = 0;
@@ -175,6 +209,7 @@ void read_sequence(byte slot_num, byte module_num) {
         if(data[0] == 0) {
             break;
         }
+        m->setData(data);
         count_note++;
         if(count_note == 5) {
             count_chunk++;
@@ -183,6 +218,12 @@ void read_sequence(byte slot_num, byte module_num) {
     }
 }
 
+/**
+ * @brief Set sequence to eeprom by chunck of 30 bytes = 5 notes.
+ *
+ * @param slot_num the slot number (FACT = 0)
+ * @param module_num the module number (TIME = 0)
+ */
 void write_sequence(byte slot_num, byte module_num) {
     Module *m = myModules->modules[TIME + module_num];
     byte data[6];
@@ -228,7 +269,7 @@ void write_sequence(byte slot_num, byte module_num) {
 }
 
 /**
- * @brief to save only one module
+ * @brief To save only one module
  *
  * @param offset firt byte num
  * @param module_num from 0 to 7
