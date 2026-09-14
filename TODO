@@ -1,2 +1,4 @@
 - vérifier le jeu lors les changement de paramètres MIDI, CV, GATE...
-
+- ajouter le déclenchement de jeu par l'entrée MIDI du mini-séquenceur
+- ajouter l'enregistrement dans l'eeprom de la séquence aléatoire lorsqu'elle est gelée
+- ajouter le dump/restore par sysex

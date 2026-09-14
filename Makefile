@@ -10,8 +10,11 @@ BIN_DIR     := $(subst :,.,bin/$(FQBN))
 SRCINO      := $(PROJECT).ino
 BIN         := $(BIN_DIR)/$(SRCINO).bin
 DOXYFILE    :=
-DOCS        :=
-MODULES     = $(wildcard $(DOCS)/modules/*.md)
+DOCS        := docs
+MODULES     := $(wildcard $(DOCS)/modules/*.md)
+SRC	    := src
+HEADERS     := $(wildcard $(SRC)/*.h)
+HEADERS     := $(HEADERS) $(wildcard $(SRC)/modules/*.h)
 METADATA    = $(DOCS)/metadata.yaml
 MAN         = $(DOCS)/MANUAL_FR.md
 JEKYLL_DIR  :=
@@ -20,9 +23,7 @@ MANIFEST    := ../arduino-manifest/arduino-manifest.pl
 ifneq (,$(wildcard Doxyfile))
 	DOXYFILE    := Doxyfile
 endif
-ifneq (,$(wildcard docs))
-	DOCS        := docs
-endif
+
 ifneq (,$(wildcard ../ciylab.github.io))
 	JEKYLL_DIR  := ../ciylab.github.io
 endif
@@ -96,7 +97,7 @@ man: metadata
 	
 manifest:
 	$(info **************** create requirements.txt)
-	@$(MANIFEST) -r -v -b $(FQBN) $(SRCINO) > requirements.txt
+	@$(MANIFEST) -v -r -b $(FQBN) $(SRCINO) $(HEADERS) > requirements.txt
 	
 .PHONY: docs
 docs: doxygen tags man manifest
@@ -124,8 +125,11 @@ debug:
 	@echo port = $(PORT)
 	@echo doxyfile = $(DOXYFILE)
 	@echo docs = $(DOCS)
-	@echo modules = $(basename $(notdir $(MODULES)))
+	@echo src = $(SRC)
+	@echo headers = $(HEADERS)
+	@echo modules = $(MODULES)
 	@echo metada = $(METADATA)
 	@echo manual = $(MAN)
 	@echo jekyll = $(JEKYLL_DIR)
 	@echo manifest = $(MANIFEST)
+

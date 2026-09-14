@@ -32,7 +32,7 @@ class Main: public Module {
 
     public:
         Main() : Module() {
-            this->add({" IO    ", 0, 0, 0, 0, 0});
+            this->add({" CONFIG", 0, 0, 0, 0, 0});
             this->add({" PLAY  ", 0, 0, 0, 7, 16});
             this->add({" LOAD  ", 0, 0, 0, 7, 32});
             this->add({" SAVE  ", 1, 1, 1, 7, 40});

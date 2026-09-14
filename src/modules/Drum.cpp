@@ -1,9 +1,9 @@
 /**
- * @file Trigger.cpp
+ * @file Drum.cpp
  */
 #include <MIDI.h>
+#include "Drum.h"
 #include "../Time.h"
-#include "Trigger.h"
 #include "../Modules.h"
 #include "../midi.h"
 #include "../encoder.h"
@@ -11,7 +11,7 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI;
 
-bool Trigger::isPulse() {
+bool Drum::isPulse() {
     byte length = parameters[0].value;
     if ((parameters[2].value *
                 (length - parameters[3].value + Time::tick / 6)) % length < 
@@ -26,18 +26,18 @@ bool Trigger::isPulse() {
     return false;
 }
 
-void Trigger::startPlay(byte pitch) {
+void Drum::startPlay(byte pitch) {
     parameters[6].buffer = pitch;
     startPlayMIDI(pitch);
     startPlayGate();
 }
 
-void Trigger::stopPlay(byte pitch) {
+void Drum::stopPlay(byte pitch) {
     stopPlayMIDI(pitch);
     stopPlayGate();
 }
 
-void Trigger::execute() {
+void Drum::execute() {
     if (parameters[0].value == 0 ||
             (parameters[2].value == 0 && parameters[3].value == 0)) {
         return;
@@ -52,11 +52,11 @@ void Trigger::execute() {
     }
 }
 
-void Trigger::l_handlePress() {
+void Drum::l_handlePress() {
     Modules::current = PLAY; 
     Display::newPage();
 }
 
-void Trigger::r_handlePress() {
+void Drum::r_handlePress() {
 }
 

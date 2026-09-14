@@ -1,5 +1,5 @@
 /**
- * @class Trigger
+ * @class Drum
  * @brief Dual euclidian generator 
  */
 #ifndef TRIGGER_H
@@ -7,7 +7,7 @@
 #include "../Module.h"
 
 
-class Trigger: public Module {
+class Drum: public Module {
     private:
         /**
          * @brief if true then we play
@@ -20,7 +20,7 @@ class Trigger: public Module {
          */
         unsigned long start;
     public:
-        Trigger(byte indexInList, const char* name) : 
+        Drum(byte indexInList, const char* name) : 
             Module(indexInList, name) {
             this->add({" LENGTH", 16, 16, 0, 16, 0});
             this->add({" GATE  ", 1, 1, 1, 5, 8});

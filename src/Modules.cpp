@@ -18,7 +18,7 @@
  * @brief The available modules.
  */
 
-#include "modules/Trigger.h"
+#include "modules/Drum.h"
 #include "modules/Miniseq.h"
 #include "modules/Random.h"
 #include "modules/Simple.h"
@@ -63,7 +63,7 @@ Module *Modules::getModule(byte num) {
             return new Simple(num, "SIMPLE");
             break;
         case 4:
-            return new Trigger(num, "DRUM");
+            return new Drum(num, "DRUM");
             break;
         case 5:
             return new Looper(num, "LOOPER");

@@ -1,8 +1,10 @@
 tags
 html
-docs
+docs/assets
+docs/metadata.yaml
 bin
 *.swp
 a.out
 tests/*/build
 !font/bdf
+font/docs/
