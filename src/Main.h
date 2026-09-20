@@ -19,7 +19,7 @@
 
 class Main: public Module {
     private:
-        const char *memory[8] = {
+        const char *memory[9] = {
             "FACT  ", // 0
             "SLOT A", // 1
             "SLOT B", // 2
@@ -27,15 +27,16 @@ class Main: public Module {
             "SLOT D", // 4
             "SLOT E", // 5
             "SLOT F", // 6
-            "SLOT G"  // 7
+            "SLOT G", // 7
+            "SLOT H"  // 8
         };
 
     public:
         Main() : Module() {
             this->add({" CONFIG", 0, 0, 0, 0, 0});
             this->add({" PLAY  ", 0, 0, 0, 7, 16});
-            this->add({" LOAD  ", 0, 0, 0, 7, 32});
-            this->add({" SAVE  ", 1, 1, 1, 7, 40});
+            this->add({" LOAD  ", 0, 0, 0, 8, 32});
+            this->add({" SAVE  ", 1, 1, 1, 8, 40});
             this->add({" CALIBR", 0, 0, 0, 0, 48});
             this->setMenu();
         }

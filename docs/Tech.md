@@ -7,7 +7,7 @@
 **Dimensions** :
 
 * largeur : 12HP
-* profondeur : 0mm
+* profondeur : 45mm
 
 **Librairies** :
 

@@ -59,21 +59,34 @@ void updateEEPROM(int deviceaddress, unsigned int eeaddress, byte data) {
 }
 
 /**
- * @brief Write default values (factory preset) in the first slot.
+ * @brief Load default values (factory preset) in the first slot.
  */
-void write_factory() {
+void load_factory_preset() {
     byte data[8 * CONFIG_SIZE] = {
         0, 0, 1, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
         4, 0, 2, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
         1, 0, 3, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
         5, 1, 4, 2, 4,  0,   1,  0,  0,  2,  0,  0,  0, // SEQ 
         2, 0, 5, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
+        // 6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        // 6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        // 6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+        // 6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
     };
-    for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
-        updateEEPROM(EEPROM, i, data[i]);
+    int offset = 0;
+    for(int module_num = 0; module_num < 8; module_num++) {
+        byte index = data[offset++];
+        myModules->load_module_from_memory(index, module_num);
+        Module *m = myModules->modules[TIME + module_num];
+        for(int i = 0; i < 4; i++) {
+            m->io[i].value = data[offset++];
+        }
+        for(int i = 0; i < 8; i++) {
+            m->parameters[i].value  = data[offset++];
+        }
     }
 }
 
@@ -91,7 +104,7 @@ void write_simple() {
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
     };
-    int offset = 8 * CONFIG_SIZE;
+    int offset = 0;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
         updateEEPROM(EEPROM, offset++, data[i]);
     }
@@ -151,10 +164,10 @@ void init_data() {
  * @brief Factory presets init with null sequence
  */
 void init_eeprom() {
-    write_factory();             // FACT
+    //write_factory();             // FACT
     write_simple();              // SLOT A
-    for(int i = 2; i < 8; i++) {
-        write_null(i);           // SLOT B to G
+    for(int i = 1; i < 9; i++) {
+        write_null(i);           // SLOT B to H
     }
     init_data();
 }
@@ -297,6 +310,7 @@ void save(byte slot_num) {
     if(slot_num == 0) {
         return;
     }
+    slot_num--;
     for(int i = 0; i < 8; i++) {
         write_module(slot_num, i);
         read_memory(i);
@@ -327,7 +341,12 @@ void read_module_from_eeprom(byte slot_num, byte module_num) {
     }
 }
 
-void load(int slot_num) {    
+void load(int slot_num) { 
+    if (slot_num == 0) {
+        load_factory_preset();
+        return;
+    }  
+    slot_num--;
     for(int i = 0; i < 8; i++) {
         read_module_from_eeprom(slot_num, i);
     }
