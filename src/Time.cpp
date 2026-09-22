@@ -92,8 +92,12 @@ void Time::handleGate() {
         modulo = (4 - ratio) * modulo;
     }
     if (Time::tick % modulo == 0 && playRand()) {
+        // flag gate is open
+        this->parameters[1].buffer = 1;
         digitalWrite(CLOCK_OUT, LOW);
-    } else if (Time::tick % modulo == 2) {
+    } else if (Time::tick % modulo == 2 &&
+            this->parameters[1].buffer == 1) {
+        this->parameters[1].buffer = 0;
         digitalWrite(CLOCK_OUT, HIGH);
     }
 }

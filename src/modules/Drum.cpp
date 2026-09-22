@@ -60,3 +60,20 @@ void Drum::l_handlePress() {
 void Drum::r_handlePress() {
 }
 
+void Drum::handleNoteOn(byte channel, byte pitch, byte velocity) {
+    if(channel != this->io[0].value) {
+        return;
+    }
+    startPlayMIDI(pitch, velocity);
+    startPlayGate();
+}
+
+void Drum::handleNoteOff(byte channel, byte pitch, byte velocity) {
+    if(channel != this->io[0].value) {
+        return;
+    }
+    stopPlayMIDI(pitch);
+    stopPlayGate();
+}
+
+
