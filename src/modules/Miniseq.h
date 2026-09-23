@@ -32,7 +32,7 @@ class Miniseq: public Module {
                 this->setMenu();
                 this->noteIndex = 0;
                 this->count = 0;
-                this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
+                this->io[0] = {" IN    ", 0, 0, 0, 16, 0};
                 this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
                 this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
                 this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
@@ -58,6 +58,8 @@ class Miniseq: public Module {
         }
         void l_handlePress();
         void r_handlePress();
+        void handleNoteOn(byte channel, byte pitch, byte velocity);
+        void handleNoteOff(byte channel, byte pitch, byte velocity);
 };
 
 #endif
