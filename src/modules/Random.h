@@ -43,19 +43,19 @@ class Random: public Module {
     public:
         Random(byte indexInList, const char* name) : 
             Module(indexInList, name) {
-            this->add({" LENGTH", 0, 0, 0, 16, 0});
-            this->add({" GATE  ", 1, 1, 1, 5, 8});
-            this->add({" SCALE ", 0, 0, 0, 3, 16});
-            this->add({" KEY   ", 0, 0, 0, 11, 24});
-            this->add({" FREEZE", 0, 0, 0, 1, 32});
-            this->add({" HUMAN ", 0, 0, 0, 5, 40});
-            this->add({" MIN   ", 24, 24, 0, 108, 48});
-            this->add({" MAX   ", 72, 72, 0, 108, 56});
+            this->add(parameter{" LENGTH", 0, 0, 0, 16, 0});
+            this->add(parameter{" GATE  ", 1, 1, 1, 5, 8});
+            this->add(parameter{" SCALE ", 0, 0, 0, 3, 16});
+            this->add(parameter{" KEY   ", 0, 0, 0, 11, 24});
+            this->add(parameter{" FREEZE", 0, 0, 0, 1, 32});
+            this->add(parameter{" HUMAN ", 0, 0, 0, 5, 40});
+            this->add(parameter{" MIN   ", 24, 24, 0, 108, 48});
+            this->add(parameter{" MAX   ", 72, 72, 0, 108, 56});
             this->setMenu();
-            this->io[0] = {" IN    ", 0, 0, 0, 0, 0};
-            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
-            this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
+            this->io[0] = parameter{" IN    ", 0, 0, 0, 0, 0};
+            this->io[1] = parameter{" CH OUT", 0, 0, 0, 16, 16};
+            this->io[2] = parameter{" CV OUT", 0, 0, 0, 3, 32};
+            this->io[3] = parameter{" GT OUT", 0, 0, 0, 5, 48};
             for(int i = 0; i < R_SEQ_SIZE; i++) {
                 this->sequence[i] = 0;
             }

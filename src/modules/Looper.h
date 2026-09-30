@@ -32,16 +32,16 @@ class Looper: public Module {
     public:
         Looper(byte indexInList, const char* name) : 
             Module(indexInList, name) {
-            this->add({" LENGTH", 0, 0, 0, 64, 0});
-            this->add({" MODE  ", 1, 1, 0, 1, 16});
-            this->add({" RECORD", 0, 0, 0, 1, 32});
-            this->add({" DELETE", 0, 0, 0, 0, 40});
-            this->add({" GATE  ", 1, 1, 1, 5, 48});
+            this->add(parameter{" LENGTH", 0, 0, 0, 64, 0});
+            this->add(parameter{" MODE  ", 1, 1, 0, 1, 16});
+            this->add(parameter{" RECORD", 0, 0, 0, 1, 32});
+            this->add(parameter{" DELETE", 0, 0, 0, 0, 40});
+            this->add(parameter{" GATE  ", 1, 1, 1, 5, 48});
             this->setMenu();
-            this->io[0] = {" IN    ", 0, 0, 0, 16, 0};
-            this->io[1] = {" CH OUT", 0, 0, 0, 16, 16};
-            this->io[2] = {" CV OUT", 0, 0, 0, 3, 32};
-            this->io[3] = {" GT OUT", 0, 0, 0, 5, 48};
+            this->io[0] = parameter{" IN    ", 0, 0, 0, 16, 0};
+            this->io[1] = parameter{" CH OUT", 0, 0, 0, 16, 16};
+            this->io[2] = parameter{" CV OUT", 0, 0, 0, 3, 32};
+            this->io[3] = parameter{" GT OUT", 0, 0, 0, 5, 48};
             this->del_seq();
             this->index = 0;
             this->stepIndex = 0;

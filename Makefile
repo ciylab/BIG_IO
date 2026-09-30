@@ -1,24 +1,14 @@
 # Source : https://github.com/digiampietro/arduino-makefile/
 
-PROJECT     := $(notdir $(CURDIR))
-VERSION     := $(shell git describe --abbrev=0)
-FQBN        := STMicroelectronics:stm32:GenF1
-BOARD       := STM32F103C8T6
-CFLAGS      := -DDEBUG -DVERSION=\"$(VERSION)\"
-CFLAGS      := --build-property build.extra_flags="$(CFLAGS)"
-BIN_DIR     := $(subst :,.,bin/$(FQBN))
-SRCINO      := $(PROJECT).ino
-BIN         := $(BIN_DIR)/$(SRCINO).bin
-DOXYFILE    :=
-DOCS        := docs
-MODULES     := $(wildcard $(DOCS)/modules/*.md)
-SRC	    := src
-HEADERS     := $(wildcard $(SRC)/*.h)
-HEADERS     := $(HEADERS) $(wildcard $(SRC)/modules/*.h)
-METADATA    = $(DOCS)/metadata.yaml
-MAN         = $(DOCS)/MANUAL_FR.md
-JEKYLL_DIR  :=
-MANIFEST    := ../arduino-manifest/arduino-manifest.pl
+ifeq ($(board), nanor4)
+	FQBN := arduino:renesas_uno:nanor4
+	BOARD := NANOR4
+else ifeq ($(board), bluepill)
+	FQBN := STMicroelectronics:stm32:GenF1
+	BOARD := STM32F103C8T6
+	OPTIONS = --board-options "pnum=BLUEPILL_F103CB"
+	OPTIONS += --board-options "usb=CDCgen"
+endif
 
 ifneq (,$(wildcard Doxyfile))
 	DOXYFILE    := Doxyfile
@@ -27,6 +17,7 @@ endif
 ifneq (,$(wildcard ../ciylab.github.io))
 	JEKYLL_DIR  := ../ciylab.github.io
 endif
+
 ifndef PORT
 	ifneq (,$(wildcard /dev/ttyUSB0))
 		PORT = /dev/ttyUSB0
@@ -37,15 +28,32 @@ ifndef PORT
 	endif
 endif
 
+OSFAMILY    := $(shell ( uname | sed "s/-.*//" ))
+PROJECT     := $(notdir $(CURDIR))
+VERSION     := $(shell git describe --abbrev=0)
+CFLAGS      := -DVERSION=\"$(VERSION)\" -D$(board)
+CFLAGS      := --build-property build.extra_flags="$(CFLAGS)"
+BIN_DIR     := $(subst :,.,bin/$(FQBN))
+SRCINO      := $(PROJECT).ino
+BIN         := $(BIN_DIR)/$(SRCINO).bin
+DOCS        := docs
+MODULES     := $(wildcard $(DOCS)/modules/*.md)
+SRC	        := src
+HEADERS     := $(wildcard $(SRC)/*.h)
+HEADERS     := $(HEADERS) $(wildcard $(SRC)/modules/*.h)
+METADATA    = $(DOCS)/metadata.yaml
+MAN         = $(DOCS)/MANUAL_FR.md
+MANIFEST    := ../arduino-manifest/arduino-manifest.pl
+
 all: debug compile upload clean docs
 	
 compile: $(SRCINO)
 	$(info **************** build $(VERSION))
 	@arduino-cli compile --warnings more \
 	-b $(FQBN) $(CFLAGS) \
-	--board-options "pnum=BLUEPILL_F103CB" \
-	--board-options "usb=CDCgen" \
-	--output-dir $(BIN_DIR)
+	$(OPTIONS) \
+	--output-dir $(BIN_DIR) \
+	$(SRCINO)
 	@cp $(BIN) bin/firmware_$(BOARD).bin
 	 
 clean: 
@@ -53,7 +61,8 @@ clean:
 	@rm -fr $(BIN_DIR)
 		
 upload:
-	st-flash --reset write $(BIN) 0x8000000
+	arduino-cli upload -v -b $(FQBN) \
+	--input-file $(BIN) -p $(PORT)
 	
 doxygen: 
 	$(info **************** create html)
@@ -111,7 +120,8 @@ help:
 	@echo "    - docs"
 	@echo "    - help"
 	@echo "    - debug"
-	
+	@echo "    - test"
+		
 debug:
 	$(info **************** infos)
 	@echo projet = $(PROJECT)

@@ -3,15 +3,27 @@
 // SET READING PINS ACCORDINGLY TO YOUR ENCODER TO BOARD CONNECTIONS
 // Set here your encoder reading pins (Ex.: EC11 with breakout board)
 
+/**
 #define clk PA1
 #define dt PA0
 #define sw PA2
 
-/**
 #define clk PB0
 #define dt PB1
 #define sw PB10
 */
+
+// right
+/**
+#define clk A1
+#define dt  A2
+#define sw  A3
+*/
+
+// left
+#define clk D9
+#define dt  D8
+#define sw  D7
 
 // Functions prototyping to be handled on each Encoder Event
 void handleRotate(int8_t rotation);
@@ -28,8 +40,17 @@ void handleHeldRotateRelease();
 // Create a global pointer for the encoder object
 Versatile_RotaryEncoder *versatile_encoder;
 
-void setup() {
+void pin_init() {
+    pinMode(A1, INPUT_PULLUP);
+    pinMode(A2, INPUT_PULLUP);
+    pinMode(A3, INPUT_PULLUP);
+    pinMode(D7, INPUT_PULLUP);
+    pinMode(D8, INPUT_PULLUP);
+    pinMode(D9, INPUT_PULLUP);
+}
 
+void setup() {
+    pin_init();
     Serial.begin(9600);
 	versatile_encoder = new Versatile_RotaryEncoder(clk, dt, sw);
 

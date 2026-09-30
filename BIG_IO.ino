@@ -30,7 +30,11 @@ Display oled;
  */
 Modules *myModules = new Modules();
 
-MIDI_CREATE_DEFAULT_INSTANCE();
+#ifdef nanor4
+    MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
+#elif bluepill
+    MIDI_CREATE_DEFAULT_INSTANCE();
+#endif
 
 void setup() {
     Serial.begin(9600);
@@ -52,14 +56,14 @@ void setup() {
     /*
      * left encoder
      */
-    left = new Versatile_RotaryEncoder(PB0, PB1, PB10);
+    left = new Versatile_RotaryEncoder(CLK1, DT1, SW1);
     left->setHandleRotate(l_handleRotate);
     left->setHandlePress(l_handlePress);
     left->setHandleLongPress(l_handleLongPress);
     /*
      * right encoder
      */
-    right = new Versatile_RotaryEncoder(PA1, PA0, PA2);
+    right = new Versatile_RotaryEncoder(CLK2, DT2, SW2);
     right->setHandleRotate(r_handleRotate);
     right->setHandlePress(r_handlePress);
     /*

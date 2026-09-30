@@ -1,7 +1,14 @@
 # include <SPI.h>
 
+/*
 #define CS1 PA4
 #define CS2 PC15
+*/
+
+#define CS1 D10
+#define CS2 A7
+//#define CS2 D12
+
 /**
     Build the 16-bit command word:
     Bit 15: A/B (0 for MCP4921)

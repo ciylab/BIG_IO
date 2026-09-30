@@ -25,10 +25,10 @@ class io: public Module {
     public:
         io() : Module() {
             this->size = 0;
-            this->add({" IN    ", 0, 0, 0, 16, 8});
-            this->add({" CH OUT", 0, 0, 0, 16, 24});
-            this->add({" CV OUT", 0, 0, 0, 3, 40});
-            this->add({" GT OUT", 0, 0, 0, 5, 56});
+            this->add(parameter{" IN    ", 0, 0, 0, 16, 8});
+            this->add(parameter{" CH OUT", 0, 0, 0, 16, 24});
+            this->add(parameter{" CV OUT", 0, 0, 0, 3, 40});
+            this->add(parameter{" GT OUT", 0, 0, 0, 5, 56});
         }
         /**
          * @brief Special function because values are right shifted

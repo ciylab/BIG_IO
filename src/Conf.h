@@ -21,14 +21,14 @@ class Conf: public Module {
          */
         Conf(): Module() {
             this->size = 0;
-            this->add({" 1:    ", 0, 0, 0, 0, 0});
-            this->add({" 2:    ", 0, 0, 1, 6, 8});
-            this->add({" 3:    ", 0, 0, 1, 6, 16});
-            this->add({" 4:    ", 0, 0, 1, 6, 24});
-            this->add({" 5:    ", 0, 0, 1, 6, 32});
-            this->add({" 6:    ", 0, 0, 1, 6, 40});
-            this->add({" 7:    ", 0, 0, 1, 6, 48});
-            this->add({" 8:    ", 0, 0, 1, 6, 56});
+            this->add(parameter{" 1:    ", 0, 0, 0, 0, 0});
+            this->add(parameter{" 2:    ", 0, 0, 1, 6, 8});
+            this->add(parameter{" 3:    ", 0, 0, 1, 6, 16});
+            this->add(parameter{" 4:    ", 0, 0, 1, 6, 24});
+            this->add(parameter{" 5:    ", 0, 0, 1, 6, 32});
+            this->add(parameter{" 6:    ", 0, 0, 1, 6, 40});
+            this->add(parameter{" 7:    ", 0, 0, 1, 6, 48});
+            this->add(parameter{" 8:    ", 0, 0, 1, 6, 56});
             this->setMenu();
         }
         /**

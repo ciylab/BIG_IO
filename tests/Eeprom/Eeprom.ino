@@ -106,7 +106,7 @@ void setup() {
 void loop() {
     //  Nothing to do during loop
     delay(5000);
-    read_eeprom(EEPROM, 8992, 7);
+    read_eeprom(EEPROM, 0, 7);
 }
 
 

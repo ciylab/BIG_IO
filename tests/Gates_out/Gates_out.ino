@@ -1,11 +1,19 @@
-#define CLOCK PB3
-#define GATE_1 PB5
-#define GATE_2 PB4
+/*
+#define CLOCK_OUT PB3
+#define GATE_1    PB5
+#define GATE_2    PB4
 #define TRIGGER_1 PB8
 #define TRIGGER_2 PB9
+*/
+
+#define CLOCK_OUT D6
+#define GATE_1    D5
+#define GATE_2    D4
+#define TRIGGER_1 D3
+#define TRIGGER_2 D2
 
 const byte pins[] = {
-    CLOCK, GATE_2, GATE_1, TRIGGER_1, TRIGGER_2};
+    CLOCK_OUT, GATE_2, GATE_1, TRIGGER_1, TRIGGER_2};
 
 void pin_init() {
     for(int i = 0; i < 5; i++) {

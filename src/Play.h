@@ -12,14 +12,14 @@ class Play: public Module {
     public:
         Play() : Module() {
             this->size = 0;
-            this->add({" 1:    ", 0, 0, 0, 0, 0});
-            this->add({" 2:    ", 0, 0, 1, 5, 8});
-            this->add({" 3:    ", 0, 0, 1, 5, 16});
-            this->add({" 4:    ", 0, 0, 1, 5, 24});
-            this->add({" 5:    ", 0, 0, 1, 5, 32});
-            this->add({" 6:    ", 0, 0, 1, 5, 40});
-            this->add({" 7:    ", 0, 0, 1, 5, 48});
-            this->add({" 8:    ", 0, 0, 1, 5, 56});
+            this->add(parameter{" 1:    ", 0, 0, 0, 0, 0});
+            this->add(parameter{" 2:    ", 0, 0, 1, 5, 8});
+            this->add(parameter{" 3:    ", 0, 0, 1, 5, 16});
+            this->add(parameter{" 4:    ", 0, 0, 1, 5, 24});
+            this->add(parameter{" 5:    ", 0, 0, 1, 5, 32});
+            this->add(parameter{" 6:    ", 0, 0, 1, 5, 40});
+            this->add(parameter{" 7:    ", 0, 0, 1, 5, 48});
+            this->add(parameter{" 8:    ", 0, 0, 1, 5, 56});
             this->setMenu();
         }
         void getString(int val, char temp[8]) {

@@ -33,11 +33,11 @@ class Main: public Module {
 
     public:
         Main() : Module() {
-            this->add({" CONFIG", 0, 0, 0, 0, 0});
-            this->add({" PLAY  ", 0, 0, 0, 7, 16});
-            this->add({" LOAD  ", 0, 0, 0, 8, 32});
-            this->add({" SAVE  ", 1, 1, 1, 8, 40});
-            this->add({" CALIBR", 0, 0, 0, 0, 48});
+            this->add(parameter{" CONFIG", 0, 0, 0, 0, 0});
+            this->add(parameter{" PLAY  ", 0, 0, 0, 7, 16});
+            this->add(parameter{" LOAD  ", 0, 0, 0, 8, 32});
+            this->add(parameter{" SAVE  ", 1, 1, 1, 8, 40});
+            this->add(parameter{" CALIBR", 0, 0, 0, 0, 48});
             this->setMenu();
         }
         void getString(int val, char temp[8]) {

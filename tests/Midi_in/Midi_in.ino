@@ -1,5 +1,6 @@
 #include <MIDI.h>
-MIDI_CREATE_DEFAULT_INSTANCE();
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
+//MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
     Serial.begin(9600);

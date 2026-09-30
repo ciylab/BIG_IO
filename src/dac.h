@@ -6,9 +6,7 @@
 #ifndef DAC_H
 #define DAC_H
 #include <Arduino.h>
-
-#define CS1 PA4    //!< dual DAC.
-#define CS2 PC15   //!< simple DAC.
+#include "pins.h"
 
 /**
  * @brief SPI output gates.

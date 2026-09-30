@@ -5,14 +5,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <Arduino.h>
+#include "pins.h"
 
-#define CLOCK_IN  PA3
-#define CLOCK_OUT PB3
-#define DRUM_1    PB5 
-#define DRUM_2    PB4
-#define GATE_1    PB9
-#define GATE_2    PB8 
-#
 /**
  * @brief Gates (leds) list. 
  *

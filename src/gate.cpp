@@ -6,12 +6,12 @@
 
 void pin_init() {
     pinMode(CLOCK_IN, INPUT);
-    pinMode(PA0, INPUT_PULLUP);
-    pinMode(PA1, INPUT_PULLUP);
-    pinMode(PA2, INPUT_PULLUP);
-    pinMode(PB0, INPUT_PULLUP);
-    pinMode(PB1, INPUT_PULLUP);
-    pinMode(PB10, INPUT_PULLUP);
+    pinMode(CLK1, INPUT_PULLUP);
+    pinMode(DT1, INPUT_PULLUP);
+    pinMode(SW1, INPUT_PULLUP);
+    pinMode(CLK2, INPUT_PULLUP);
+    pinMode(DT2, INPUT_PULLUP);
+    pinMode(SW2, INPUT_PULLUP);
     for(int i = 0; i < 5; i++) {
         pinMode(gates[i], OUTPUT);
         digitalWrite(gates[i], HIGH);

@@ -1,4 +1,5 @@
-int analogPin = PA3;
+int analogPin = A6;
+// int analogPin = PA3;
 int val = 0;
 
 void setup() {
