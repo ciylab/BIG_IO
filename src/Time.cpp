@@ -94,11 +94,21 @@ void Time::handleGate() {
     if (Time::tick % modulo == 0 && playRand()) {
         // flag gate is open
         this->parameters[1].buffer = 1;
+#ifdef nanor4
+        digitalWrite(CLOCK_OUT, HIGH);
+        digitalWrite(LED, HIGH);
+#elif bluepill
         digitalWrite(CLOCK_OUT, LOW);
+#endif
     } else if (Time::tick % modulo == 2 &&
             this->parameters[1].buffer == 1) {
         this->parameters[1].buffer = 0;
+#ifdef nanor4
+        digitalWrite(CLOCK_OUT, LOW);
+        digitalWrite(LED, LOW);
+#elif bluepill
         digitalWrite(CLOCK_OUT, HIGH);
+#endif
     }
 }
 

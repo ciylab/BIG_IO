@@ -13,17 +13,17 @@
 #define sw PB10
 */
 
-// right
-/**
+// left
+/*
 #define clk A1
 #define dt  A2
 #define sw  A3
 */
 
-// left
-#define clk D9
-#define dt  D8
-#define sw  D7
+// right
+#define clk D8
+#define dt  D7
+#define sw  D9
 
 // Functions prototyping to be handled on each Encoder Event
 void handleRotate(int8_t rotation);

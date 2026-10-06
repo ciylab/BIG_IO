@@ -13,7 +13,11 @@ void init_dac() {
     pinMode(CS1, OUTPUT);
     pinMode(CS2, OUTPUT);
     digitalWrite(CS1, HIGH);
+#ifdef nanor4
+    analogWriteResolution(12);   
+#elif bluepill
     digitalWrite(CS2, HIGH);    
+#endif
     SPI.begin();
     C4RefVolt = 3277;
 }
@@ -35,10 +39,14 @@ void dac_write(byte ch, int cv) {
         SPI.transfer(cv & 0xff);
         digitalWrite(CS1, HIGH);
     } else if(ch == 2) { // MCP4921
+#ifdef bluebill
         digitalWrite(CS2, LOW);
         SPI.transfer((cv >> 8) | 0x30);  // H0x30=OUTA/1x
         SPI.transfer(cv & 0xff);
         digitalWrite(CS2, HIGH);    
+#elif nanor4
+        analogWrite(CS2, cv);
+#endif    
     }
 }
 

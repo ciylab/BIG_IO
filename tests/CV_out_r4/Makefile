@@ -3,8 +3,11 @@
 OSFAMILY    := $(shell ( uname | sed "s/-.*//" ))
 MAKE_DIR    := $(PWD)
 GIT_VERSION := $(shell git describe --abbrev=4 --dirty --always --tags)
+CFLAGS      := -D$(board)
+CFLAGS      := --build-property build.extra_flags="$(CFLAGS)"
 
-ifndef SERIAL_DEV
+ifndef SERIAL_DEV  analogWriteResolution(12);
+
 	ifneq (,$(wildcard /dev/ttyUSB0))
 		SERIAL_DEV = /dev/ttyUSB0
 	else ifneq (,$(wildcard /dev/ttyACM0))
@@ -44,7 +47,7 @@ debug:
 	$(info SERIAL_DEV  is [${SERIAL_DEV}])
 	
 compile:
-	arduino-cli compile -b $(FQBN) \
+	arduino-cli compile -b $(FQBN) $(CFLAGS) \
 	$(OPTIONS) \
 	--output-dir $(BUILD_DIR) \
 	$(SRCINO) 

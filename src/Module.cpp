@@ -76,7 +76,11 @@ void Module::startPlayCV(byte pitch) {
 void Module::startPlayGate() {
     this->io[3].buffer = this->io[3].value;
     if(this->io[3].value != 0) {
+#ifdef nanor4
+        digitalWrite(gates[this->io[3].value - 1], HIGH);
+#elif bluepill
         digitalWrite(gates[this->io[3].value - 1], LOW);
+#endif
     }
 }
 
@@ -94,7 +98,11 @@ void Module::stopPlayCV() {
 
 void Module::stopPlayGate() {
     if(this->io[3].buffer != 0) {
-        digitalWrite(gates[this->io[3].buffer - 1], HIGH);
+#ifdef nanor4
+        digitalWrite(gates[this->io[3].value - 1], LOW);
+#elif bluepill
+        digitalWrite(gates[this->io[3].value - 1], HIGH);
+#endif
     }
 }
 

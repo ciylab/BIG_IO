@@ -39,7 +39,9 @@ Modules *myModules = new Modules();
 void setup() {
     Serial.begin(9600);
     pin_init();   // init all pins
+#ifdef bluepill
     gates_test();  // lights
+#endif
     oled.begin(); // font and welcome page
     /*
      * Midi part.
