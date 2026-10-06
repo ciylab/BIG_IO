@@ -31,7 +31,7 @@ endif
 OSFAMILY    := $(shell ( uname | sed "s/-.*//" ))
 PROJECT     := $(notdir $(CURDIR))
 VERSION     := $(shell git describe --abbrev=0)
-CFLAGS      := -DVERSION=\"$(VERSION)\" -D$(board)
+CFLAGS      := -DDEBUG -DVERSION=\"$(VERSION)\" -D$(board)
 CFLAGS      := --build-property build.extra_flags="$(CFLAGS)"
 BIN_DIR     := $(subst :,.,bin/$(FQBN))
 SRCINO      := $(PROJECT).ino

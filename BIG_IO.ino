@@ -31,9 +31,9 @@ Display oled;
 Modules *myModules = new Modules();
 
 #ifdef nanor4
-    MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #elif bluepill
-    MIDI_CREATE_DEFAULT_INSTANCE();
+MIDI_CREATE_DEFAULT_INSTANCE();
 #endif
 
 void setup() {
