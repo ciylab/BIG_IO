@@ -31,14 +31,14 @@ void Miniseq::execute() {
         return ;
     }
     if(Time::newTick) {
-        if(Time::tick % 6 == 0 && count == 0) {
-            startPlay(this->parameters[2 + noteIndex].value);
-            start = Time::tick;
-        } else if (Time::tick == start + this->parameters[1].value) {
+        if(Time::tick % 6 == 0) {
             if(count == 0) {
-                stopPlay(this->parameters[2 + noteIndex].buffer);
+                startPlay(this->parameters[2 + noteIndex].value);
+                start = Time::tick;
             }
             count = (count + 1) % this->parameters[7].value;
+        } else if (Time::tick == start + this->parameters[1].value) {
+            stopPlay(this->parameters[2 + noteIndex].buffer);
         }
     }
 }
