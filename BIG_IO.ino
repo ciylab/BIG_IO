@@ -1,6 +1,5 @@
 #include <MIDI.h>
 #include <Versatile_RotaryEncoder.h>
-#include <U8x8lib.h>
 #include "src/encoder.h"
 #include "src/Display.h"
 #include "src/gate.h"

@@ -17,10 +17,10 @@ void pin_init() {
     pinMode(CLOCK_IN, INPUT);
 #endif    
     for(int i = 0; i < 5; i++) {
+        pinMode(gates[i], OUTPUT);
 #ifdef nanor4
         digitalWrite(gates[i], LOW);
 #elif bluepill
-        pinMode(gates[i], OUTPUT);
         digitalWrite(gates[i], HIGH);
 #endif
     }

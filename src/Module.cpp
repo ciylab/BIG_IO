@@ -90,12 +90,6 @@ void Module::stopPlayMIDI(byte pitch) {
     }
 }
 
-void Module::stopPlayCV() {
-    if(this->io[2].value != 0) {        
-        dac_write(this->io[2].value - 1, 0);
-    }
-}
-
 void Module::stopPlayGate() {
     if(this->io[3].buffer != 0) {
 #ifdef nanor4

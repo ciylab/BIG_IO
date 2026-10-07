@@ -52,7 +52,6 @@ void Looper::startPlay(byte pitch, byte velocity) {
 
 void Looper::stopPlay(byte pitch) {
     stopPlayMIDI(pitch);
-    stopPlayCV();
     stopPlayGate();
 }
 
@@ -114,7 +113,6 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
         return;
     }
     stopPlayMIDI(pitch);
-    stopPlayCV();
     stopPlayGate();
     if(!this->parameters[1].value) {
         return;

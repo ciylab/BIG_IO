@@ -1,11 +1,12 @@
 /**
  * @file eeprom.cpp
  */
+
 #ifdef nanor4
 #include <EEPROM.h>
-#define EEPROM_ADDR 0x50
 #elif bluepill
 #include <Wire.h>
+#define EEPROM_ADDR 0x50
 #endif
 #include "eeprom.h"
 #include "Modules.h"

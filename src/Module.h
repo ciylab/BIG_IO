@@ -159,10 +159,6 @@ class Module {
         /**
          * @brief General function to send cv
          */
-        virtual void stopPlayCV();
-        /**
-         * @brief General function to send gate
-         */
         virtual void stopPlayGate(); 
         /**
          * @brief free memory

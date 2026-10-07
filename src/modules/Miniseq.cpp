@@ -22,7 +22,6 @@ void Miniseq::startPlay(byte pitch) {
 
 void Miniseq::stopPlay(byte pitch) {
     stopPlayMIDI(pitch);
-    stopPlayCV();
     stopPlayGate();
     noteIndex = (noteIndex + 1) % this->parameters[0].value; 
 }

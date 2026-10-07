@@ -2,7 +2,7 @@
 
 **Alimentation** :
 
-* Bus Eurorack : 5v 0mA
+* Bus Eurorack : 5v 42mA
 
 **Dimensions** :
 
@@ -18,4 +18,4 @@
 **Plateforme** :
 
 * STMicroelectronics:stm32 2.12.0
-
+* arduino:renesas_uno:nanor4 1.6.0
