@@ -7,6 +7,7 @@
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
+
 unsigned long Time::tick;
 bool Time::newTick;
 
@@ -92,23 +93,13 @@ void Time::handleGate() {
         modulo = (4 - ratio) * modulo;
     }
     if (Time::tick % modulo == 0 && playRand()) {
-        // flag gate is open
+        // flag gate is open (unused buffer)
         this->parameters[1].buffer = 1;
-#ifdef nanor4
-        digitalWrite(CLOCK_OUT, HIGH);
-        digitalWrite(LED, HIGH);
-#elif bluepill
-        digitalWrite(CLOCK_OUT, LOW);
-#endif
+        startPlayGate();
     } else if (Time::tick % modulo == 2 &&
             this->parameters[1].buffer == 1) {
         this->parameters[1].buffer = 0;
-#ifdef nanor4
-        digitalWrite(CLOCK_OUT, LOW);
-        digitalWrite(LED, LOW);
-#elif bluepill
-        digitalWrite(CLOCK_OUT, HIGH);
-#endif
+        stopPlayGate();
     }
 }
 

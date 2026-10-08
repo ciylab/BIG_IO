@@ -17,6 +17,8 @@
  */
 #include "eeprom.h"
 
+byte sig_num;
+
 class Main: public Module {
     private:
         const char *memory[9] = {
@@ -30,7 +32,6 @@ class Main: public Module {
             "SLOT G", // 7
             "SLOT H"  // 8
         };
-
     public:
         Main() : Module() {
             this->add(parameter{" CONFIG", 0, 0, 0, 0, 0});
@@ -38,21 +39,31 @@ class Main: public Module {
             this->add(parameter{" LOAD  ", 0, 0, 0, 8, 32});
             this->add(parameter{" SAVE  ", 1, 1, 1, 8, 40});
             this->add(parameter{" CALIBR", 0, 0, 0, 0, 48});
+#ifdef nanor4
+            this->add(parameter{" SIGNAL", 0, 0, 0, 5, 56});
+#endif
             this->setMenu();
         }
         void getString(int val, char temp[8]) {
             switch(Display::cursor_num) {
                 case 2:
-                    sprintf(temp, " %s ", memory[val]);
+                    sprintf(temp, " %s", memory[val]);
                     break;
                 case 3:
-                    sprintf(temp, " %s ", memory[val]);
+                    sprintf(temp, " %s", memory[val]);
                     break;
+#ifdef nanor4
+                case 5:
+                    sprintf(temp, " %s", GateOut[val]);
+                    sig_num = val;
+                    break;
+#endif
                 default:
                     break;
             }
             temp[7] = '\0';
         }
+
         void r_handlePress() {
             parameter *p = &(this->parameters)[Display::cursor_num];
             if(this->new_value && Display::cursor_num == 2) {

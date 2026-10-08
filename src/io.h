@@ -16,9 +16,6 @@ class io: public Module {
             "CH 7 ", "CH 8 ", "CH 9 ", "CH 10", "CH 11", "CH 12", 
             "CH 13", "CH 14", "CH 15", "CH 16"
         };
-        const char *GateOut[6] = {"NONE  ", "CLOCK ",
-            "DRUM 1", "DRUM 2", "GATE 1", "GATE 2"
-        };
         const char *CvOut[4] = {"NONE  ",  "CV 1   ", "CV 2   ", "CV 3   "
         };
 

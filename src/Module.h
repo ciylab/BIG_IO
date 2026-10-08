@@ -33,6 +33,10 @@ struct parameter {
 };
 
 class Module {
+    protected:
+        const char *GateOut[6] = {"NONE  ", "CLOCK ",
+            "DRUM  ", "GATE 1", "GATE 2", "GATE 3"
+        };
     public:
         static const char *NOTES[12];
         parameter io[4]; //!< Array of input/output parameters.

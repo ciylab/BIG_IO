@@ -7,6 +7,7 @@
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
+extern byte sig_num;
 
 const char *Module::NOTES[12] = {
     " C", "C#", " D", "D#", " E", " F", 
@@ -78,6 +79,9 @@ void Module::startPlayGate() {
     if(this->io[3].value != 0) {
 #ifdef nanor4
         digitalWrite(gates[this->io[3].value - 1], HIGH);
+        if(sig_num == this->io[3].value) {
+            digitalWrite(LED, HIGH);
+        }
 #elif bluepill
         digitalWrite(gates[this->io[3].value - 1], LOW);
 #endif
@@ -94,6 +98,9 @@ void Module::stopPlayGate() {
     if(this->io[3].buffer != 0) {
 #ifdef nanor4
         digitalWrite(gates[this->io[3].value - 1], LOW);
+        if(sig_num == this->io[3].value) {
+            digitalWrite(LED, LOW);
+        }
 #elif bluepill
         digitalWrite(gates[this->io[3].value - 1], HIGH);
 #endif
