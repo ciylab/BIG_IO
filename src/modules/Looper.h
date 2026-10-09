@@ -19,6 +19,17 @@ class Looper: public Module {
     private:
         const char *ONOFF[2] = {" OFF", " ON "};
         const char *MODE[2] =  {"STbyST", "RealTi"};
+        const char *MEM[9] = {
+            "NONE  ", 
+            " A    ",
+            " B    ",
+            " C    ",
+            " D    ",
+            " E    ",
+            " F    ",
+            " G    ",
+            " H    "
+        };
         unsigned long start;
         int index;
         int stepIndex;
@@ -37,6 +48,7 @@ class Looper: public Module {
             this->add(parameter{" RECORD", 0, 0, 0, 1, 32});
             this->add(parameter{" DELETE", 0, 0, 0, 0, 40});
             this->add(parameter{" GATE  ", 1, 1, 1, 5, 48});
+            this->add(parameter{" MEMORY", 0, 0, 0, 8, 56});
             this->setMenu();
             this->io[0] = parameter{" IN    ", 0, 0, 0, 16, 0};
             this->io[1] = parameter{" CH OUT", 0, 0, 0, 16, 16};
@@ -63,6 +75,9 @@ class Looper: public Module {
                     break;
                 case 4:
                     getProgressBar(val, temp);
+                    break;
+                case 5:
+                    sprintf(temp, " %.6s", MEM[val]);
                     break;
                 default:
                     sprintf(temp, " %.4s  ", ONOFF[val]); 

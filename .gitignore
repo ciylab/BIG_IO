@@ -5,7 +5,6 @@ docs/metadata.yaml
 bin
 *.swp
 a.out
-tests/build
-tests/*/build
+build
 !font/bdf
 font/docs/

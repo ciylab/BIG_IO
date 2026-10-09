@@ -51,9 +51,8 @@
  * - module type
  * - 4 parameters IN/OUT
  * - 8 parameters (max used on a page)
- * - address of the fist byte of the slot sequence 
  */
-#define CONFIG_SIZE 14
+#define CONFIG_SIZE 13
 
 /**
  * @brief load data from slot 0
