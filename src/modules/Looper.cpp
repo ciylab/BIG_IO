@@ -22,6 +22,13 @@ void Looper::setData(int index, byte pitch) {
     }
 }
 
+byte Looper::getData(int index) {
+    if(index < SEQ_SIZE) {
+        return pitchOn[index];
+    }
+    return pitchOff[index - SEQ_SIZE];
+}
+
 void Looper::del_seq() {
     memset(pitchOn, 0, SEQ_SIZE);
     memset(pitchOff, 0, SEQ_SIZE);

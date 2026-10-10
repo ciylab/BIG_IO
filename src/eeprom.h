@@ -87,5 +87,9 @@ void load(int slot_num);
  */
 void read_memory(byte module_num);
 
+/**
+ * @brief Extract sequence from eeprom.
+ */
 void read_sequence(Module *m);
+
 #endif

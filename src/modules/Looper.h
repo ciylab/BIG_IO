@@ -88,6 +88,7 @@ class Looper: public Module {
         void l_handlePress();
         void r_handlePress();
         void setData(int index, byte pitch);
+        byte getData(int index);
         void handleNoteOn(byte channel, byte pitch, byte velocity);
         void handleNoteOff(byte channel, byte pitch, byte velocity);
 };

@@ -1,6 +1,6 @@
 #include <EEPROM.h>
 #define CONFIG_SIZE 13
-#define MEM_SIZE 768
+#define MEM_SIZE 384
 #define QUARTER 24
 #define LOOPER 5
 
@@ -52,7 +52,7 @@ void write_simple() {
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
         6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
+        5, 0, 0, 0, 0,  4,   0,  0,  0,  0,  1,  0,  0  // NONE
     };
     int offset = 0;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
@@ -79,32 +79,41 @@ void write_null(int slot_num) {
 
 void init_eeprom() {
     write_simple();              // SLOT A
-    for(int i = 1; i < 9; i++) {
+    for(int i = 1; i < 8; i++) {
         write_null(i);           // SLOT B to H
     }
 }
 
 int getSequenceOffset(int mem_num) {
-    return 8 * CONFIG_SIZE + MEM_SIZE * mem_num;
+    return 8 * 8 * CONFIG_SIZE + 2 * MEM_SIZE * mem_num;
 }
 
 void example_1() {
     int length = 4; // a quarter note
     int pitch[4] = {24, 48, 36, 31};
     int offset = getSequenceOffset(0); // first memory
-    for(int i = 0; i < length * 6; i++) { // note on
+    int i;
+    // note on
+    for(i = 0; i < length * 6; i++) {
         if(i % 6 == 0) {
             EEPROM.update(offset++, pitch[i / 6]);
         } else {
             EEPROM.update(offset++, 0);
         }
     }
-    for(int i = 0; i < length * 6; i++) { // note off
+    for(i = length * 6; i < MEM_SIZE; i++) {
+        EEPROM.update(offset++, 0);
+    }
+    // note off
+    for(i = 0; i < length * 6; i++) {        
         if(i % 6 == 3) {
             EEPROM.update(offset++, pitch[i / 6]);
         } else {
             EEPROM.update(offset++, 0);
         }
+    }
+    for(i = length * 6; i < MEM_SIZE; i++) {
+        EEPROM.update(offset++, 0);
     }
 }
 
@@ -113,7 +122,7 @@ void print_mem(int mem_num) {
     Serial.print("************** BEGIN MEM ");
     Serial.println(mem_num);
     int offset = getSequenceOffset(mem_num);
-    for(int i = 0; i < MEM_SIZE; i++) {
+    for(int i = 0; i < 2 * MEM_SIZE; i++) {
         b = EEPROM.read(offset + i);
         print_format(b);
         if((i + 1) % QUARTER == 0) {
@@ -154,8 +163,8 @@ void print_slot(int slot_num) {
 
 void setup() {
     Serial.begin(9600);
-    //init_eeprom();
-    //example_1();
+    init_eeprom();
+    example_1();
 }
 
 void loop() {

@@ -84,13 +84,6 @@ void read_eeprom(int deviceaddress, unsigned int begin, int length) {
     Serial.println();
 }
 
-void write_zero(int deviceaddress, unsigned int begin, 
-        int length, byte *data) {
-    for(int i = 0; i < length; i++) {
-        writeEEPROM(deviceaddress, begin + i, 0);
-    }
-}
-
 void setup() {
     Serial.begin(9600);
     Wire.begin();
@@ -98,8 +91,6 @@ void setup() {
     for(int i = 0; i < 3 * PAGE_SIZE; i++) {
         data[i] = i % 256;
     }
-    write_zero(EEPROM, 0, 3 * PAGE_SIZE, data);
-    writeByChunkEEPROM(EEPROM, 16, data, 114);
     */
 }
 

@@ -142,34 +142,6 @@ void write_null(int slot_num) {
 }
 
 /**
- * @brief Compute offset for sequence of data
- *
- * @param slot_num the slot number (FACT = 0)
- * @param module_num the module number (TIME = 0)
- */
-unsigned int get_offset(byte slot_num, byte module_num) {
-    unsigned int offset = 8 * CONFIG_SIZE * 8; // base config memory
-    offset += 15 * 32 * 8 * slot_num;          // slots memory for seq
-    offset += 15 * 32 * module_num;            // modules memory for seq
-    return offset;
-}
-
-/**
- * @brief Set sequences to null for any module
- * 
- * The key is to set the end mark of sequence with data[0] = 0
- */
-void init_data() {
-    unsigned int offset;
-    for(byte slot_num = 0; slot_num < 8; slot_num++) {
-        for (byte module_num = 0; module_num < 8; module_num++) {
-            offset = get_offset(slot_num, module_num);
-            updateEEPROM(offset, 0);
-        }
-    }
-}
-
-/**
  * @brief Factory presets init with null sequence
  */
 void init_eeprom() {
@@ -177,7 +149,6 @@ void init_eeprom() {
     for(int i = 1; i < 8; i++) {
         write_null(i);           // SLOT B to H
     }
-    //init_data();
 }
 
 /**
@@ -194,97 +165,37 @@ void init_from_eeprom() {
     load(0); // load from factory preset FACT.
 }
 
-void print_data(byte data[6], int count_note) {
-    if(count_note == 0) {
-        Serial.println("**************** new chunk");
-    }
-    Serial.print(data[0]);
-    if(data[0] != 0) {
-        Serial.print(" ");
-        Serial.print(data[1]);
-        Serial.print(" ");
-        Serial.print((data[2] << 8) + data[3]);
-        Serial.print(" ");
-        Serial.print((data[4] << 8) + data[5]);
-    }
-    Serial.println();
-}
-
 /**
  * @brief Get sequence from eeprom.
  *
  * @param m the LOOPER module
  */
 void read_sequence(Module *m) {
-    byte length = m->parameters[0].value;
     byte mem_num = m->parameters[5].value - 1;
     unsigned int offset = 
-        8 * CONFIG_SIZE + mem_num * 2 * SEQ_SIZE;
-    for(int i = 0; i < 6 * length; i++) {
+        8 * CONFIG_SIZE * 8 + mem_num * 2 * SEQ_SIZE;
+    for(int i = 0; i < 2 * SEQ_SIZE; i++) {
         m->setData(i, readEEPROM(offset++));
-    }
-    for(int i = 0; i < 6 * length; i++) {
-        m->setData(i + SEQ_SIZE, readEEPROM(offset++));
     }
 }
 
 /**
  * @brief Set sequence to eeprom by chunck of 30 bytes = 5 notes.
  *
- * @param slot_num the slot number (FACT = 0)
- * @param module_num the module number (TIME = 0)
+ * @param m the LOOPER module
  */
-void write_sequence(byte slot_num, byte module_num) {
-/*
-    Module *m = myModules->modules[TIME + module_num];
-    byte data[6];
-    unsigned int offset = get_offset(slot_num, module_num);
-    int i;
-    int count_note = 0;
-    int count_chunk = 0;
-    Wire.beginTransmission(EEPROM);
-    Wire.write((int)(offset >> 8)); 
-    Wire.write((int)(offset & 0xFF));
-    for(i = 0; i < 6 * m->parameters[0].value; i++) {
-        if(m->getData(i, data)) {
-#ifdef DEBUG
-            print_data(data, count_note);
-#endif
-            Wire.write(data, 6);
-            count_note++;
-            offset += 6;
-        }
-        if(count_note == 5) {                    // 30 bytes
-            Wire.endTransmission();
-            delay(5);
-            count_chunk++;
-            count_note = 0;
-            offset += 2;                         // jump 2 bytes
-            Wire.beginTransmission(EEPROM);      // new chunk
-            Wire.write((int)(offset >> 8));
-            Wire.write((int)(offset & 0xFF));        
-        }
+void write_sequence(Module *m) {
+    byte mem_num = m->parameters[5].value - 1;
+    unsigned int offset =  8 * CONFIG_SIZE * 8 + mem_num * SEQ_SIZE;
+    for(int i = 0; i < 2 * SEQ_SIZE; i++) {
+        updateEEPROM(offset++, m->getData(i));
     }
-    if(0 < count_note) {
-        Wire.endTransmission();
-        delay(5);    
-    }
-    */
-    /**
-     * @brief We write the null byte to mark the end.
-     *
-     * @remark If the sequence is empty then the first byte is 0.
-     */
-     /*
-    if(count_chunk < 15) {
-        writeEEPROM(offset, 0);
-    }*/
 }
 
 /**
  * @brief To save only one module
  *
- * @param offset firt byte num
+ * @param slot_num num of slot
  * @param module_num from 0 to 7
  */
 void write_module(byte slot_num, byte module_num) {
@@ -302,10 +213,13 @@ void write_module(byte slot_num, byte module_num) {
         updateEEPROM(offset++, 0);
     }
     if(m->indexInList == 5) { // LOOPER
-        write_sequence(slot_num, module_num);
+        write_sequence(m);
     }
 }
 
+/**
+ * @brief To save all 8 modules.
+ */
 void save(byte slot_num) {
     if(slot_num == 0) {
         return;
@@ -313,7 +227,6 @@ void save(byte slot_num) {
     slot_num--;
     for(int i = 0; i < 8; i++) {
         write_module(slot_num, i);
-        read_memory(i);
     }
 }
 
@@ -354,52 +267,3 @@ void load(int slot_num) {
     }
 }
 
-/**
- * @brief Serial print formatted byte with 3 chars only for test.
- */
-void print_format(byte b) {
-    if(b < 10) {
-        Serial.print("  ");
-    } else if (b < 100) {
-        Serial.print(" ");
-    }
-    Serial.print(b);
-}
-
-/**
- * @brief Read data from eeprom for test
- *
- * @param begin the first byte
- * @param length number of bytes
- */
-void read_eeprom(int begin, int length) {
-    byte b;
-    for(int i = 0; i < length; i++) {
-        b = readEEPROM(begin + i);
-        print_format(b);
-        Serial.print(SEP);
-        if((i + 1) % CONFIG_SIZE == 0) { 
-            Serial.println();
-        }
-    }
-    Serial.println();
-}
-
-void read_memory(byte module_num) {
-    Module *m = myModules->modules[TIME + module_num];
-    Serial.println("******************** MEM");
-    Serial.print(m->indexInList);
-    Serial.print(", ");
-    for(int i = 0; i < 4; i++) {
-        Serial.print(m->io[i].value);
-        Serial.print(", ");
-    }
-    for(int i = 0; i < m->size; i++) {
-        Serial.print(m->parameters[i].value);
-        Serial.print(", ");
-    }
-    for(int i = m->size; i < 8; i++) {
-        Serial.print("0, ");
-    }
-    Serial.println();
-}
