@@ -14,34 +14,18 @@
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
+void Looper::setData(int index, byte pitch) {
+    if(index < SEQ_SIZE) {
+        pitchOn[index] = pitch;
+    } else {
+        pitchOff[index - SEQ_SIZE] = pitch;
+    }
+}
+
 void Looper::del_seq() {
-    memset(pitchOn, 0, 384);
-    memset(pitchOff, 0, 384);
-    memset(velocities, 0, 384);
-}
-
-bool Looper::getData(int index, byte data[6]) {
-    data[0] = pitchOn[index];
-    if(data[0] == 0) {
-        return false;
-    }
-    data[1] = velocities[index];
-    data[2] = index >> 8;
-    data[3] = index & 0xFF;
-    while(pitchOff[index] != data[0]) {
-        index = (index + 1) % (6 * parameters[0].value);
-    }
-    data[4] = index >> 8;
-    data[5] = index & 0xFF;
-    return true;
-}
-
-void Looper::setData(byte data[6]) {
-    byte indexOn = (data[2] << 8) + data[3];
-    byte indexOff = (data[4] << 8) + data[5];
-    pitchOn[indexOn] = data[0];
-    velocities[indexOn] = data[1];
-    pitchOff[indexOff] = data[0];
+    memset(pitchOn, 0, SEQ_SIZE);
+    memset(pitchOff, 0, SEQ_SIZE);
+    memset(velocities, 0, SEQ_SIZE);
 }
 
 void Looper::startPlay(byte pitch, byte velocity) {
@@ -83,6 +67,8 @@ void Looper::r_handlePress() {
         del_seq();
         count = 0;
         r_handleRotate(0);
+    } else if(Display::cursor_num == 5) {
+        read_sequence(this);
     }
 }
 

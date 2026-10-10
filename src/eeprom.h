@@ -39,6 +39,7 @@
 
 #ifndef EEPROM_H
 #define EEPROM_H
+#include "Modules.h"
 
 /**
  * @brief The maximum number of notes in looper
@@ -53,6 +54,11 @@
  * - 8 parameters (max used on a page)
  */
 #define CONFIG_SIZE 13
+
+/**
+ * @brief number of PPQN = 6 * 16 * 4 for 4 bars
+ */
+#define SEQ_SIZE 384
 
 /**
  * @brief load data from slot 0
@@ -81,4 +87,5 @@ void load(int slot_num);
  */
 void read_memory(byte module_num);
 
+void read_sequence(Module *m);
 #endif

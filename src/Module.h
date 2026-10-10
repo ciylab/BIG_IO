@@ -176,13 +176,13 @@ class Module {
         /**
          * @brief Only to save sequence of Looper
          */
-        virtual bool getData(int index, byte data[6]) {
-            return false;
+        virtual byte getData(int index) {
+            return 0;
         }
         /**
          * @brief Only to load sequence of Looper
          */
-        virtual void setData(byte data[6]) {}
+        virtual void setData(int index, byte pitch) {}
 };
 
 #endif

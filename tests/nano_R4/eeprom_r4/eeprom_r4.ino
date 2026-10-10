@@ -84,11 +84,35 @@ void init_eeprom() {
     }
 }
 
-void print_mem(byte mem_num) {
+int getSequenceOffset(int mem_num) {
+    return 8 * CONFIG_SIZE + MEM_SIZE * mem_num;
+}
+
+void example_1() {
+    int length = 4; // a quarter note
+    int pitch[4] = {24, 48, 36, 31};
+    int offset = getSequenceOffset(0); // first memory
+    for(int i = 0; i < length * 6; i++) { // note on
+        if(i % 6 == 0) {
+            EEPROM.update(offset++, pitch[i / 6]);
+        } else {
+            EEPROM.update(offset++, 0);
+        }
+    }
+    for(int i = 0; i < length * 6; i++) { // note off
+        if(i % 6 == 3) {
+            EEPROM.update(offset++, pitch[i / 6]);
+        } else {
+            EEPROM.update(offset++, 0);
+        }
+    }
+}
+
+void print_mem(int mem_num) {
     byte b;
     Serial.print("************** BEGIN MEM ");
     Serial.println(mem_num);
-    int offset = 8 * CONFIG_SIZE + MEM_SIZE * mem_num;
+    int offset = getSequenceOffset(mem_num);
     for(int i = 0; i < MEM_SIZE; i++) {
         b = EEPROM.read(offset + i);
         print_format(b);
@@ -99,13 +123,17 @@ void print_mem(byte mem_num) {
     Serial.println("************** END MEM ");
 }
 
+int getSlotOffset(int slot_num) {
+    return 8 * CONFIG_SIZE * slot_num;
+}
+
 void print_slot(int slot_num) {
     byte b;
     byte seq_num = 255;
     bool isLooper = false;
-    Serial.print("************************ ");
+    Serial.print("***************** SLOT ");
     Serial.println(slot_num);
-    int offset = 8 * CONFIG_SIZE * slot_num;
+    int offset = getSlotOffset(slot_num);
     for(int i = 0; i < CONFIG_SIZE * 8; i++) {
         b = EEPROM.read(offset + i);
         print_format(b);
@@ -127,6 +155,7 @@ void print_slot(int slot_num) {
 void setup() {
     Serial.begin(9600);
     //init_eeprom();
+    //example_1();
 }
 
 void loop() {

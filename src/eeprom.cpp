@@ -9,7 +9,7 @@
 #define EEPROM_ADDR 0x50
 #endif
 #include "eeprom.h"
-#include "Modules.h"
+//#include "Modules.h"
 
 /**
  * @brief for Serial output during test.
@@ -174,10 +174,10 @@ void init_data() {
  */
 void init_eeprom() {
     write_simple();              // SLOT A
-    for(int i = 1; i < 9; i++) {
+    for(int i = 1; i < 8; i++) {
         write_null(i);           // SLOT B to H
     }
-    init_data();
+    //init_data();
 }
 
 /**
@@ -213,31 +213,18 @@ void print_data(byte data[6], int count_note) {
 /**
  * @brief Get sequence from eeprom.
  *
- * @param slot_num the slot number (FACT = 0)
- * @param module_num the module number (TIME = 0)
+ * @param m the LOOPER module
  */
-void read_sequence(byte slot_num, byte module_num) {
-    Module *m = myModules->modules[TIME + module_num];
-    byte data[6];
-    unsigned int offset = get_offset(slot_num, module_num);
-    int count_note = 0;
-    int count_chunk = 0;
-    while(count_chunk < 16) {
-        for(int i = 0; i < 6; i++) {
-            data[i] = readEEPROM(offset++);
-        }
-#ifdef DEBUG
-        print_data(data, count_note);
-#endif
-        if(data[0] == 0) {
-            break;
-        }
-        m->setData(data);
-        count_note++;
-        if(count_note == 5) {
-            count_chunk++;
-            offset += 2;
-        }
+void read_sequence(Module *m) {
+    byte length = m->parameters[0].value;
+    byte mem_num = m->parameters[5].value - 1;
+    unsigned int offset = 
+        8 * CONFIG_SIZE + mem_num * 2 * SEQ_SIZE;
+    for(int i = 0; i < 6 * length; i++) {
+        m->setData(i, readEEPROM(offset++));
+    }
+    for(int i = 0; i < 6 * length; i++) {
+        m->setData(i + SEQ_SIZE, readEEPROM(offset++));
     }
 }
 
@@ -349,12 +336,11 @@ void read_module_from_eeprom(byte slot_num, byte module_num) {
     for(int i = 0; i < current->size; i++) {
         current->parameters[i].value = readEEPROM(offset++);
     }
-    /*
-    if(index == 5 && current->parameters[0].value != 0) {
-        read_sequence(slot_num, module_num);
+    if(index == 5 // LOOPER
+            && current->parameters[5].value != 0 // sequence in eeprom
+      ) {
+        read_sequence(current);
     }
-    readEEPROM(offset++);
-    */
 }
 
 void load(int slot_num) { 

@@ -85,10 +85,9 @@ class Looper: public Module {
             }
             temp[7] = '\0';
         }
-        bool getData(int index, byte data[6]);
-        void setData(byte data[6]);
         void l_handlePress();
         void r_handlePress();
+        void setData(int index, byte pitch);
         void handleNoteOn(byte channel, byte pitch, byte velocity);
         void handleNoteOff(byte channel, byte pitch, byte velocity);
 };
