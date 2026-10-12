@@ -17,7 +17,7 @@ La page principale permet les manipulations de base :
 >CONFIG
  PLAY
  LOAD   SAVE
- CALIBR 
+ CALIBR SIGNAL 
 ~~~~~~~
 
 **Navigation** :
@@ -39,7 +39,7 @@ Une configuration consiste à choisir un algorithme, une entrée et une sortie p
 
   - NONE
   - MIDI (numéro de canal de 1 à 16)
-  - GATE (CLOCK, DRUM 1, DRUM 2,  GATE 1 et GATE 2)
+  - GATE (CLOCK, DRUM, GATE 1,  GATE 2 et GATE 3)
   - CV (CV 1, CV 2, CV 3)
  
  **Remarque** :
@@ -72,6 +72,8 @@ Le module est configuré par défaut :
 La calibration **CALIBR** permet de contrôler la justesse des notes sur un rack modulaire. Pour la calibration, la sortie CV1 doit fournir 4 volts. 
 
 La page **PLAY** permet d'accéder aux paramètres de chacun des 8 modules.
+
+La sortie **SIGNAL** assigne la led rouge à l'un des gates.
 
 Il est possible de sauvegarder **SAVE** ou de charger **LOAD** une configuration. La validation se fait par pression de l'encodeur droit. Il y a 8 slots. Chaque slot contient les 8 modules y compris les éventuelles séquences du looper. Le premier slot **FACT** est modifiable mais ne peut pas être écrasé. On peut le sauvegarder sur un des autres 7 slots. Sur le même principe le premier module d'une configuration sera toujours **TIME** pour la gestion de l'horloge. Il n'y aura pas d'autre module disponible en première position.
 

@@ -9,7 +9,10 @@
 
 extern Modules *myModules;
 
-U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
+// only for testing
+U8X8_SSD1306_128X64_VCOMH0_SW_I2C u8x8(A5, A4, U8X8_PIN_NONE);
+// real
+// U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
 char Display::buffer[64];
 byte Display::charIndex = 0;
@@ -27,6 +30,7 @@ Display::Display() {
 }
 
 void Display::begin() {
+    u8x8.setBusClock(400000); // only for testing
     u8x8.begin();
     u8x8.setFont(my_u8x8_font_7x14_1x2_r);
     welcome();

@@ -105,7 +105,10 @@ void Time::handleGate() {
 
 bool Time::listen_clock_pulse() {
     int val = analogRead(CLOCK_IN);
-    //Serial.println(val);
+#ifdef DEBUG
+    Serial.print("read value for clock in : ");
+    Serial.println(val);
+#endif
     if(val < 500 && start == false) {
         start = true;
         return true;

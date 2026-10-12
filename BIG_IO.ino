@@ -36,7 +36,9 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 #endif
 
 void setup() {
+#ifdef DEBUG
     Serial.begin(9600);
+#endif
     pin_init();   // init all pins
 #ifdef bluepill
     gates_test();  // lights
