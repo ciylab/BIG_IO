@@ -78,7 +78,8 @@ void Modules::load_module_from_memory(byte index, byte module_num) {
     if(this->modules[Modules::to_config] != NULL) {
         this->modules[Modules::to_config]->panic();     // clean midi out
         this->modules[Modules::to_config]->closeGate(); // no more gate
-        Module::del(this->modules[Modules::to_config]); // free memory
+        //Module::del(this->modules[Modules::to_config]); // free memory
+        delete this->modules[Modules::to_config]; // free memory
     }
     this->modules[Modules::to_config] = Modules::getModule(index);
     this->modules[CONF]->parameters[module_num].value = index;
