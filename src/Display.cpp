@@ -30,7 +30,6 @@ Display::Display() {
 }
 
 void Display::begin() {
-    u8x8.setBusClock(400000); // only for testing
     u8x8.begin();
     u8x8.setFont(my_u8x8_font_7x14_1x2_r);
     welcome();

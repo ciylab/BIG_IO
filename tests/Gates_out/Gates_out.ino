@@ -10,12 +10,14 @@
 #define GATE_2    D4
 #define TRIGGER_1 D3
 #define TRIGGER_2 D2
+#define LED A7
 #endif
 
 const byte pins[] = {
     CLOCK_OUT, GATE_2, GATE_1, TRIGGER_1, TRIGGER_2};
 
 void pin_init() {
+    pinMode(LED, OUTPUT);
     for(int i = 0; i < 5; i++) {
         pinMode(pins[i], OUTPUT);
     }
@@ -24,8 +26,11 @@ void pin_init() {
 void test() {
     for(int i = 0; i < 5; i++) {
         digitalWrite(pins[i], HIGH);
+        digitalWrite(LED, HIGH);
         delay(500);
         digitalWrite(pins[i], LOW);
+        digitalWrite(LED, LOW);
+        delay(500);
     }
 }
 

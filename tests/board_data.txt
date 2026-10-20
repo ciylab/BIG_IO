@@ -19,7 +19,3 @@ blue pill :
   idVendor           0x0483 STMicroelectronics
   idProduct          0x5740 Virtual COM Port
 
-arduino-cli board list :
-Port         Protocol Type              Board Name         FQBN                 Core
-/dev/ttyUSB0 serial   Serial Port (USB) Thinary Nano Every thinary:avr:nona4808 thinary:avr
-

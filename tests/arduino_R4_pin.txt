@@ -1,0 +1,16 @@
+          USB 
+SCK               MISO(CS2)
+3.3v              MOSI
+AREF              SS(CS1)
+A0(DAC)           D9(DT2)
+A1(DT1)           D8(CLK2)
+A2(CLK1)          D7(SW2)
+A3(SW1)           D6(GATE OUT)
+SDA               D5(GATE OUT) 
+SDL               D4(GATE OUT) 
+A6(CLOCK IN)      D3(GATE OUT)
+A7                D2(GATE OUT)
+5v                GND
+BOOT              RST
+GND               D0(RX)                
+VIN               D1(TX) 
