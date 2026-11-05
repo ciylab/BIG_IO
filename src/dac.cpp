@@ -57,6 +57,8 @@ void calibrate(int8_t rotation) {
         C4RefVolt++;
     }
     dac_write(0, C4RefVolt);
+    dac_write(1, C4RefVolt);
+    dac_write(2, C4RefVolt);
 }
 
 int getVoltage(byte pitch) {

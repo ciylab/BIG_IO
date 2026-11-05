@@ -13,7 +13,7 @@
  * @remark Sort from left to right.
  */
 const byte gates[5] = {
-    CLOCK_OUT, DRUM_1, DRUM_2, GATE_1, GATE_2};
+    CLOCK_OUT, DRUM, GATE_1, GATE_2, GATE_3};
 
 /**
  * @brief 5 output set HIGH by default and input pull up for encoders.
