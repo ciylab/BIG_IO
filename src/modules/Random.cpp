@@ -160,12 +160,22 @@ void Random::execute() {
 }
 
 void Random::r_handlePress() {
-    if(Display::cursor_num == 4) {
-        if(this->parameters[4].value == 1) {
-            r_handleRotate(-1);
+    if(Display::cursor_num == 6) {
+        if(this->parameters[6].value != 0) {
+            this->parameters[6].buffer = this->parameters[6].value;
+            this->parameters[6].value = 0;
         } else {
-            r_handleRotate(1);
+            this->parameters[6].value = this->parameters[6].buffer;
         }
+        Display::show_value(this->parameters[6].value);
+    } else if(Display::cursor_num == 7) {
+        if(this->parameters[7].value != 108) {
+            this->parameters[7].buffer = this->parameters[7].value;
+            this->parameters[7].value = 108;
+        } else {
+            this->parameters[7].value = this->parameters[7].buffer;
+        }             
+        Display::show_value(this->parameters[7].value);
     }
 }
 

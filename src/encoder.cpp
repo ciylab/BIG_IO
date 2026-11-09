@@ -126,6 +126,7 @@ void r_handlePress() {
             Serial.println(m->temp);
 #endif
             p->value = m->temp;
+            m->new_value = false;
         }
     }
     myModules->modules[Modules::current]->r_handlePress();

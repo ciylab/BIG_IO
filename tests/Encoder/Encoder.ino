@@ -4,22 +4,22 @@
 // Set here your encoder reading pins (Ex.: EC11 with breakout board)
 
 /**
+#define clk PA4
+#define dt PA6
+#define sw PB1
+*/
+
 #define clk PA1
 #define dt PA0
 #define sw PA2
 
-#define clk PB0
-#define dt PB1
-#define sw PB10
-*/
-
+/**
 // left
 #define clk A2
 #define dt  A1
 #define sw  A3
 
 // right
-/**
 #define clk D7
 #define dt  D8
 #define sw  D9

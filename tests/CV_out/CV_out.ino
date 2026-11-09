@@ -1,44 +1,49 @@
 #include <SPI.h>
 
-#ifdef bluebill
-#define CS1 PA4
-#define CS2 PC15
+#ifdef bluepill
+#define CS1 PB0
+#define CS2 PA3
 #elif nanor4
 #define CS1 D10
 #define CS2 A0
 #endif
 
-/**
-  Build the 16-bit command word:
-  Bit 15: A/B (0 for MCP4921)
-  Bit 14: Buffered VREF (0 = unbuffered, 1 = buffered)
-  Bit 13: Output Gain (1 = 1x, 0 = 2x)
-  Bit 12: Shutdown control (1 = active operation)
-  Bits 11-0: 12-bit data value
-  */
+// Fonction pour envoyer la valeur au MCP4921 (Valeur entre 0 et 4095)
+void writeMCP4921(uint16_t valeur) {
+    
+    // Sécurise la valeur pour ne pas dépasser 12 bits (4095)
+    valeur &= 0x0FFF; 
 
-void dac_write(int ch, int cv) {
-    if (ch == 0) {
-        digitalWrite(CS1, LOW);
-        SPI.transfer((cv >> 8) | 0x30);  // H0x30=OUTA/1x
-        SPI.transfer(cv & 0xff);
-        digitalWrite(CS1, HIGH);
-    } else if(ch == 1) {
-        digitalWrite(CS1, LOW);
-        SPI.transfer((cv >> 8) | 0xB0);  // H0xB0=OUTB/1x
-        SPI.transfer(cv & 0xff);
-        digitalWrite(CS1, HIGH);
-    } else if(ch == 2) { 
-#ifdef bluebill
-        // MCP4921
-        digitalWrite(CS2, LOW);
-        SPI.transfer((cv >> 8) | 0x30);  // H0x30=OUTA/1x
-        SPI.transfer(cv & 0xff);
-        digitalWrite(CS2, HIGH);    
-#elif nanor4
-        analogWrite(CS2, cv);
-#endif
+    // Ajoute les bits de configuration au début du message (4 bits de poids fort)
+    // Bit 15 (0) : Sélection du canal A
+    // Bit 14 (0) : VREF non bufferisé
+    // Bit 13 (1) : Gain 1x (Sortie = VREF * Valeur / 4096)
+    // Bit 12 (1) : Active la sortie (Pas de mode veille)
+    uint16_t commande = 0x3000 | valeur;
+
+    // Active le composant (CS passe à LOW)
+    digitalWrite(CS1, LOW);
+
+    // Envoie les 16 bits en deux fois (8 bits par 8 bits)
+    SPI.transfer(highByte(commande));
+    SPI.transfer(lowByte(commande));
+
+    // Désactive le composant (CS passe à HIGH) pour valider l'écriture
+    digitalWrite(CS1, HIGH);
+}
+
+void writeMCP4922(int canal, uint16_t valeur) {
+    valeur &= 0x0FFF; 
+    uint16_t commande = 0x3000 | valeur; 
+
+    if (canal == 1) {
+        commande |= 0x8000; // Sélectionne le canal B si canal == 1
     }
+
+    digitalWrite(CS2, LOW);
+    SPI.transfer(highByte(commande));
+    SPI.transfer(lowByte(commande));
+    digitalWrite(CS2, HIGH);
 }
 
 void setup() {
@@ -50,15 +55,30 @@ void setup() {
     analogWriteResolution(12);
 #endif
     SPI.begin();
+    // Optionnel mais recommandé : configure la vitesse et le mode SPI
+    SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
 }
 
 void loop() {
-    dac_write(0, 0);
-    dac_write(1, 0);
-    dac_write(2, 0);
-    delay(500);
-    dac_write(0, 4095);
-    dac_write(1, 4095);
-    dac_write(2, 4095);
-    delay(500);
+    // 1. Sortie au maximum (Environ 5V si VREF = 5V)
+#ifdef bluepill
+    // MCP4921
+    writeMCP4921(4095);
+#elif nanor4
+    analogWrite(CS1, 4095);
+#endif  
+    writeMCP4922(0, 4095);        // Canal A
+    writeMCP4922(1, 4095);        // Canal B
+    delay(500); // Attend 1 seconde
+
+    // 2. Sortie au minimum (0V)
+#ifdef bluepill
+    // MCP4921
+    writeMCP4921(0);
+#elif nanor4
+    analogWrite(CS1, 0);
+#endif 
+    writeMCP4922(0, 0);        // Canal A
+    writeMCP4922(1, 0);        // Canal B
+    delay(500); // Attend 1 seconde
 }

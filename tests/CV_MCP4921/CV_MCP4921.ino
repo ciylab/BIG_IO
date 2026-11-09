@@ -1,6 +1,6 @@
 # include <SPI.h>
 
-const int PIN_CS = PC15; // Broche Chip Select
+const int PIN_CS = PB0; // Broche Chip Select
 
 void setup() {
   pinMode(PIN_CS, OUTPUT);

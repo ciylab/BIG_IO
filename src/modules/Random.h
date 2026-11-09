@@ -80,10 +80,18 @@ class Random: public Module {
                     break;                
                 case 5:
                     getProgressBar(val, temp);
-                    break; 
-                default:
+                    break;
+                case 6:
                     sprintf(temp, " %.2s%d  ", 
                             NOTES[val % 12], val / 12);
+                    this->parameters[6].value = val;
+                    break;
+                case 7:
+                    sprintf(temp, " %.2s%d  ", 
+                            NOTES[val % 12], val / 12);
+                    this->parameters[7].value = val;
+                    break;
+                default:
                     break;
             }
             temp[7] = '\0';
