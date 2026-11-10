@@ -1,7 +1,8 @@
 #ifdef bluepill
 #define CLOCK_OUT PB14
 #define GATE_1    PB13
-#define GATE_2    PA11
+#define GATE_2    PA15
+//#define GATE_2    PA11
 #define GATE_3    PB15
 #define DRUM      PB12
 #define LED       PB9
@@ -35,7 +36,6 @@ void test() {
 }
 
 void setup() {
-    Serial.end();
     pin_init();
 }
 

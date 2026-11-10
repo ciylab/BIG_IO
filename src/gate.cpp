@@ -14,7 +14,7 @@ void pin_init() {
 #ifdef nanor4
     pinMode(LED, OUTPUT);
 #elif bluepill
-    pinMode(CLOCK_IN, INPUT);
+    pinMode(CLOCK_IN, INPUT_PULLUP);
 #endif    
     for(int i = 0; i < 5; i++) {
         pinMode(gates[i], OUTPUT);

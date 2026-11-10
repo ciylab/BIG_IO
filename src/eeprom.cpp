@@ -158,7 +158,7 @@ void init_eeprom() {
  */
 void init_from_eeprom() {
 #ifdef bluepill
-    Wire.begin();
+    //Wire.begin();
 #endif
     // Only to put the values in eeprom from factory CIYLab.
     // init_eeprom();

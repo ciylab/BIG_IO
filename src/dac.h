@@ -24,9 +24,9 @@ void init_dac();
  *  Bits 11-0: 12-bit data value\n
  *
  * @param ch channel 0, 1 or 2
- * @param cv int between 0 and 4095
+ * @param value between 0 and 4095
  */
-void dac_write(byte ch, int cv);
+void dac_write(uint8_t ch, uint16_t value);
 
 /**
  * @brief To calibrate CVs with right encoder.
@@ -43,5 +43,5 @@ void calibrate(int8_t rotation);
  * @param pitch the midi note number
  * @return the cv value
  */
-int getVoltage(byte pitch);
+int getVoltage(int8_t pitch);
 #endif

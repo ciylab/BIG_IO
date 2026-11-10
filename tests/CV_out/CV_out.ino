@@ -67,8 +67,8 @@ void loop() {
 #elif nanor4
     analogWrite(CS1, 4095);
 #endif  
-    writeMCP4922(0, 4095);        // Canal A
-    writeMCP4922(1, 4095);        // Canal B
+    writeMCP4922(1, 2000);        // Canal A
+    writeMCP4922(0, 1000);        // Canal B
     delay(500); // Attend 1 seconde
 
     // 2. Sortie au minimum (0V)
@@ -78,7 +78,7 @@ void loop() {
 #elif nanor4
     analogWrite(CS1, 0);
 #endif 
-    writeMCP4922(0, 0);        // Canal A
-    writeMCP4922(1, 0);        // Canal B
+    writeMCP4922(1, 0);        // Canal A
+    writeMCP4922(0, 0);        // Canal B
     delay(500); // Attend 1 seconde
 }

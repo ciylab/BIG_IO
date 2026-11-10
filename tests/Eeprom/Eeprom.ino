@@ -87,16 +87,18 @@ void read_eeprom(int deviceaddress, unsigned int begin, int length) {
 void setup() {
     Serial.begin(9600);
     Wire.begin();
+    /*
     for(int i = 0; i < 3 * PAGE_SIZE; i++) {
         data[i] = i % 256;
         writeEEPROM(EEPROM, i, data[i]);
     }
+    */
 }
 
 void loop() {
     //  Nothing to do during loop
     delay(5000);
-    read_eeprom(EEPROM, 0, 7);
+    read_eeprom(EEPROM, 0, 8 * CONFIG_SIZE);
 }
 
 

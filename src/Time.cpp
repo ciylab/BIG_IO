@@ -104,6 +104,7 @@ void Time::handleGate() {
 }
 
 bool Time::listen_clock_pulse() {
+#ifdef nanor4
     int val = analogRead(CLOCK_IN);
 #ifdef DEBUG
     Serial.print("read value for clock in : ");
@@ -117,6 +118,21 @@ bool Time::listen_clock_pulse() {
         start = false;
     } 
     return false;
+#elif bluepill
+    int val = digitalRead(CLOCK_IN);
+#ifdef DEBUG
+    Serial.print("read value for clock in : ");
+    Serial.println(val);
+#endif
+    if(val == 0 && start == false) {
+        start = true;
+        return true;
+    }
+    if(val == 1 && start == true) {
+        start = false;
+    } 
+    return false;
+#endif
 }
 
 void Time::clockSend() {

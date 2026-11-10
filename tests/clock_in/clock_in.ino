@@ -1,13 +1,23 @@
-int analogPin = A6;
-// int analogPin = PA3;
-int val = 0;
+// Définition de la broche PA8
+const int pinLecture = PA8;
 
 void setup() {
-  Serial.begin(9600);           //  setup serial
+  // Initialisation de la communication série pour afficher le résultat
+  Serial.begin(9600);
+  
+  // Configuration de PA8 en entrée avec résistance de tirage vers le haut (Pull-up interne)
+  // Le bouton doit être connecté entre PA8 et le GND. 
+  // État lu : HIGH (1) au repos, LOW (0) quand on appuie.
+  pinMode(pinLecture, INPUT_PULLUP);
 }
 
 void loop() {
-  val = analogRead(analogPin);  // read the input pin
-  Serial.println(val);          // debug value
-  delay(200);
+  // Lecture de l'état de la broche PA8
+  int etatBroche = digitalRead(pinLecture);
+  
+  // Affichage du résultat dans le moniteur série
+  Serial.print("Etat de PA8 : ");
+  Serial.println(etatBroche);
+  
+  delay(200); // Petite pause de 200ms
 }

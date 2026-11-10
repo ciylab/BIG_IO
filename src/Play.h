@@ -5,6 +5,7 @@
 #ifndef PLAY_H
 #define PLAY_H
 #include "Modules.h"
+#include "eeprom.h"
 
 extern Modules *myModules;
 
@@ -39,7 +40,7 @@ class Play: public Module {
             m->new_value = false;
             Modules::current = Display::cursor_num + TIME;
 #ifdef DEBUG
-            read_memory(Display::cursor_num);
+            //read_memory(Display::cursor_num);
 #endif
             Display::newPage();
         }

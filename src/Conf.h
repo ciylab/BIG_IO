@@ -6,6 +6,7 @@
 #define CONF_H
 
 #include "Modules.h"
+#include "eeprom.h"
 
 /**
  * The 12 modules.
@@ -72,7 +73,7 @@ class Conf: public Module {
                 myModules->load_module_from_memory(index, module_num);
             }
 #ifdef DEBUG  
-            read_memory(module_num);
+            //read_memory(module_num);
 #endif            
             if(myModules->modules[Modules::to_config]->size == 0) {
                 return; // Quit for NONE module.
