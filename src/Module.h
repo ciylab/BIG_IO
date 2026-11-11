@@ -7,7 +7,7 @@
 #define MODULE_H
 #include "Display.h"
 #include "midi.h"
-#include "gate.h"
+#include "pin.h"
 
 #define MAIN 0
 #define CONF 1

@@ -2,7 +2,7 @@
 #include <Versatile_RotaryEncoder.h>
 #include "src/encoder.h"
 #include "src/Display.h"
-#include "src/gate.h"
+#include "src/pin.h"
 #include "src/dac.h"
 #include "src/eeprom.h"
 #include "src/midi.h"
@@ -36,14 +36,10 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 #endif
 
 void setup() {
-    //Serial.begin(9600);
 #ifdef DEBUG
     Serial.begin(9600);
 #endif
     pin_init();   // init all pins
-#ifdef bluepill
-    // 
-#endif
     oled.begin(); // font and welcome page
     /*
      * Midi part.

@@ -10,21 +10,15 @@
 unsigned int C4RefVolt;
 
 void init_dac() {
-#ifdef nanor4
     pinMode(CS1, OUTPUT);
+#ifdef nanor4
     analogWriteResolution(12);   
 #elif bluepill
-    pinMode(CS1, OUTPUT);
     pinMode(CS2, OUTPUT);
     digitalWrite(CS2, HIGH);    
 #endif
     digitalWrite(CS1, HIGH);
     SPI.begin();
-
-
-#ifdef bluepill
-    //SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-#endif
     C4RefVolt = 3277;
 }
 

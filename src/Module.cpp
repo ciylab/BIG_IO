@@ -77,14 +77,10 @@ void Module::startPlayCV(byte pitch) {
 void Module::startPlayGate() {
     this->io[3].buffer = this->io[3].value;
     if(this->io[3].value != 0) {
-#ifdef nanor4
         digitalWrite(gates[this->io[3].value - 1], HIGH);
         if(sig_num == this->io[3].value) {
             digitalWrite(LED, HIGH);
         }
-#elif bluepill
-        digitalWrite(gates[this->io[3].value - 1], LOW);
-#endif
     }
 }
 
@@ -96,14 +92,11 @@ void Module::stopPlayMIDI(byte pitch) {
 
 void Module::stopPlayGate() {
     if(this->io[3].buffer != 0) {
-#ifdef nanor4
         digitalWrite(gates[this->io[3].value - 1], LOW);
         if(sig_num == this->io[3].value) {
             digitalWrite(LED, LOW);
         }
-#elif bluepill
         digitalWrite(gates[this->io[3].value - 1], HIGH);
-#endif
     }
 }
 

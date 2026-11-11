@@ -1,8 +1,8 @@
 /**
- * @file gate.cpp
+ * @file pin.cpp
  */
 
-#include "gate.h"
+#include "pin.h"
 
 void pin_init() {
     pinMode(CLK1, INPUT_PULLUP);
@@ -11,12 +11,8 @@ void pin_init() {
     pinMode(CLK2, INPUT_PULLUP);
     pinMode(DT2, INPUT_PULLUP);
     pinMode(SW2, INPUT_PULLUP);
-#ifdef nanor4
-    pinMode(LED, OUTPUT);
-#elif bluepill
     pinMode(CLOCK_IN, INPUT_PULLUP);
-#endif    
-    for(int i = 0; i < 5; i++) {
+    for(int i = 0; i < 6; i++) {
         pinMode(gates[i], OUTPUT);
 #ifdef nanor4
         digitalWrite(gates[i], LOW);
@@ -24,12 +20,8 @@ void pin_init() {
         digitalWrite(gates[i], HIGH);
 #endif
     }
+#ifdef bluepill
+    digitalWrite(LED, LOW);
+#endif
 }
 
-void gates_test() {
-    for(int i = 0; i < 5; i++) {
-        digitalWrite(gates[i], LOW);
-        delay(100);
-        digitalWrite(gates[i], HIGH);
-    }
-}

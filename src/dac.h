@@ -5,8 +5,7 @@
 
 #ifndef DAC_H
 #define DAC_H
-#include <Arduino.h>
-#include "pins.h"
+#include "pin.h"
 
 /**
  * @brief SPI output gates.

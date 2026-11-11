@@ -1,10 +1,11 @@
 /**
- * @file pins.h
+ * @file pin.h
  * @brief pins definition
  */
 
-#ifndef PINS_H
-#define PINS_H
+#ifndef PIN_H
+#define PIN_H
+#include <Arduino.h>
 
 #ifdef nanor4
 #define LED       A7
@@ -41,5 +42,20 @@
 #define SW2       PA2
 #define LED       PB9
 #endif
+
+/**
+ * @brief Gates (leds) list. 
+ *
+ * @remark Sort from left to right.
+ */
+const byte gates[6] = {
+    CLOCK_OUT, DRUM, GATE_1, GATE_2, GATE_3, LED};
+
+/**
+ * @brief 5 output set HIGH by default and input pull up for encoders.
+ *
+ * @remark NPN switching output 
+ */
+void pin_init();
 
 #endif
