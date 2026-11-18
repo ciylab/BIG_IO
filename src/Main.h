@@ -17,7 +17,10 @@
  */
 #include "eeprom.h"
 
-byte sig_num;
+/**
+ * @brief Led is clock out by default.
+ */
+byte led_in_num = 1; // TIME
 
 class Main: public Module {
     private:
@@ -39,7 +42,7 @@ class Main: public Module {
             this->add(parameter{" LOAD  ", 0, 0, 0, 8, 32});
             this->add(parameter{" SAVE  ", 1, 1, 1, 8, 40});
             this->add(parameter{" CALIBR", 0, 0, 0, 0, 48});
-            this->add(parameter{" SIGNAL", 0, 0, 0, 5, 56});
+            this->add(parameter{" LED IN", 0, 0, 0, 5, 56});
             this->setMenu();
         }
         void getString(int val, char temp[8]) {
@@ -52,7 +55,7 @@ class Main: public Module {
                     break;
                 case 5:
                     sprintf(temp, " %s", GateOut[val]);
-                    sig_num = val;
+                    led_in_num = val;
                     break;
                 default:
                     break;

@@ -39,9 +39,6 @@ class Play: public Module {
             }
             m->new_value = false;
             Modules::current = Display::cursor_num + TIME;
-#ifdef DEBUG
-            //read_memory(Display::cursor_num);
-#endif
             Display::newPage();
         }
 };

@@ -9,7 +9,7 @@
 #define EEPROM_ADDR 0x50
 #endif
 #include "eeprom.h"
-//#include "Modules.h"
+#include "Time.h"
 
 /**
  * @brief for Serial output during test.
@@ -249,7 +249,10 @@ void read_module_from_eeprom(byte slot_num, byte module_num) {
     for(int i = 0; i < current->size; i++) {
         current->parameters[i].value = readEEPROM(offset++);
     }
-    if(index == 5 // LOOPER
+    if(index == 0 // TIME
+      ) {
+        Time::delta = 2500000 / current->parameters[0].value;
+    } else if(index == 5 // LOOPER
             && current->parameters[5].value != 0 // sequence in eeprom
       ) {
         read_sequence(current);

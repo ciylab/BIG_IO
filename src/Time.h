@@ -20,10 +20,6 @@ class Time: public Module {
         const char *SPEED[7] = {"/4", "/3", "/2", "x1", "x2", "x3", "x4"};
         const char *METER[3] = {"3/4", "4/4", "5/4"};
         /**
-         * @brief Diff between two ticks in microseconds.
-         */
-        unsigned long delta;
-        /**
          * @brief The time when the last tick.
          */
         unsigned long lastTime;
@@ -63,6 +59,10 @@ class Time: public Module {
         bool listen_clock_pulse();
  
    public:
+        /**
+         * @brief Diff between two ticks in microseconds.
+         */
+        static unsigned long delta;
         /**
          * @brief The tick number.
          */

@@ -7,7 +7,7 @@
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
-extern byte sig_num;
+extern byte led_in_num;
 
 const char *Module::NOTES[12] = {
     " C", "C#", " D", "D#", " E", " F", 
@@ -78,7 +78,7 @@ void Module::startPlayGate() {
     this->io[3].buffer = this->io[3].value;
     if(this->io[3].value != 0) {
         digitalWrite(gates[this->io[3].value - 1], LOW);
-        if(sig_num == this->io[3].value) {
+        if(led_in_num == this->io[3].value) {
             digitalWrite(LED, HIGH);
         }
     }
@@ -92,7 +92,7 @@ void Module::stopPlayMIDI(byte pitch) {
 
 void Module::stopPlayGate() {
     if(this->io[3].buffer != 0) {
-        if(sig_num == this->io[3].value) {
+        if(led_in_num == this->io[3].value) {
             digitalWrite(LED, LOW);
         }
         digitalWrite(gates[this->io[3].value - 1], HIGH);

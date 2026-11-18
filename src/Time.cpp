@@ -10,11 +10,12 @@ extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
 unsigned long Time::tick;
 bool Time::newTick;
+unsigned long Time::delta;
 
 void Time::init() {
     Time::tick = 0;
     Time::newTick = true;
-    delta = 2500000 / DEFAULT_BPM;
+    Time::delta = 2500000 / DEFAULT_BPM;
     lastTime = micros();
     lastClockIn = 0;
     start = false;
