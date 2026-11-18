@@ -32,10 +32,8 @@
 #define GATE_3    PB15
 #define GATE_1    PB13
 #define GATE_2    PA15
-//#define GATE_2    PA11
 #define CLK1      PA4
 #define DT1       PB8
-//#define DT1       PA6
 #define SW1       PB1
 #define CLK2      PA1
 #define DT2       PA0

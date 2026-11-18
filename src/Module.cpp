@@ -77,7 +77,7 @@ void Module::startPlayCV(byte pitch) {
 void Module::startPlayGate() {
     this->io[3].buffer = this->io[3].value;
     if(this->io[3].value != 0) {
-        digitalWrite(gates[this->io[3].value - 1], HIGH);
+        digitalWrite(gates[this->io[3].value - 1], LOW);
         if(sig_num == this->io[3].value) {
             digitalWrite(LED, HIGH);
         }
@@ -92,7 +92,6 @@ void Module::stopPlayMIDI(byte pitch) {
 
 void Module::stopPlayGate() {
     if(this->io[3].buffer != 0) {
-        digitalWrite(gates[this->io[3].value - 1], LOW);
         if(sig_num == this->io[3].value) {
             digitalWrite(LED, LOW);
         }
