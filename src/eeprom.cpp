@@ -11,6 +11,50 @@
 #include "eeprom.h"
 #include "Time.h"
 
+byte factory[8 * CONFIG_SIZE] = {
+    0, 0, 1, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+    4, 0, 2, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
+    1, 0, 3, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
+    5, 1, 4, 2, 4,  0,   1,  0,  0,  2,  0,  0,  0, // SEQ 
+    2, 0, 5, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
+};
+
+byte simple[8 * CONFIG_SIZE] = {
+    0, 0, 0, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+    3, 3, 1, 1, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
+    3, 4, 2, 2, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
+    3, 5, 3, 3, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
+};
+
+byte only_time[8 * CONFIG_SIZE] = {
+    0, 0, 1, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
+};
+
+byte test_midi[8 * CONFIG_SIZE] = {
+    0, 0, 0, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
+    5, 1, 1, 1, 3,  0,   1,  0,  0,  2,  0,  0,  0, // SEQ 
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
+    6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
+};
+
 /**
  * @brief for Serial output during test.
  */
@@ -74,17 +118,7 @@ void updateEEPROM(unsigned int address, byte data) {
 /**
  * @brief Load default values (factory preset) in the first slot.
  */
-void load_factory_preset() {
-    byte data[8 * CONFIG_SIZE] = {
-        0, 0, 1, 0, 1, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
-        4, 0, 2, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
-        1, 0, 3, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
-        5, 1, 4, 2, 4,  0,   1,  0,  0,  2,  0,  0,  0, // SEQ 
-        2, 0, 5, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
-    };
+void load_factory_preset(byte data[]) {
     int offset = 0;
     for(int module_num = 0; module_num < 8; module_num++) {
         byte index = data[offset++];
@@ -100,54 +134,27 @@ void load_factory_preset() {
 }
 
 /**
- * @brief Write simple the second slot.
- */
-void write_simple() {    
-    byte data[8 * CONFIG_SIZE] = {
-        0, 0, 0, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
-        3, 3, 1, 1, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
-        3, 4, 2, 2, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
-        3, 5, 3, 3, 0,  0, 108,  0,  0,  0,  0,  0,  0, // REDIR
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
-    };
-    int offset = 0;
-    for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
-        updateEEPROM(offset++, data[i]);
-    }
-}
-
-/**
- * @brief Write null values (factory preset) in the other slot.
+ * @brief Write config in slot.
  *
- * @param slot_num slot num (> 2)
+ * @param slot_num slot number from 0
+ * @param data the configuration
  */
-void write_null(int slot_num) {
-    byte data[8 * CONFIG_SIZE] = {
-        0, 0, 1, 0, 0, 30,   3,  1,  0,  0,  0,  0,  0, // TIME
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
-        6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
-    };
+
+void write(int slot_num, byte data[]) {
     int offset = 8 * CONFIG_SIZE * slot_num;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
         updateEEPROM(offset++, data[i]);
     }
 }
 
+
 /**
  * @brief Factory presets init with null sequence
  */
 void init_eeprom() {
-    write_simple();              // SLOT A
+    write(0, simple);              // SLOT A
     for(int i = 1; i < 8; i++) {
-        write_null(i);           // SLOT B to H
+        write(i, only_time);       // SLOT B to H
     }
 }
 
@@ -157,9 +164,6 @@ void init_eeprom() {
  * @remark The user cannot write on this preset.
  */
 void init_from_eeprom() {
-#ifdef bluepill
-    //Wire.begin();
-#endif
     // Only to put the values in eeprom from factory CIYLab.
     // init_eeprom();
     load(0); // load from factory preset FACT.
@@ -261,7 +265,8 @@ void read_module_from_eeprom(byte slot_num, byte module_num) {
 
 void load(int slot_num) { 
     if (slot_num == 0) {
-        load_factory_preset();
+        // load_factory_preset(factory);
+        load_factory_preset(test_midi);
         return;
     }  
     slot_num--;

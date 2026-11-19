@@ -30,6 +30,11 @@ byte Looper::getData(int index) {
 }
 
 void Looper::del_seq() {
+    for(int i = 0; i < 6 * this->parameters[0].value; i++) {
+        if(this->pitchOn[i] != 0) {
+            MIDI.sendNoteOff(this->pitchOn[i], 0, this->io[1].value);
+        }
+    }
     memset(pitchOn, 0, SEQ_SIZE);
     memset(pitchOff, 0, SEQ_SIZE);
     memset(velocities, 0, SEQ_SIZE);
@@ -52,9 +57,10 @@ void Looper::execute() {
     }
     if(Time::newTick) {
         this->index = Time::tick % (6 * this->parameters[0].value);
-        if(this->pitchOn[index] != 0) {
+        if(this->pitchOn[this->index] != 0) {
             startPlay(this->pitchOn[index], this->velocities[index]);
-        } else if (this->pitchOff[index] != 0) {
+        } 
+        if (this->pitchOff[index] != 0) {
             stopPlay(this->pitchOff[index]);
         }
     }
@@ -89,15 +95,14 @@ void Looper::handleNoteOn(byte channel, byte pitch, byte velocity) {
     if(this->parameters[2].value) { // record on
         this->parameters[2].buffer = this->parameters[2].value;
         if(this->parameters[1].value && count < NUM_NOTES) { // RT
-            pitchOn[Time::tick % (6 * this->parameters[0].value)] = pitch;
-            velocities[Time::tick % (6 * this->parameters[0].value)] =
-                velocity;
+            index = Time::tick % (6 * this->parameters[0].value);
         } else { // step by step
-            pitchOn[6 * stepIndex] = pitch;
-            velocities[6 * stepIndex] = velocity;
-            pitchOff[6 * stepIndex + this->parameters[4].value] = pitch;
+            index = 6 * stepIndex;
+            pitchOff[index + this->parameters[4].value] = pitch;
             stepIndex = (stepIndex + 1) % this->parameters[0].value;
         }
+        pitchOn[index] = pitch;
+        velocities[index] = velocity;
     }
 }
 
@@ -114,7 +119,6 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
             this->parameters[1].value && // RT
             count < NUM_NOTES) {
         pitchOff[Time::tick % (6 * this->parameters[0].value)] = pitch;
-        this->parameters[2].buffer = 0;
         count++;
     }
 }
