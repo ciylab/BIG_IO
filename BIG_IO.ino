@@ -4,7 +4,7 @@
 #include "src/Display.h"
 #include "src/pin.h"
 #include "src/dac.h"
-#include "src/eeprom.h"
+#include "src/memory.h"
 #include "src/midi.h"
 #include "src/Modules.h"
 

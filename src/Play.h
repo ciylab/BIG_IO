@@ -5,7 +5,7 @@
 #ifndef PLAY_H
 #define PLAY_H
 #include "Modules.h"
-#include "eeprom.h"
+#include "memory.h"
 
 extern Modules *myModules;
 

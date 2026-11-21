@@ -15,7 +15,7 @@
 /**
  * @brief For load/save.
  */
-#include "eeprom.h"
+#include "memory.h"
 
 /**
  * @brief Led is clock out by default.

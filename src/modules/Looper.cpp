@@ -8,7 +8,7 @@
 #include "../dac.h"
 #include "../encoder.h"
 #include "../midi.h"
-#include "../eeprom.h"
+#include "../memory.h"
 #include "Looper.h"
 
 using namespace MIDI_NAMESPACE;
@@ -41,14 +41,22 @@ void Looper::del_seq() {
 }
 
 void Looper::startPlay(byte pitch, byte velocity) {
+    if(ns.isEmpty()) {
+        startPlayGate();
+    }
+    ns.push(pitch);
     startPlayMIDI(pitch, velocity);
     startPlayCV(pitch);
-    startPlayGate();
 }
 
 void Looper::stopPlay(byte pitch) {
+    ns.remove(pitch);
     stopPlayMIDI(pitch);
-    stopPlayGate();
+    if(ns.isEmpty()) {
+        stopPlayGate();
+    } else {
+        startPlayCV(ns.top());
+    }
 }
 
 void Looper::execute() {
@@ -89,9 +97,12 @@ void Looper::handleNoteOn(byte channel, byte pitch, byte velocity) {
     if(channel != this->io[0].value) {
         return;
     }
+    startPlay(pitch, velocity);
+    /*
     startPlayMIDI(pitch, velocity);
     startPlayCV(pitch);
     startPlayGate();
+    */
     if(this->parameters[2].value) { // record on
         this->parameters[2].buffer = this->parameters[2].value;
         if(this->parameters[1].value && count < NUM_NOTES) { // RT
@@ -110,8 +121,11 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
     if(channel != this->io[0].value) {
         return;
     }
+    stopPlay(pitch);
+    /*
     stopPlayMIDI(pitch);
     stopPlayGate();
+    */
     if(!this->parameters[1].value) {
         return;
     }

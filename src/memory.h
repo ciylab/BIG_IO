@@ -1,5 +1,5 @@
 /**
- * @file eeprom.h
+ * @file memory.h
  *
  * @brief Anything to handle data with eeprom.
  *
@@ -37,8 +37,8 @@
  * We can use sequence of 5 * (499 / 32) = 75 notes.
  */
 
-#ifndef EEPROM_H
-#define EEPROM_H
+#ifndef MEMORY_H
+#define MEMORY_H
 #include "Modules.h"
 
 /**

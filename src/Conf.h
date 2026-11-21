@@ -6,7 +6,7 @@
 #define CONF_H
 
 #include "Modules.h"
-#include "eeprom.h"
+#include "memory.h"
 
 /**
  * The 12 modules.

@@ -8,7 +8,7 @@
 #include <Wire.h>
 #define EEPROM_ADDR 0x50
 #endif
-#include "eeprom.h"
+#include "memory.h"
 #include "Time.h"
 
 byte factory[8 * CONFIG_SIZE] = {
@@ -166,7 +166,7 @@ void init_eeprom() {
 void init_from_eeprom() {
     // Only to put the values in eeprom from factory CIYLab.
     // init_eeprom();
-    load(0); // load from factory preset FACT.
+    load_factory_preset(factory);
 }
 
 /**
@@ -265,8 +265,7 @@ void read_module_from_eeprom(byte slot_num, byte module_num) {
 
 void load(int slot_num) { 
     if (slot_num == 0) {
-        // load_factory_preset(factory);
-        load_factory_preset(test_midi);
+        load_factory_preset(factory);
         return;
     }  
     slot_num--;

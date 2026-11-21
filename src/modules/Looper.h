@@ -14,6 +14,7 @@
 #ifndef LOOPER_H
 #define LOOPER_H
 #include "../Module.h"
+#include "NoteStack.h"
 
 class Looper: public Module {
     private:
@@ -40,6 +41,7 @@ class Looper: public Module {
         void stopPlay(byte pitch);
         void del_seq();
         byte count;
+        NoteStack ns;
     public:
         Looper(byte indexInList, const char* name) : 
             Module(indexInList, name) {
