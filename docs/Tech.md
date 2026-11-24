@@ -2,7 +2,9 @@
 
 **Alimentation** :
 
-* Bus Eurorack : 5v 42mA
+* Bus Eurorack : 5v
+	- arduino nano R4 Renesas : 42mA
+	- STM32 BluePill : 24 mA
 
 **Dimensions** :
 
