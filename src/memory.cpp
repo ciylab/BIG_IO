@@ -166,8 +166,8 @@ void init_eeprom() {
 void init_from_eeprom() {
     // Only to put the values in eeprom from factory CIYLab.
     // init_eeprom();
-    // load_factory_preset(factory);
-    load_factory_preset(test_midi);
+    load_factory_preset(factory);
+    // load_factory_preset(test_midi);
 }
 
 /**

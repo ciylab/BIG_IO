@@ -102,7 +102,7 @@ class Module {
         void closeGate() {
             byte gate = this->io[3].value;
             if(gate != 0) {
-                digitalWrite(gates[gate - 1], HIGH);
+                digitalWrite(gates[gate - 1], LOW);
             }
             this->io[3].value = 0;
         }
@@ -164,17 +164,6 @@ class Module {
          * @brief General function to send cv
          */
         virtual void stopPlayGate(); 
-        /**
-         * @brief free memory
-         */
-        /*
-        static void del(Module *m) {
-            if(m != NULL) {
-                delete m;
-                m = NULL;
-            }
-        }
-        */
         /**
          * @brief Only to save sequence of Looper
          */

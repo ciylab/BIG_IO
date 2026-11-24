@@ -72,9 +72,6 @@ class io: public Module {
             /**
              * To turn off the clock led when some change.
              */
-            //if(Modules::to_config == TIME) {
-            //    digitalWrite(CLOCK_OUT, HIGH);
-            //}
             temp[7] = '\0';
         }
         void l_handlePress() {

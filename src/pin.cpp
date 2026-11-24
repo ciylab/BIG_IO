@@ -20,8 +20,6 @@ void pin_init() {
         digitalWrite(gates[i], HIGH);
 #endif
     }
-#ifdef bluepill
     digitalWrite(LED, LOW);
-#endif
 }
 

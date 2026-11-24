@@ -33,7 +33,7 @@ Display::Display() {
 void Display::begin() {
     delay(250);
     u8x8.begin();
-    Wire.setClock(100000); // 400 kHz au lieu de 100 kHz par défaut
+    Wire.setClock(100000);
     u8x8.setPowerSave(0);
     u8x8.clear();
     u8x8.setFont(my_u8x8_font_7x14_1x2_r);
