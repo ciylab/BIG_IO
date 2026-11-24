@@ -178,13 +178,11 @@ class Module {
         /**
          * @brief Only to save sequence of Looper
          */
-        virtual byte getData(int index) {
-            return 0;
-        }
+        virtual void read_sequence() {}
         /**
          * @brief Only to load sequence of Looper
          */
-        virtual void setData(int index, byte pitch) {}
+        virtual void write_sequence() {}
 };
 
 #endif

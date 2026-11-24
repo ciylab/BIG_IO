@@ -8,25 +8,42 @@
 #include "../dac.h"
 #include "../encoder.h"
 #include "../midi.h"
-#include "../memory.h"
 #include "Looper.h"
 
 using namespace MIDI_NAMESPACE;
 extern MidiInterface<SerialMIDI<HardwareSerial>> MIDI; /**<interface MIDI*/
 
-void Looper::setData(int index, byte pitch) {
-    if(index < SEQ_SIZE) {
-        pitchOn[index] = pitch;
-    } else {
-        pitchOff[index - SEQ_SIZE] = pitch;
+void Looper::read_sequence() {
+    if(parameters[5].value == 0) {
+        return;
     }
+    byte mem_num = parameters[5].value - 1;
+    byte length;
+    unsigned int offset = 8 * CONFIG_SIZE * NUM_SLOT;
+    offset += mem_num * (1 + 3 * 16 * 6 * N_BARS);
+    length = readEEPROM(offset++);
+    for(int i = 0; i < 6 * length; i++) {
+        pitchOn[i] = readEEPROM(offset++);
+        velocities[i] = readEEPROM(offset++);
+        pitchOff[i] = readEEPROM(offset++);
+    }
+    parameters[0].value = length;
 }
 
-byte Looper::getData(int index) {
-    if(index < SEQ_SIZE) {
-        return pitchOn[index];
+void Looper::write_sequence() {
+    if(parameters[6].value == 0) {
+        return;
     }
-    return pitchOff[index - SEQ_SIZE];
+    byte mem_num = parameters[6].value - 1;
+    byte length = parameters[0].value;
+    unsigned int offset = 8 * CONFIG_SIZE * NUM_SLOT;
+    offset += mem_num * (1 + 3 * 16 * 6 * N_BARS);
+    updateEEPROM(offset++, length);
+    for(int i = 0; i < 6 * length; i++) {
+        updateEEPROM(offset++, pitchOn[i]);
+        updateEEPROM(offset++, velocities[i]);
+        updateEEPROM(offset++, pitchOff[i]);
+    }
 }
 
 void Looper::del_seq() {
@@ -35,9 +52,9 @@ void Looper::del_seq() {
             MIDI.sendNoteOff(this->pitchOn[i], 0, this->io[1].value);
         }
     }
-    memset(pitchOn, 0, SEQ_SIZE);
-    memset(pitchOff, 0, SEQ_SIZE);
-    memset(velocities, 0, SEQ_SIZE);
+    memset(pitchOn, 0, 96 * N_BARS);
+    memset(pitchOff, 0, 96 * N_BARS);
+    memset(velocities, 0, 96 * N_BARS);
 }
 
 void Looper::startPlay(byte pitch, byte velocity) {
@@ -80,16 +97,19 @@ void Looper::l_handlePress() {
 }
 
 void Looper::r_handlePress() {
-    if(Display::cursor_num == 2) {
+    if(Display::cursor_num == 3) {        // record
         this->new_value = true;
-        Display::show_value(this->parameters[2].value); 
-        temp = 1 - this->parameters[2].value; 
-    } else if(Display::cursor_num == 3) {
+        Display::show_value(this->parameters[3].value); 
+        temp = 1 - this->parameters[3].value; 
+    } else if(Display::cursor_num == 4) { // delete
         del_seq();
-        count = 0;
         r_handleRotate(0);
-    } else if(Display::cursor_num == 5) {
-        read_sequence(this);
+    } else if(this->new_value && Display::cursor_num == 5) { // load
+        this->read_sequence();
+        Display::print_here(" LOADED");
+    } else if(this->new_value && Display::cursor_num == 6) { // save
+        this->write_sequence();
+        Display::print_here(" SAVED");
     }
 }
 
@@ -98,18 +118,13 @@ void Looper::handleNoteOn(byte channel, byte pitch, byte velocity) {
         return;
     }
     startPlay(pitch, velocity);
-    /*
-    startPlayMIDI(pitch, velocity);
-    startPlayCV(pitch);
-    startPlayGate();
-    */
-    if(this->parameters[2].value) { // record on
-        this->parameters[2].buffer = this->parameters[2].value;
-        if(this->parameters[1].value && count < NUM_NOTES) { // RT
+    if(this->parameters[3].value) { // record on
+        this->parameters[3].buffer = this->parameters[3].value;
+        if(this->parameters[2].value) { // RT
             index = Time::tick % (6 * this->parameters[0].value);
         } else { // step by step
             index = 6 * stepIndex;
-            pitchOff[index + this->parameters[4].value] = pitch;
+            pitchOff[index + this->parameters[1].value] = pitch;
             stepIndex = (stepIndex + 1) % this->parameters[0].value;
         }
         pitchOn[index] = pitch;
@@ -122,18 +137,13 @@ void Looper::handleNoteOff(byte channel, byte pitch, byte velocity) {
         return;
     }
     stopPlay(pitch);
-    /*
-    stopPlayMIDI(pitch);
-    stopPlayGate();
-    */
-    if(!this->parameters[1].value) {
+    if(!this->parameters[2].value) {
         return;
     }
-    if(this->parameters[2].buffer && // record on
-            this->parameters[1].value && // RT
-            count < NUM_NOTES) {
+    if(this->parameters[3].buffer &&  // record on
+            this->parameters[2].value // RT
+      ) {
         pitchOff[Time::tick % (6 * this->parameters[0].value)] = pitch;
-        count++;
     }
 }
 

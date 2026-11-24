@@ -29,4 +29,8 @@ void r_handleRotate(int8_t rotation);
  * @brief To validate temporary value as new value.
  */
 void r_handlePress();
+/**
+ * @brief To debug
+ */
+void print_sequence(byte mem_num);
 #endif

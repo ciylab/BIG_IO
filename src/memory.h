@@ -3,48 +3,33 @@
  *
  * @brief Anything to handle data with eeprom.
  *
- * Eeprom size of 24LC256 is 32768 bytes. 
- *
  * The size of one module is at least 13 bytes :
  * - first byte : module id (TIME = 0...)
  * - 4 bytes for io values
  * - 8 bytes max for parameters value
- * We can use 8 modules simultaneously = one slot. 
- * The maximum number of note is for the looper module:
- * - 16 (one bar of sixteenth notes) * 4 (bars) * 6 (PPQN) = 384
- * For note on (pitch and velocity), note off (pitch), we need by slot :
- * -24LC256 is 32768 bytes. 
+ * We can use 8 modules together = one slot = 104 bytes and
+ * for 8 slots : 832 bytes.
+ * 
+ * Eeprom size of 24LC256 is 32768 bytes (32Ko) : 
+ * The number of notes for the looper is :
+ * 16 (one bar of sixteenth notes) * 4 (bars) * 6 (PPQN) = 384
+ * For note on (pitch and velocity), note off (pitch), we need :
+ * 384 * 3 = 1152 bytes. Hence we can save :
+ * (32768 - 832) / 1152 = 27 sequences.
  *
- * The size of one module is at least 13 bytes :
- * - first byte : module id (TIME = 0...)
- * - 4 bytes for io values
- * - 8 bytes max for parameters value
- * We can use 8 modules simultaneously = one slot. 
- * The maximum number of note is for the looper module:
- * - 16 (one bar of sixteenth notes) * 4 (bars) * 6 (PPQN) = 384
- * For note on (pitch and velocity), note off (pitch), we need by slot :
- * - (13 + 384 * 3) * 8 = (13 + 384 * 3) * 8 = 9320 bytes
- * and we are limited to 3 slots !!!!!
- * To use 8 slots, we decided to limit the number of
- * notes in looper and we have 32768 / 8 / 8 = 512 bytes by module 
- * hence 512 - 13 = 499 bytes for one sequence. For each note we
- * need 6 bytes : 
- * - the pitch
- * - the velocity
- * - the rank from 0 to 383 for note on (2 bytes)
- * - the rank from 0 to 383 for note off (2 bytes)
- * With a chunck size of 32 bytes, we can write 5 notes by chunk
- * We can use sequence of 5 * (499 / 32) = 75 notes.
+ * Eeprom size of Nano R4 is 8192 bytes (8Ko) : we use only one bar
+ * We can save : (8192 - 832) / (96 * 3) = 25 sequences.
+ * 
+ * The size of the sequence in the looper memory is one (number of
+ * the sequence) plus pitch on, velocities, pitch off array values. 
+ * For convenience we read/write values in this order : the first 
+ * value of each array, then the second value... and so on untill
+ * 96 or 384 for any of the 25 sequences.
  */
 
 #ifndef MEMORY_H
 #define MEMORY_H
 #include "Modules.h"
-
-/**
- * @brief The maximum number of notes in looper
- */
-#define NUM_NOTES 75 
 
 /** 
  * @brief byte size for one module 
@@ -53,12 +38,27 @@
  * - 4 parameters IN/OUT
  * - 8 parameters (max used on a page)
  */
+#define NUM_SLOT 8
 #define CONFIG_SIZE 13
 
 /**
- * @brief number of PPQN = 6 * 16 * 4 for 4 bars
+ * @brief number of PPQN = 6 * 16 * N_BARS
  */
-#define SEQ_SIZE 384
+#ifdef nanor4
+#define N_BARS 1
+#elif bluepill
+#define N_BARS 4
+#endif
+
+/**
+ * @brief Read the byte in eeprom
+ */
+byte readEEPROM(unsigned int address);
+
+/**
+ * @brief Write the byte in eeprom
+ */
+void updateEEPROM(unsigned int address, byte data);
 
 /**
  * @brief load data from slot 0
@@ -76,20 +76,13 @@ void save(byte slot_num);
  *
  * @param slot_num slot num from 0 to 7
  */
-void load(int slot_num);
+void load(byte slot_num);
 
 /**
- * @brief Read data from memory for test.
+ * @brief Read data from memory for debug.
  *
- * @param module_num in the current modules
- * @see Play.h
- * @see Conf.h
+ * @param mem_num num of memory in looper
  */
-void read_memory(byte module_num);
-
-/**
- * @brief Extract sequence from eeprom.
- */
-void read_sequence(Module *m);
+void print_sequence(byte mem_num);
 
 #endif

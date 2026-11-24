@@ -16,7 +16,7 @@ byte factory[8 * CONFIG_SIZE] = {
     4, 0, 2, 0, 2, 16,   1,  4,  0,  0,  0, 48,  0, // DRUM
     1, 0, 3, 1, 3,  3,   1, 24, 28, 31, 35, 38,  1, // BASS 
     5, 1, 4, 2, 4,  0,   1,  0,  0,  2,  0,  0,  0, // SEQ 
-    2, 0, 5, 3, 5,  4,   1,  0,  0,  0,  0, 24, 72, // RAND
+    2, 0, 5, 3, 5,  4,   1,  0,  0,  0,  0,  0, 60, // RAND
     6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
     6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0, // NONE
     6, 0, 0, 0, 0,  0,   0,  0,  0,  0,  0,  0,  0  // NONE
@@ -77,7 +77,7 @@ void writeEEPROM(unsigned int address, byte data) {
     Wire.write((int)(address & 0xFF));    // writes the LSB
     Wire.write(data);
     Wire.endTransmission();
-    delay(5);                               // important!
+    delay(5);                             // important!
 #endif
 }
 
@@ -140,10 +140,10 @@ void load_factory_preset(byte data[]) {
  * @param data the configuration
  */
 
-void write(int slot_num, byte data[]) {
+void write_slot(int slot_num, byte config[]) {
     int offset = 8 * CONFIG_SIZE * slot_num;
     for(int i = 0; i < 8 * CONFIG_SIZE; i++) {
-        updateEEPROM(offset++, data[i]);
+        updateEEPROM(offset++, config[i]);
     }
 }
 
@@ -152,9 +152,9 @@ void write(int slot_num, byte data[]) {
  * @brief Factory presets init with null sequence
  */
 void init_eeprom() {
-    write(0, simple);              // SLOT A
-    for(int i = 1; i < 8; i++) {
-        write(i, only_time);       // SLOT B to H
+    write_slot(0, simple);              // SLOT A
+    for(int i = 1; i < NUM_SLOT; i++) {
+        write_slot(i, only_time);       // SLOT B to H
     }
 }
 
@@ -166,34 +166,8 @@ void init_eeprom() {
 void init_from_eeprom() {
     // Only to put the values in eeprom from factory CIYLab.
     // init_eeprom();
-    load_factory_preset(factory);
-}
-
-/**
- * @brief Get sequence from eeprom.
- *
- * @param m the LOOPER module
- */
-void read_sequence(Module *m) {
-    byte mem_num = m->parameters[5].value - 1;
-    unsigned int offset = 
-        8 * CONFIG_SIZE * 8 + mem_num * 2 * SEQ_SIZE;
-    for(int i = 0; i < 2 * SEQ_SIZE; i++) {
-        m->setData(i, readEEPROM(offset++));
-    }
-}
-
-/**
- * @brief Set sequence to eeprom by chunck of 30 bytes = 5 notes.
- *
- * @param m the LOOPER module
- */
-void write_sequence(Module *m) {
-    byte mem_num = m->parameters[5].value - 1;
-    unsigned int offset =  8 * CONFIG_SIZE * 8 + mem_num * SEQ_SIZE;
-    for(int i = 0; i < 2 * SEQ_SIZE; i++) {
-        updateEEPROM(offset++, m->getData(i));
-    }
+    // load_factory_preset(factory);
+    load_factory_preset(test_midi);
 }
 
 /**
@@ -203,21 +177,21 @@ void write_sequence(Module *m) {
  * @param module_num from 0 to 7
  */
 void write_module(byte slot_num, byte module_num) {
-    Module *m = myModules->modules[TIME + module_num];
+    Module *current = myModules->modules[TIME + module_num];
     // The size of a slot is 8 * CONFIG_SIZE
     int offset = slot_num * 8 * CONFIG_SIZE + module_num * CONFIG_SIZE;
-    writeEEPROM(offset++, m->indexInList);
+    writeEEPROM(offset++, current->indexInList);
     for(int i = 0; i < 4; i++) {
-        updateEEPROM(offset++, m->io[i].value);
+        updateEEPROM(offset++, current->io[i].value);
     }
-    for(int i = 0; i < m->size; i++) {
-        updateEEPROM(offset++, m->parameters[i].value);
+    for(int i = 0; i < current->size; i++) {
+        updateEEPROM(offset++, current->parameters[i].value);
     }
-    for(int i = m->size; i < 8; i++) {
+    for(int i = current->size; i < 8; i++) {
         updateEEPROM(offset++, 0);
     }
-    if(m->indexInList == 5) { // LOOPER
-        write_sequence(m);
+    if(current->indexInList == 5) { // LOOPER
+        current->write_sequence();
     }
 }
 
@@ -240,7 +214,7 @@ void save(byte slot_num) {
  * @param slot_num slot num from 0 to 7
  * @param module_num in the current modules from 0 to 7
  */
-void read_module_from_eeprom(byte slot_num, byte module_num) {
+void read_module(byte slot_num, byte module_num) {
     // the first byte address
     int offset = (8 * slot_num + module_num) * CONFIG_SIZE;
     byte index = readEEPROM(offset++);
@@ -258,19 +232,49 @@ void read_module_from_eeprom(byte slot_num, byte module_num) {
         Time::delta = 2500000 / current->parameters[0].value;
     } else if(index == 5 // LOOPER
             && current->parameters[5].value != 0 // sequence in eeprom
-      ) {
-        read_sequence(current);
+            ) {
+        current->read_sequence();
     }
 }
 
-void load(int slot_num) { 
+void load(byte slot_num) { 
     if (slot_num == 0) {
         load_factory_preset(factory);
         return;
     }  
     slot_num--;
     for(int i = 0; i < 8; i++) {
-        read_module_from_eeprom(slot_num, i);
+        read_module(slot_num, i);
     }
 }
 
+void print_sequence(byte mem_num) {
+    byte length = 0;
+    unsigned int offset = 8 * CONFIG_SIZE * NUM_SLOT;
+    offset += mem_num * 3 * 16 * 6 * N_BARS;
+    length = readEEPROM(offset++);
+    Serial.print("length : ");
+    Serial.println(length);
+    Serial.println("on vel off");
+    for(int i = 0; i < 6 * length; i++) {
+        Serial.print(readEEPROM(offset++), HEX);
+        Serial.print("  ");
+        Serial.print(readEEPROM(offset++));
+        Serial.print("  ");
+        Serial.print(readEEPROM(offset++), HEX);
+        Serial.println();
+    }
+}
+
+void print_memory(byte slot_num, byte module_num) {
+    // the first byte address
+    int offset = (8 * slot_num + module_num) * CONFIG_SIZE;
+    Serial.print(readEEPROM(offset++));
+    Serial.print(" : ");
+    // and then data
+    for(int i = 0; i < 12; i++) {
+        Serial.print(readEEPROM(offset++));
+        Serial.print(" ");
+    }
+    Serial.println();
+}
